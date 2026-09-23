@@ -21,3 +21,4 @@ dist/
 
 # 不要忽略 content/ 内容（这是 Decap CMS 的数据源）
 !content/.gitkeep
+__pycache__/
