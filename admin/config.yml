@@ -15,7 +15,8 @@ backend:
   name: github
   repo: Rick4440/mangen-site           # GitHub repo
   branch: main
-  # 配置好 Decap GitHub OAuth 服务后再加入 base_url 和 auth_endpoint。
+  base_url: https://mangen-site.pages.dev
+  auth_endpoint: api/auth
   open_authoring: false
   squash_merges: true
 
@@ -24,8 +25,8 @@ media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
 
 # 站点预览（编辑后保存前预览）
-site_url: https://mangen.jp
-display_url: https://mangen.jp
+site_url: https://mangen-site.pages.dev
+display_url: https://mangen-site.pages.dev
 logo_url: /assets/img/logo.png
 
 # 7 个 Collection：公司信息、车型、博客
@@ -168,7 +169,7 @@ collections:
       - { label: "正文（Markdown）", name: "body", widget: "markdown" }
 
 # 文章列表和 sitemap 由构建脚本自动生成，无需手动维护索引。
-publish_mode: editorial_workflow
+publish_mode: simple
 media_library:
   name: upload
   config:
