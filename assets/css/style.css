@@ -35,8 +35,8 @@ img{max-width:100%;height:auto;display:block}
 .site-header{border-bottom:1px solid var(--line);background:#fff;position:sticky;top:0;z-index:10}
 .site-header .inner{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;max-width:var(--max);margin:0 auto;gap:18px}
 .site-header .brand{display:flex;align-items:center;gap:10px;min-width:0}
-.site-header .brand img{height:36px;width:auto;flex-shrink:0}
-.site-header .brand .name{font-family:"Shippori Mincho",serif;font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.site-header .brand img{width:156px;height:auto;flex-shrink:0;display:block;padding:7px 10px;background:var(--ink);border-radius:6px}
+.site-header .brand .name{display:none;font-family:"Shippori Mincho",serif;font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .site-header nav ul{display:flex;gap:18px;list-style:none;margin:0;padding:0;font-size:13px}
 .site-header nav a{color:var(--sub)}
 .site-header nav a:hover{color:var(--accent)}
@@ -154,3 +154,4 @@ img{max-width:100%;height:auto;display:block}
 
 /* Loading state */
 [data-loading]{opacity:.6;pointer-events:none}
+@media(max-width:520px){.site-header .brand img{width:128px;padding:6px 8px}.site-header .inner{gap:9px;padding:10px 14px}.lang-switch{gap:1px}.lang-switch a{padding:3px 5px}}
