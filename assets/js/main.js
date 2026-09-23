@@ -81,7 +81,11 @@
     if (chbox) {
       chbox.innerHTML = channels.map(c => {
         const label = c.label_i18n?.[LANG] || c.label || '';
-        const value = c.value || '準備中';
+        const value = c.value || '';
+        if (!value || value.includes('準備中')) return '';
+        if (label === 'Mail' || label === 'メール' || label === '邮箱' || label === 'Email') {
+          return `<a class="ch" href="mailto:${escapeAttr(value)}">${escapeHTML(label)}: ${escapeHTML(value)}</a>`;
+        }
         return `<span class="ch">${escapeHTML(label)}: ${escapeHTML(value)}</span>`;
       }).join('');
     }
