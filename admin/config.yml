@@ -9,14 +9,13 @@
 #   - backend.repo: Rick4440/mangen-site
 #   - backend.branch: main
 #   - backend.base_url: https://mangen.jp  （Cloudflare Pages 域名）
-# GitHub OAuth 用 Cloudflare Pages 的 "Access GitHub" 集成，token 自动注入
+# GitHub OAuth 需要独立认证服务；Cloudflare Pages 的 GitHub 部署连接不提供 CMS 登录。
 
 backend:
   name: github
   repo: Rick4440/mangen-site           # GitHub repo
   branch: main
-  base_url: https://mangen.jp                  # ← Cloudflare Pages 域名
-  auth_endpoint: api/v1
+  # 配置好 Decap GitHub OAuth 服务后再加入 base_url 和 auth_endpoint。
   open_authoring: false
   squash_merges: true
 
@@ -141,7 +140,7 @@ collections:
     label_singular: "文章"
     description: "中文 SEO 博客。新增后会自动出现在 /blog/ 列表。"
     folder: "content/posts"
-    create: "Blog Post"
+    create: true
     slug: "{{slug}}"
     extension: "md"
     format: "frontmatter"
@@ -168,40 +167,7 @@ collections:
           - { label: "英文", name: "en", widget: "text" }
       - { label: "正文（Markdown）", name: "body", widget: "markdown" }
 
-  # 4. 博客索引（手动维护，新增文章时必须同步添加）
-  - name: "blog-index"
-    label: "博客列表索引"
-    description: "新增文章后必须在这里同步添加，否则 /blog/ 不显示。"
-    files:
-      - name: "blog-index"
-        label: "索引"
-        file: "content/posts/_index.json"
-        fields:
-          - label: "文章列表（按日期倒序）"
-            name: ""
-            label_singular: "article"
-            widget: "list"
-            fields:
-              - { label: "文件名（xxx.html）", name: "slug", widget: "string" }
-              - { label: "发布日期 YYYY-MM-DD", name: "date", widget: "string" }
-              - { label: "标题（默认）", name: "title", widget: "string" }
-              - label: "标题多语言"
-                name: "title_i18n"
-                widget: "object"
-                fields:
-                  - { label: "日文", name: "ja", widget: "string" }
-                  - { label: "中文", name: "zh", widget: "string" }
-                  - { label: "英文", name: "en", widget: "string" }
-              - { label: "摘要（默认）", name: "excerpt", widget: "text" }
-              - label: "摘要多语言"
-                name: "excerpt_i18n"
-                widget: "object"
-                fields:
-                  - { label: "日文", name: "ja", widget: "text" }
-                  - { label: "中文", name: "zh", widget: "text" }
-                  - { label: "英文", name: "en", widget: "text" }
-
-# 配置编辑器（媒体库 + Markdown 工具）
+# 文章列表和 sitemap 由构建脚本自动生成，无需手动维护索引。
 publish_mode: editorial_workflow
 media_library:
   name: upload
