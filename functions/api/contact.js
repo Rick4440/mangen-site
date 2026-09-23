@@ -27,9 +27,8 @@ export async function onRequestPost({ request, env }) {
   // 转发到 Formspree（设置 env.FORMSPREE_ENDPOINT 后生效）
   const endpoint = env.FORMSPREE_ENDPOINT;
   if (!endpoint) {
-    // 没配置：开发模式下直接返回成功，避免阻塞测试
-    return new Response(JSON.stringify({ ok: true, mode: 'dev' }), {
-      headers: { 'Content-Type': 'application/json' }
+    return new Response(JSON.stringify({ error: 'contact service unavailable' }), {
+      status: 503, headers: { 'Content-Type': 'application/json' }
     });
   }
 

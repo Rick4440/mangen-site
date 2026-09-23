@@ -35,7 +35,7 @@
     { "label": "LINE",   "label_i18n": { "ja": "LINE",   "zh": "LINE",  "en": "LINE"   }, "value": "準備中" },
     { "label": "微信",   "label_i18n": { "ja": "WeChat", "zh": "微信",  "en": "WeChat" }, "value": "準備中" },
     { "label": "WhatsApp", "label_i18n": { "ja": "WhatsApp", "zh": "WhatsApp", "en": "WhatsApp" }, "value": "準備中" },
-    { "label": "Mail",   "label_i18n": { "ja": "メール", "zh": "邮箱", "en": "Email"  }, "value": "info@mangen.jp 準備中" }
+    { "label": "Mail",   "label_i18n": { "ja": "メール", "zh": "邮箱", "en": "Email"  }, "value": "mangeninc@gmail.com" }
   ],
   "info_rows_i18n": {
     "ja": [

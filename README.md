@@ -22,7 +22,7 @@
 
 ⏳ 等用户完成下列事项后转入 Cloudflare Pages + mangen.jp：
 1. J-PlatPat 商标查询
-2. onamae.com 注册 mangen.jp
+2. Xserver 注册 mangen.jp
 3. ✅ **GitHub repo** — `https://github.com/Rick4440/mangen-site`（public，2026-09-23 已推送）
 4. Cloudflare 注册
 
@@ -35,7 +35,7 @@ GitHub repo  →  Cloudflare Pages（自动部署）  →  mangen.jp
                      ↓
               Cloudflare Pages Function (/api/contact)  →  Formspree / Resend
                      ↓
-              Zoho Mail（域名邮箱 info@mangen.jp）
+              Gmail（mangeninc@gmail.com，表单收件）
 ```
 
 ## 月成本
@@ -46,7 +46,7 @@ GitHub repo  →  Cloudflare Pages（自动部署）  →  mangen.jp
 | Cloudflare DNS | ¥0 |
 | Decap CMS | ¥0 |
 | Formspree 免费档 | ¥0（50 条/月） |
-| Zoho Mail 免费 | ¥0（5 用户） |
+| Gmail 收件 | ¥0 |
 | .jp 域名 (onamae.com) | ¥3,800/年 ≈ ¥317/月 |
 | **合计** | **约 ¥317/月** |
 
@@ -98,3 +98,5 @@ mangen-static-site/
 ├── sitemap.xml / robots.txt
 └── docs/deployment-playbook.md          部署手册（根目录软链 → ../../docs/）
 ```
+
+更新：表单收件邮箱为 `mangeninc@gmail.com`；域名尚未注册，Cloudflare 账号尚未连接。最新的构建与验收步骤参见 `docs-deploy.md`。
