@@ -1,0 +1,211 @@
+# Decap CMS 配置文件 — 万源静态站
+#
+# Decap 写入 /content/ 下的 JSON / Markdown 文件
+# Cloudflare Pages 自动部署（GitHub → CF Pages 集成）
+# 后台地址：https://mangen.jp/admin/
+
+# ✅ 已配置：
+#   - backend.name: github
+#   - backend.repo: Rick4440/mangen-site
+#   - backend.branch: main
+#   - backend.base_url: https://mangen.jp  （Cloudflare Pages 域名）
+# GitHub OAuth 用 Cloudflare Pages 的 "Access GitHub" 集成，token 自动注入
+
+backend:
+  name: github
+  repo: Rick4440/mangen-site           # GitHub repo
+  branch: main
+  base_url: https://mangen.jp                  # ← Cloudflare Pages 域名
+  auth_endpoint: api/v1
+  open_authoring: false
+  squash_merges: true
+
+# 媒体（图片）上传到同一 repo 的 assets/uploads/ 目录
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+# 站点预览（编辑后保存前预览）
+site_url: https://mangen.jp
+display_url: https://mangen.jp
+logo_url: /assets/img/logo.png
+
+# 7 个 Collection：公司信息、车型、博客
+collections:
+  # 1. 全局公司信息（电话、地址、资质、邮箱、Schema）
+  - name: "company-info"
+    label: "公司信息（电话/地址/资质）"
+    label_singular: "公司信息"
+    description: "公司电话、地址、资质、邮箱等。修改后全站生效。"
+    files:
+      - name: "company"
+        label: "全局公司信息"
+        file: "content/settings/company.json"
+        fields:
+          - { label: "公司正式名称（日文）", name: "company_name", widget: "string" }
+          - label: "公司名称多语言"
+            name: "company_name_i18n"
+            widget: "object"
+            fields:
+              - { label: "日文", name: "ja", widget: "string" }
+              - { label: "中文", name: "zh", widget: "string" }
+              - { label: "英文", name: "en", widget: "string" }
+          - label: "公司介绍段落（多语言）"
+            name: "desc_i18n"
+            widget: "object"
+            fields:
+              - { label: "日文", name: "ja", widget: "text" }
+              - { label: "中文", name: "zh", widget: "text" }
+              - { label: "英文", name: "en", widget: "text" }
+          - label: "电话"
+            name: "phones"
+            widget: "list"
+            fields:
+              - { label: "城市（内部）", name: "city", widget: "string" }
+              - label: "城市显示（多语言）"
+                name: "city_i18n"
+                widget: "object"
+                fields:
+                  - { label: "日文", name: "ja", widget: "string" }
+                  - { label: "中文", name: "zh", widget: "string" }
+                  - { label: "英文", name: "en", widget: "string" }
+              - { label: "显示用号码", name: "display", widget: "string" }
+              - { label: "号码（去 -）", name: "number", widget: "string" }
+              - { label: "国际格式", name: "intl", widget: "string" }
+          - label: "资质"
+            name: "license"
+            widget: "object"
+            fields:
+              '1':
+                label: "资质 1"
+                widget: "object"
+                fields:
+                  - { label: "文字", name: "value", widget: "string" }
+                  - { label: "中文说明", name: "zh", widget: "string" }
+              '2':
+                label: "资质 2"
+                widget: "object"
+                fields:
+                  - { label: "文字", name: "value", widget: "string" }
+                  - { label: "中文说明", name: "zh", widget: "string" }
+          - label: "联系方式徽章（LINE/微信/WhatsApp/Mail）"
+            name: "channels"
+            widget: "list"
+            fields:
+              - { label: "渠道标签（内部）", name: "label", widget: "string" }
+              - label: "标签多语言"
+                name: "label_i18n"
+                widget: "object"
+                fields:
+                  - { label: "日文", name: "ja", widget: "string" }
+                  - { label: "中文", name: "zh", widget: "string" }
+                  - { label: "英文", name: "en", widget: "string" }
+              - { label: "实际值（ID/邮箱等，未配置填「準備中」）", name: "value", widget: "string" }
+
+  # 2. 车型
+  - name: "fleet"
+    label: "车型"
+    label_singular: "车型"
+    description: "公司可用的车型。增删改后首页车型区会实时更新。"
+    files:
+      - name: "fleet"
+        label: "车型数据"
+        file: "content/fleet/fleet.json"
+        fields:
+          - label: "车型列表"
+            name: "items"
+            widget: "list"
+            fields:
+              - { label: "内部 ID（英文）", name: "id", widget: "string" }
+              - { label: "排序（1 在最前）", name: "order", widget: "number", default: 1, value_type: "int", min: 1 }
+              - { label: "图片路径", name: "image", widget: "string", hint: "如 /assets/img/alphard.png" }
+              - { label: "车名（日文默认）", name: "name", widget: "string" }
+              - { label: "座位说明（日文默认）", name: "seats", widget: "string" }
+              - label: "车名多语言"
+                name: "name_i18n"
+                widget: "object"
+                fields:
+                  - { label: "日文", name: "ja", widget: "string" }
+                  - { label: "中文", name: "zh", widget: "string" }
+                  - { label: "英文", name: "en", widget: "string" }
+              - label: "座位多语言"
+                name: "seats_i18n"
+                widget: "object"
+                fields:
+                  - { label: "日文", name: "ja", widget: "string" }
+                  - { label: "中文", name: "zh", widget: "string" }
+                  - { label: "英文", name: "en", widget: "string" }
+
+  # 3. 博客文章（一个文件一篇文章）
+  - name: "blog"
+    label: "博客文章"
+    label_singular: "文章"
+    description: "中文 SEO 博客。新增后会自动出现在 /blog/ 列表。"
+    folder: "content/posts"
+    create: "Blog Post"
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    fields:
+      - { label: "URL slug", name: "slug", widget: "string", hint: "英文短横线分隔" }
+      - label: "发布日期"
+        name: "date"
+        widget: "datetime"
+        format: "YYYY-MM-DD"
+        picker_utc: false
+      - label: "标题"
+        name: "title_i18n"
+        widget: "object"
+        fields:
+          - { label: "日文", name: "ja", widget: "string" }
+          - { label: "中文", name: "zh", widget: "string" }
+          - { label: "英文", name: "en", widget: "string" }
+      - label: "摘要"
+        name: "excerpt_i18n"
+        widget: "object"
+        fields:
+          - { label: "日文", name: "ja", widget: "text" }
+          - { label: "中文", name: "zh", widget: "text" }
+          - { label: "英文", name: "en", widget: "text" }
+      - { label: "正文（Markdown）", name: "body", widget: "markdown" }
+
+  # 4. 博客索引（手动维护，新增文章时必须同步添加）
+  - name: "blog-index"
+    label: "博客列表索引"
+    description: "新增文章后必须在这里同步添加，否则 /blog/ 不显示。"
+    files:
+      - name: "blog-index"
+        label: "索引"
+        file: "content/posts/_index.json"
+        fields:
+          - label: "文章列表（按日期倒序）"
+            name: ""
+            label_singular: "article"
+            widget: "list"
+            fields:
+              - { label: "文件名（xxx.html）", name: "slug", widget: "string" }
+              - { label: "发布日期 YYYY-MM-DD", name: "date", widget: "string" }
+              - { label: "标题（默认）", name: "title", widget: "string" }
+              - label: "标题多语言"
+                name: "title_i18n"
+                widget: "object"
+                fields:
+                  - { label: "日文", name: "ja", widget: "string" }
+                  - { label: "中文", name: "zh", widget: "string" }
+                  - { label: "英文", name: "en", widget: "string" }
+              - { label: "摘要（默认）", name: "excerpt", widget: "text" }
+              - label: "摘要多语言"
+                name: "excerpt_i18n"
+                widget: "object"
+                fields:
+                  - { label: "日文", name: "ja", widget: "text" }
+                  - { label: "中文", name: "zh", widget: "text" }
+                  - { label: "英文", name: "en", widget: "text" }
+
+# 配置编辑器（媒体库 + Markdown 工具）
+publish_mode: editorial_workflow
+media_library:
+  name: upload
+  config:
+    max_file_size: 5242880
+editor:
+  preview: true

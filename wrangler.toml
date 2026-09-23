@@ -1,0 +1,15 @@
+# Project
+name: mangen-static-site
+type: static
+
+# Build
+build:
+  command: ""
+  publish: "."
+
+# 部署后 hooks
+# （Cloudflare Dashboard 配置 GitHub 集成后自动跑 deploy hook）
+
+# Functions
+# functions/ 目录会自动启用 Pages Functions
+# 表单端点：/api/contact

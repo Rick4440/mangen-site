@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Allow: /admin/
+Disallow: /api/
+Sitemap: https://mangen.jp/sitemap.xml

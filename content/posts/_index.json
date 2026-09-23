@@ -1,0 +1,26 @@
+[
+  {
+    "slug": "green-plate-guide.html",
+    "date": "2026-09-22",
+    "title": "日本旅行用车｜绿牌白牌一字之差",
+    "title_i18n": { "ja": "緑ナンバーと白ナンバーの違い", "zh": "日本旅行用车｜绿牌白牌一字之差", "en": "Green Plate vs White Plate" },
+    "excerpt": "日本出租车、网约车、包车看着都像——颜色不同的车牌背后，是完全不同的法规、监管与服务标准。",
+    "excerpt_i18n": { "ja": "日本のタクシー・ハイヤー・貸切送迎の違い。", "zh": "日本出租车、网约车、包车看着都像——颜色不同的车牌背后，是完全不同的法规、监管与服务标准。", "en": "Japan's taxis, ride-hailing and chartered vehicles look alike, but the plate color reveals very different rules." }
+  },
+  {
+    "slug": "japan-travel-etiquette.html",
+    "date": "2026-09-22",
+    "title": "访日旅游礼仪与注意事项",
+    "title_i18n": { "ja": "訪日マナーの基本", "zh": "访日旅游礼仪与注意事项", "en": "Japan Travel Etiquette" },
+    "excerpt": "在日本，遵守一些本地礼仪可以让旅行体验顺滑一倍以上。本文整理访日客人最容易忽略但最重要的细节。",
+    "excerpt_i18n": { "ja": "日本で気をつけたい基本的なマナー。", "zh": "在日本，遵守一些本地礼仪可以让旅行体验顺滑一倍以上。本文整理访日客人最容易忽略但最重要的细节。", "en": "Following a few local rules will double your travel experience." }
+  },
+  {
+    "slug": "osaka-kyoto-nara-3days.html",
+    "date": "2026-09-22",
+    "title": "大阪・京都・奈良 3 日包车路线",
+    "title_i18n": { "ja": "大阪・京都・奈良 3 日間モデルコース", "zh": "大阪・京都・奈良 3 日包车路线", "en": "Osaka-Kyoto-Nara 3-day Route" },
+    "excerpt": "关西最经典的 3 日路线：大阪吃、京都看、奈良摸鹿。每天的路线、餐厅、推荐车型一次说清。",
+    "excerpt_i18n": { "ja": "関西定番の3日間モデルコース。", "zh": "关西最经典的 3 日路线：大阪吃、京都看、奈良摸鹿。每天的路线、餐厅、推荐车型一次说清。", "en": "Kansai's classic 3-day route." }
+  }
+]

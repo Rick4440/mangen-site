@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mangen Co., Ltd. | Japan-wide Chauffeur Service</title>
+  <meta name="description" content="Airport transfer, charter and business inspection transport across Japan. JP/ZH/EN speaking drivers.">
+  <link rel="canonical" href="https://mangen.jp/en.html">
+  <link rel="alternate" hreflang="ja" href="https://mangen.jp/">
+  <link rel="alternate" hreflang="zh" href="https://mangen.jp/zh.html">
+  <link rel="alternate" hreflang="en" href="https://mangen.jp/en.html">
+  <link rel="alternate" hreflang="x-default" href="https://mangen.jp/">
+  <link rel="icon" type="image/png" href="/assets/img/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/img/favicon.png">
+  <meta property="og:title" content="Mangen Co., Ltd. | Japan-wide chauffeur service">
+  <meta property="og:description" content="Airport transfer, charter, business visits. JP/ZH/EN drivers.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://mangen.jp/assets/img/logo.png">
+  <meta property="og:url" content="https://mangen.jp/en.html">
+  <meta property="og:locale" content="en_US">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@500;600&family=Noto+Serif+SC:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="/en.html">
+      <img src="/assets/img/logo.png" alt="Mangen Co., Ltd.">
+      <span class="name">Mangen Co., Ltd.</span>
+    </a>
+    <button class="menu-btn" aria-label="menu"><span></span><span></span><span></span></button>
+    <nav>
+      <ul>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#fleet">Fleet</a></li>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#company">About</a></li>
+      </ul>
+    </nav>
+    <div class="lang-switch">
+      <a href="/">JA</a>
+      <a href="/zh.html">ZH</a>
+      <a href="/en.html" class="active">EN</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section class="hero" id="top">
+  <div class="wrap">
+    <h1>Japan-wide Chauffeur Service</h1>
+    <p class="lead">From airport transfers to private tours and business visits—our JP/ZH/EN speaking drivers deliver safe, comfortable journeys across Japan.</p>
+    <a href="#contact" class="cta">Get a Quote</a>
+  </div>
+</section>
+
+<section class="sec" id="services">
+  <div class="wrap">
+    <h2>Services</h2>
+    <p class="sub">All your mobility needs during your stay in Japan.</p>
+    <div class="service-grid">
+      <div class="service"><h3>Airport Transfer</h3><p>Meet-and-greet at the gate with real-time flight tracking.</p></div>
+      <div class="service"><h3>Private Tour</h3><p>Kyoto, Nara, Mt. Fuji—customized itineraries for families and groups.</p></div>
+      <div class="service"><h3>Business Visit</h3><p>Corporate visits, factory tours, conferences—professional transport for executive guests.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec alt" id="quality">
+  <div class="wrap">
+    <h2>Why Choose Us</h2>
+    <p class="sub">Sincerity, passion, patience, responsibility.</p>
+    <div class="values">
+      <div class="v"><span class="ja">真心</span><span class="zh">Sincerity</span></div>
+      <div class="v"><span class="ja">熱心</span><span class="zh">Passion</span></div>
+      <div class="v"><span class="ja">辛抱強さ</span><span class="zh">Patience</span></div>
+      <div class="v"><span class="ja">責任感</span><span class="zh">Responsibility</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="fleet">
+  <div class="wrap">
+    <h2>Fleet</h2>
+    <p class="sub">Pick a vehicle that fits your party.</p>
+    <div class="fleet" data-bind="fleet"><div class="card"><div class="body">Loading…</div></div></div>
+  </div>
+</section>
+
+<section class="sec alt" id="contact">
+  <div class="wrap">
+    <h2>Contact</h2>
+    <p class="sub">Call us or fill in the form below.</p>
+    <div class="contact-grid">
+      <div>
+        <div data-bind="phones"></div>
+        <div class="channels" data-bind="channels"></div>
+      </div>
+      <div>
+        <form class="form" data-form="contact" action="/api/contact" method="POST">
+          <div><label for="en-name">Name</label><input id="en-name" name="name" required></div>
+          <div><label for="en-contact">Phone / Email / WhatsApp</label><input id="en-contact" name="contact" required></div>
+          <div><label for="en-date">Date</label><input id="en-date" name="date" type="date"></div>
+          <div><label for="en-pax">Passengers / Vehicle</label>
+            <select id="en-pax" name="pax">
+              <option>1-3 / Sedan</option>
+              <option>4-6 / Alphard</option>
+              <option>7-14 / Hiace</option>
+              <option>15-18 / Coaster</option>
+              <option>Other / Custom</option>
+            </select>
+          </div>
+          <div><label for="en-msg">Notes</label><textarea id="en-msg" name="message"></textarea></div>
+          <button type="submit">Send</button>
+          <div class="status"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="company">
+  <div class="wrap">
+    <h2>About</h2>
+    <div class="company-grid">
+      <div>
+        <p data-bind="company-desc">Mangen Co., Ltd. delivers trustworthy, safe, comfortable and customizable mobility for visitors to Japan. From booking to drop-off, we maintain consistent quality.</p>
+        <div class="values" style="margin-top:18px">
+          <div class="v"><span class="ja">真心</span><span class="zh">Sincerity</span></div>
+          <div class="v"><span class="ja">熱心</span><span class="zh">Passion</span></div>
+          <div class="v"><span class="ja">辛抱強さ</span><span class="zh">Patience</span></div>
+          <div class="v"><span class="ja">責任感</span><span class="zh">Responsibility</span></div>
+        </div>
+        <div class="license">
+          <div class="item" data-bind="license-1"></div>
+          <div class="item" data-bind="license-2"></div>
+        </div>
+      </div>
+      <div>
+        <table class="company-table"><tbody data-bind="company-info"></tbody></table>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="inner">
+    <div>
+      <h4>Mangen Co., Ltd.</h4>
+      <p>Japan-wide chauffeur service. Airport, charter, business visits. JP/ZH/EN drivers.</p>
+      <div class="license" style="margin-top:14px">
+        <div class="item" data-bind="license-1"></div>
+        <div class="item" data-bind="license-2"></div>
+      </div>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <ul data-bind="footer-phones"></ul>
+    </div>
+    <div>
+      <h4>Links</h4>
+      <ul>
+        <li><a href="/blog/">Blog</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#company">About</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="copy" data-bind="copyright">© 2026 Mangen Co., Ltd. All Rights Reserved.</div>
+</footer>
+
+<script src="/assets/js/main.js"></script>
+</body>
+</html>

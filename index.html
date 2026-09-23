@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>株式会社万源 | 日本全国対応の送迎サービス</title>
+  <meta name="description" content="空港送迎・貸切観光・商務視察の送迎サービス。日本全国対応、日中英対応ドライバー。">
+  <link rel="canonical" href="https://mangen.jp/">
+  <link rel="alternate" hreflang="ja" href="https://mangen.jp/">
+  <link rel="alternate" hreflang="zh" href="https://mangen.jp/zh.html">
+  <link rel="alternate" hreflang="en" href="https://mangen.jp/en.html">
+  <link rel="alternate" hreflang="x-default" href="https://mangen.jp/">
+  <link rel="icon" type="image/png" href="/assets/img/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/img/favicon.png">
+  <meta property="og:title" content="株式会社万源 | 日本全国対応の送迎サービス">
+  <meta property="og:description" content="空港送迎・貸切観光・商務視察の送迎。日中英ドライバー。">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://mangen.jp/assets/img/logo.png">
+  <meta property="og:url" content="https://mangen.jp/">
+  <meta property="og:locale" content="ja_JP">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@500;600&family=Noto+Serif+SC:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="inner">
+    <a class="brand" href="/">
+      <img src="/assets/img/logo.png" alt="株式会社万源">
+      <span class="name">株式会社万源</span>
+    </a>
+    <button class="menu-btn" aria-label="menu"><span></span><span></span><span></span></button>
+    <nav>
+      <ul>
+        <li><a href="#services">サービス</a></li>
+        <li><a href="#fleet">車両</a></li>
+        <li><a href="/blog/">ブログ</a></li>
+        <li><a href="#contact">お問い合わせ</a></li>
+        <li><a href="#company">会社概要</a></li>
+      </ul>
+    </nav>
+    <div class="lang-switch">
+      <a href="/" class="active">JA</a>
+      <a href="/zh.html">ZH</a>
+      <a href="/en.html">EN</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section class="hero" id="top">
+  <div class="wrap">
+    <h1>日本全国対応の送迎サービス</h1>
+    <p class="lead">空港送迎・貸切観光・商務視察まで、中国語・日本語・英語を話すドライバーが安全で快適な移動をお手伝いします。</p>
+    <a href="#contact" class="cta">お問い合わせ・お見積り</a>
+  </div>
+</section>
+
+<section class="sec" id="services">
+  <div class="wrap">
+    <h2>サービス内容</h2>
+    <p class="sub">訪日のお客様のあらゆる移動ニーズにお応えします。</p>
+    <div class="service-grid">
+      <div class="service"><h3>空港送迎</h3><p>到着便に合わせ空港ゲートまでお迎え。フライト遅延も柔軟に対応します。</p></div>
+      <div class="service"><h3>貸切観光</h3><p>京都・奈良・富士山など、ご家族・グループに合わせた行程を自由に。</p></div>
+      <div class="service"><h3>商務視察</h3><p>企業訪問・工場見学・会合同行まで、接待の質を高める移動をご提供。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec alt" id="quality">
+  <div class="wrap">
+    <h2>選ばれる理由</h2>
+    <p class="sub">真心・熱心・辛抱強さ・責任感。四つの心を込めたサービス。</p>
+    <div class="values">
+      <div class="v"><span class="ja">真心</span><span class="zh">真心</span></div>
+      <div class="v"><span class="ja">熱心</span><span class="zh">热心</span></div>
+      <div class="v"><span class="ja">辛抱強さ</span><span class="zh">耐心</span></div>
+      <div class="v"><span class="ja">責任感</span><span class="zh">责任心</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="fleet">
+  <div class="wrap">
+    <h2>車両ラインナップ</h2>
+    <p class="sub">人数・用途に合わせてお選びいただけます。</p>
+    <div class="fleet" data-bind="fleet"><div class="card"><div class="body">読込中…</div></div></div>
+  </div>
+</section>
+
+<section class="sec alt" id="contact">
+  <div class="wrap">
+    <h2>お問い合わせ</h2>
+    <p class="sub">お電話またはフォームよりお気軽にお問い合わせください。</p>
+    <div class="contact-grid">
+      <div>
+        <div data-bind="phones"></div>
+        <div class="channels" data-bind="channels"></div>
+      </div>
+      <div>
+        <form class="form" data-form="contact" action="/api/contact" method="POST">
+          <div><label for="name">お名前</label><input id="name" name="name" required></div>
+          <div><label for="contact">連絡先（電話 / メール / WeChat）</label><input id="contact" name="contact" required></div>
+          <div><label for="date">ご利用日</label><input id="date" name="date" type="date"></div>
+          <div><label for="pax">人数・車両タイプ</label>
+            <select id="pax" name="pax">
+              <option>1〜3名 / セダン</option>
+              <option>4〜6名 / アルファード</option>
+              <option>7〜14名 / ハイエース</option>
+              <option>15〜18名 / コースター</option>
+              <option>その他 / 相談</option>
+            </select>
+          </div>
+          <div><label for="msg">ご要望</label><textarea id="msg" name="message"></textarea></div>
+          <button type="submit">送信する</button>
+          <div class="status"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="company">
+  <div class="wrap">
+    <h2>会社概要</h2>
+    <div class="company-grid">
+      <div>
+        <p data-bind="company-desc">株式会社万源は、安全・快適・カスタマイズ可能な移動を通じて、訪日のお客様に信頼されるサービスをお届けします。</p>
+        <div class="values" style="margin-top:18px">
+          <div class="v"><span class="ja">真心</span><span class="zh">真心</span></div>
+          <div class="v"><span class="ja">熱心</span><span class="zh">热心</span></div>
+          <div class="v"><span class="ja">辛抱強さ</span><span class="zh">耐心</span></div>
+          <div class="v"><span class="ja">責任感</span><span class="zh">责任心</span></div>
+        </div>
+        <div class="license">
+          <div class="item" data-bind="license-1"></div>
+          <div class="item" data-bind="license-2"></div>
+        </div>
+      </div>
+      <div>
+        <table class="company-table"><tbody data-bind="company-info"></tbody></table>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="inner">
+    <div>
+      <h4>株式会社万源</h4>
+      <p>日本全国対応の送迎サービス。空港送迎・貸切観光・商務視察。日中英ドライバー。</p>
+      <div class="license" style="margin-top:14px">
+        <div class="item" data-bind="license-1"></div>
+        <div class="item" data-bind="license-2"></div>
+      </div>
+    </div>
+    <div>
+      <h4>お問い合わせ</h4>
+      <ul data-bind="footer-phones"></ul>
+    </div>
+    <div>
+      <h4>リンク</h4>
+      <ul>
+        <li><a href="/blog/">ブログ</a></li>
+        <li><a href="#services">サービス</a></li>
+        <li><a href="#company">会社概要</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="copy" data-bind="copyright">© 2026 株式会社万源. All Rights Reserved.</div>
+</footer>
+
+<script src="/assets/js/main.js"></script>
+</body>
+</html>

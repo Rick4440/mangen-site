@@ -1,0 +1,90 @@
+{
+  "company_name": "株式会社万源",
+  "company_name_i18n": {
+    "ja": "株式会社万源",
+    "zh": "株式会社万源",
+    "en": "Mangen Co., Ltd."
+  },
+  "phones": [
+    {
+      "city": "大阪",
+      "city_i18n": { "ja": "大阪", "zh": "大阪", "en": "Osaka" },
+      "display": "072-275-4665",
+      "number": "072-275-4665",
+      "intl": "+81-72-275-4665"
+    },
+    {
+      "city": "東京",
+      "city_i18n": { "ja": "東京", "zh": "东京", "en": "Tokyo" },
+      "display": "042-649-9057",
+      "number": "042-649-9057",
+      "intl": "+81-42-649-9057"
+    }
+  ],
+  "license": {
+    "1": {
+      "value": "近運自二第209号",
+      "zh": "運輸局免許"
+    },
+    "2": {
+      "value": "大阪府知事登錄旅行サービス手配業 第7456号",
+      "zh": "大阪府登録"
+    }
+  },
+  "channels": [
+    { "label": "LINE",   "label_i18n": { "ja": "LINE",   "zh": "LINE",  "en": "LINE"   }, "value": "準備中" },
+    { "label": "微信",   "label_i18n": { "ja": "WeChat", "zh": "微信",  "en": "WeChat" }, "value": "準備中" },
+    { "label": "WhatsApp", "label_i18n": { "ja": "WhatsApp", "zh": "WhatsApp", "en": "WhatsApp" }, "value": "準備中" },
+    { "label": "Mail",   "label_i18n": { "ja": "メール", "zh": "邮箱", "en": "Email"  }, "value": "info@mangen.jp 準備中" }
+  ],
+  "info_rows_i18n": {
+    "ja": [
+      { "label": "会社名",       "value": "株式会社万源" },
+      { "label": "所在地",       "value": "大阪府堺市北区金岡町1147-33" },
+      { "label": "対応エリア",   "value": "日本全国" },
+      { "label": "対応言語",     "value": "日本語 / 中文 / English" },
+      { "label": "営業時間",     "value": "24時間" }
+    ],
+    "zh": [
+      { "label": "公司名称", "value": "株式会社万源" },
+      { "label": "所在地",   "value": "大阪府堺市北区金岡町1147-33" },
+      { "label": "服务区域", "value": "日本全国" },
+      { "label": "服务语言", "value": "日语 / 中文 / 英语" },
+      { "label": "营业时间", "value": "24 小时" }
+    ],
+    "en": [
+      { "label": "Company",    "value": "Mangen Co., Ltd." },
+      { "label": "Address",    "value": "1147-33 Kanaoka-cho, Kita-ku, Sakai, Osaka" },
+      { "label": "Area",       "value": "All Japan" },
+      { "label": "Languages",  "value": "Japanese / Chinese / English" },
+      { "label": "Hours",      "value": "24h" }
+    ]
+  },
+  "desc_i18n": {
+    "ja": "株式会社万源は、安全・快適・カスタマイズ可能な移動を通じて、訪日のお客様に信頼されるサービスをお届けします。真心・熱心・辛抱強さ・責任感を胸に、車両一つひとつにお応えします。",
+    "zh": "株式会社万源通过安全、舒适、定制化的出行，为访日客人提供值得信赖的服务。我们以真心、热心、耐心、责任心贯穿每一趟服务。",
+    "en": "Mangen Co., Ltd. delivers trustworthy, safe, comfortable and customizable mobility for visitors to Japan. Sincerity, passion, patience and responsibility guide every trip."
+  },
+  "schema": {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "https://mangen.jp/#business",
+    "name": "株式会社万源",
+    "alternateName": "Mangen Co., Ltd.",
+    "description": "日本全国対応の送迎サービス。日中英ドライバー。",
+    "url": "https://mangen.jp/",
+    "telephone": "+81-72-275-4665",
+    "priceRange": "¥¥",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "金岡町1147-33",
+      "addressLocality": "堺市北区",
+      "addressRegion": "大阪府",
+      "postalCode": "591-8022",
+      "addressCountry": "JP"
+    },
+    "areaServed": { "@type": "Country", "name": "Japan" },
+    "availableLanguage": ["ja", "zh", "en"],
+    "openingHours": "Mo-Su 00:00-24:00"
+  }
+}

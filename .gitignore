@@ -1,0 +1,23 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*~
+
+# Build outputs
+node_modules/
+dist/
+.cache/
+
+# CloudStudio specific
+.workbuddy/
+
+# Logs
+*.log
+
+# 不要忽略 content/ 内容（这是 Decap CMS 的数据源）
+!content/.gitkeep

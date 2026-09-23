@@ -1,0 +1,156 @@
+/* Mangen 万源静态站 - 黑金设计令牌
+   单一 CSS，三语共用，JS 渲染数据 */
+:root{
+  --ink:#17140f;
+  --sub:#6d6459;
+  --accent:#a5813c;
+  --accent-ink:#85652a;
+  --gold:#a5813c;
+  --bg:#ffffff;
+  --alt:#faf8f3;
+  --line:#e9e2d4;
+  --card:#ffffff;
+  --radius:10px;
+  --max:1180px;
+  --pad:54px;
+  --gap:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:"Noto Sans JP","Hiragino Sans","Yu Gothic",system-ui,-apple-system,"Helvetica Neue",sans-serif;
+  color:var(--ink);background:var(--bg);line-height:1.7;font-size:15px;
+}
+h1,h2,h3{font-family:"Shippori Mincho","Noto Serif SC",Georgia,serif;font-weight:600;letter-spacing:.02em;margin:0}
+a{color:var(--ink);text-decoration:none}
+a:hover{color:var(--accent)}
+img{max-width:100%;height:auto;display:block}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+.sec{padding:var(--pad) 0}
+.sec.alt{background:var(--alt)}
+.sec h2{font-size:26px;margin:0 0 8px}
+.sec .sub{color:var(--sub);margin:0 0 28px;font-size:14px}
+
+/* Header */
+.site-header{border-bottom:1px solid var(--line);background:#fff;position:sticky;top:0;z-index:10}
+.site-header .inner{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;max-width:var(--max);margin:0 auto;gap:18px}
+.site-header .brand{display:flex;align-items:center;gap:10px;min-width:0}
+.site-header .brand img{height:36px;width:auto;flex-shrink:0}
+.site-header .brand .name{font-family:"Shippori Mincho",serif;font-size:15px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.site-header nav ul{display:flex;gap:18px;list-style:none;margin:0;padding:0;font-size:13px}
+.site-header nav a{color:var(--sub)}
+.site-header nav a:hover{color:var(--accent)}
+.lang-switch{display:flex;gap:6px;align-items:center;font-size:12px;flex-shrink:0}
+.lang-switch a{color:var(--sub);padding:3px 8px;border-radius:999px;border:1px solid transparent;white-space:nowrap}
+.lang-switch a.active{color:var(--accent);border-color:var(--line)}
+.menu-btn{display:none;background:none;border:none;cursor:pointer;padding:6px}
+.menu-btn span{display:block;width:22px;height:2px;background:var(--ink);margin:4px 0;transition:.2s}
+@media (max-width:780px){
+  .site-header nav ul{display:none}
+  .site-header nav.open ul{display:flex;flex-direction:column;position:absolute;top:60px;left:0;right:0;background:#fff;border-bottom:1px solid var(--line);padding:14px 24px;gap:10px}
+  .menu-btn{display:block}
+}
+
+/* Hero */
+.hero{padding:78px 0 54px;text-align:center;background:linear-gradient(180deg,#faf8f3 0%,#ffffff 100%)}
+.hero h1{font-size:34px;margin:0 0 14px;line-height:1.35}
+.hero .lead{font-size:15px;color:var(--sub);max-width:780px;margin:0 auto 28px}
+.hero .cta{display:inline-block;padding:12px 28px;border:1px solid var(--accent);color:var(--accent);border-radius:var(--radius);font-weight:500}
+.hero .cta:hover{background:var(--accent);color:#fff}
+
+/* Fleet */
+.fleet{display:grid;grid-template-columns:repeat(5,1fr);gap:var(--gap)}
+.fleet .card{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);overflow:hidden;transition:.2s}
+.fleet .card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.fleet .body{height:128px;background:#f7f6f2;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:center}
+.fleet .body img{object-fit:contain;max-height:120px;width:auto}
+.fleet .info{padding:10px 12px;text-align:center}
+.fleet .info .name{font-size:13px;font-weight:500;margin:0 0 2px}
+.fleet .info .seats{font-size:11px;color:var(--sub);margin:0}
+@media (max-width:900px){.fleet{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.fleet .body{height:100px}}
+
+/* Services / Values */
+.service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.service{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+.service h3{font-size:16px;margin:0 0 6px;color:var(--accent)}
+.service p{font-size:13px;color:var(--sub);margin:0}
+@media (max-width:780px){.service-grid{grid-template-columns:1fr}}
+
+.values{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
+.values .v{padding:10px 14px;border:1px solid var(--line);border-radius:var(--radius);background:#fff;text-align:center}
+.values .v .ja{color:var(--accent);font-size:11px;display:block}
+.values .v .zh{font-size:14px;font-weight:500}
+@media (max-width:780px){.values{grid-template-columns:repeat(2,1fr)}}
+
+/* Contact */
+.contact-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:38px;align-items:start}
+@media (max-width:900px){.contact-grid{grid-template-columns:1fr}}
+.telbig{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:var(--radius);padding:14px 18px;margin-bottom:10px;background:#fff}
+.telbig small{color:var(--sub);font-size:11px;display:block}
+.telbig b{font-size:18px;color:var(--ink);letter-spacing:.02em}
+.channels{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.channels .ch{padding:6px 12px;border:1px dashed var(--gold);border-radius:999px;color:var(--accent);font-size:12px}
+
+/* Form */
+.form{display:grid;gap:12px}
+.form label{font-size:13px;color:var(--sub);display:block;margin-bottom:4px}
+.form input,.form textarea,.form select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;font:inherit;color:var(--ink);background:#fff}
+.form input:focus,.form textarea:focus,.form select:focus{outline:none;border-color:var(--accent)}
+.form textarea{min-height:120px;resize:vertical}
+.form button{padding:12px;border:1px solid var(--accent);background:var(--accent);color:#fff;border-radius:var(--radius);cursor:pointer;font:inherit;font-weight:500}
+.form button:hover{background:var(--accent-ink);border-color:var(--accent-ink)}
+.form button:disabled{opacity:.5;cursor:not-allowed}
+.form .status{font-size:13px;padding:10px;border-radius:8px;display:none}
+.form .status.success{display:block;background:#e8f5e9;color:#2e7d32}
+.form .status.error{display:block;background:#fce4ec;color:#c62828}
+
+/* Company */
+.company-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:38px;align-items:start}
+@media (max-width:900px){.company-grid{grid-template-columns:1fr}}
+.company-table{width:100%;font-size:13px;border-collapse:collapse}
+.company-table td{padding:8px 0;border-bottom:1px solid var(--line)}
+.company-table td:first-child{color:var(--sub);width:32%}
+
+/* License */
+.license{display:flex;flex-wrap:wrap;gap:14px;padding:14px 22px;border:1px solid var(--line);border-radius:var(--radius);background:#fff;margin-top:14px}
+.license .item{font-size:13px;color:var(--sub)}
+.license .item small{display:block;color:var(--sub);font-size:11px}
+.license .item b{color:var(--ink);font-size:13px}
+
+/* Footer */
+.site-footer{border-top:1px solid var(--line);padding:36px 0 28px;background:#fff;color:var(--sub);font-size:13px;margin-top:36px}
+.site-footer .inner{max-width:var(--max);margin:0 auto;padding:0 24px;display:grid;grid-template-columns:2fr 1fr 1fr;gap:24px}
+@media (max-width:780px){.site-footer .inner{grid-template-columns:1fr}}
+.site-footer h4{font-size:13px;color:var(--ink);margin:0 0 10px}
+.site-footer ul{list-style:none;margin:0;padding:0}
+.site-footer ul li{margin-bottom:4px}
+.site-footer .copy{text-align:center;color:var(--sub);font-size:12px;padding-top:24px;border-top:1px solid var(--line);margin-top:24px;max-width:var(--max);margin-left:auto;margin-right:auto}
+
+/* Blog */
+.blog-list{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:18px}
+@media (max-width:780px){.blog-list{grid-template-columns:1fr}}
+.blog-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:20px;display:block;color:inherit}
+.blog-card:hover{border-color:var(--accent)}
+.blog-card time{color:var(--sub);font-size:12px}
+.blog-card h3{font-size:17px;margin:6px 0}
+.blog-card p{color:var(--sub);font-size:13px;margin:0}
+.article{max-width:780px;margin:0 auto}
+.article nav.crumb{font-size:13px;color:var(--sub);margin-bottom:14px}
+.article nav.crumb a{color:var(--sub)}
+.article nav.crumb a:hover{color:var(--accent)}
+.article header{margin-bottom:24px}
+.article header h1{font-size:30px;margin:0 0 8px;line-height:1.4}
+.article .meta{color:var(--sub);font-size:13px}
+.article .body{font-size:15px;line-height:1.85}
+.article .body h2{font-size:22px;margin:32px 0 12px}
+.article .body h3{font-size:18px;margin:24px 0 10px}
+.article .body p{margin:0 0 14px}
+.article .body ul,.article .body ol{margin:0 0 14px 22px;padding:0}
+.article .body li{margin-bottom:6px}
+.article .cta-block{margin-top:48px;padding:24px;border:1px solid var(--accent);border-radius:var(--radius);background:var(--alt)}
+.article .cta-block h3{margin:0 0 8px;font-size:18px}
+.article .cta-block a{display:inline-block;padding:10px 22px;border:1px solid var(--accent);color:var(--accent);border-radius:8px;margin-top:8px}
+
+/* Loading state */
+[data-loading]{opacity:.6;pointer-events:none}

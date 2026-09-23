@@ -1,0 +1,49 @@
+{
+  "items": [
+    {
+      "id": "alphard",
+      "order": 1,
+      "image": "/assets/img/alphard.png",
+      "name": "トヨタ アルファード",
+      "seats": "最大6名",
+      "name_i18n": { "ja": "トヨタ アルファード", "zh": "丰田埃尔法", "en": "Toyota Alphard" },
+      "seats_i18n": { "ja": "最大6名", "zh": "最多6人", "en": "Up to 6 passengers" }
+    },
+    {
+      "id": "hiace",
+      "order": 2,
+      "image": "/assets/img/hiace.png",
+      "name": "トヨタ ハイエース",
+      "seats": "9〜14名",
+      "name_i18n": { "ja": "トヨタ ハイエース", "zh": "丰田海狮", "en": "Toyota Hiace" },
+      "seats_i18n": { "ja": "9〜14名", "zh": "9-14人", "en": "9-14 passengers" }
+    },
+    {
+      "id": "coaster",
+      "order": 3,
+      "image": "/assets/img/coaster.png",
+      "name": "トヨタ コースター",
+      "seats": "15〜18名",
+      "name_i18n": { "ja": "トヨタ コースター", "zh": "丰田考斯特", "en": "Toyota Coaster" },
+      "seats_i18n": { "ja": "15〜18名", "zh": "15-18人", "en": "15-18 passengers" }
+    },
+    {
+      "id": "vclass",
+      "order": 4,
+      "image": "/assets/img/vclass.png",
+      "name": "メルセデス Vクラス",
+      "seats": "最大6名",
+      "name_i18n": { "ja": "メルセデス Vクラス", "zh": "奔驰V级", "en": "Mercedes V-Class" },
+      "seats_i18n": { "ja": "最大6名", "zh": "最多6人", "en": "Up to 6 passengers" }
+    },
+    {
+      "id": "sclass",
+      "order": 5,
+      "image": "/assets/img/sclass.png",
+      "name": "メルセデス Sクラス",
+      "seats": "最大3名",
+      "name_i18n": { "ja": "メルセデス Sクラス", "zh": "奔驰S级", "en": "Mercedes S-Class" },
+      "seats_i18n": { "ja": "最大3名", "zh": "最多3人", "en": "Up to 3 passengers" }
+    }
+  ]
+}
