@@ -209,9 +209,5 @@ collections:
 
 # 文章列表和 sitemap 由构建脚本自动生成，无需手动维护索引。
 publish_mode: simple
-media_library:
-  name: upload
-  config:
-    max_file_size: 5242880
 editor:
   preview: true
