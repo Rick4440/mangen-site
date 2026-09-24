@@ -15,7 +15,7 @@ backend:
   name: github
   repo: Rick4440/mangen-site           # GitHub repo
   branch: main
-  base_url: https://mangen-site.pages.dev
+  base_url: https://mangen.jp
   auth_endpoint: api/auth
   open_authoring: false
   squash_merges: true
@@ -25,8 +25,8 @@ media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
 
 # 站点预览（编辑后保存前预览）
-site_url: https://mangen-site.pages.dev
-display_url: https://mangen-site.pages.dev
+site_url: https://mangen.jp
+display_url: https://mangen.jp
 logo_url: /assets/img/logo.png
 
 # 7 个 Collection：公司信息、车型、博客
@@ -117,7 +117,7 @@ collections:
             fields:
               - { label: "内部 ID（英文）", name: "id", widget: "string" }
               - { label: "排序（1 在最前）", name: "order", widget: "number", default: 1, value_type: "int", min: 1 }
-              - { label: "图片路径", name: "image", widget: "string", hint: "如 /assets/img/alphard.png" }
+              - { label: "车型图片", name: "image", widget: "image", hint: "可选已有图片或上传新图" }
               - { label: "车名（日文默认）", name: "name", widget: "string" }
               - { label: "座位说明（日文默认）", name: "seats", widget: "string" }
               - label: "车名多语言"
@@ -146,7 +146,7 @@ collections:
     extension: "md"
     format: "frontmatter"
     fields:
-      - { label: "URL slug", name: "slug", widget: "string", hint: "英文短横线分隔" }
+      - { label: "URL slug", name: "slug", widget: "string", pattern: ["^[a-z0-9]+(?:-[a-z0-9]+)*$", "仅使用小写英文字母、数字和中间短横线"] }
       - label: "发布日期"
         name: "date"
         widget: "datetime"

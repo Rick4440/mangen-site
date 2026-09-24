@@ -3,10 +3,10 @@ function popup(status, payload) {
   const message = `authorization:github:${status}:${JSON.stringify(payload)}`;
   return new Response(`<!doctype html><html><head><meta charset="utf-8"><title>GitHub login</title></head><body><script>
     if (window.opener) {
-      window.opener.postMessage('authorizing:github', 'https://mangen-site.pages.dev');
+      window.opener.postMessage('authorizing:github', 'https://mangen.jp');
       window.addEventListener('message', function(event) {
-        if (event.origin !== 'https://mangen-site.pages.dev' || event.data !== 'authorizing:github') return;
-        window.opener.postMessage(${JSON.stringify(message)}, 'https://mangen-site.pages.dev');
+        if (event.origin !== 'https://mangen.jp' || event.data !== 'authorizing:github') return;
+        window.opener.postMessage(${JSON.stringify(message)}, 'https://mangen.jp');
         window.close();
       });
     } else { document.body.textContent = 'Please return to the CMS and try again.'; }
@@ -17,7 +17,7 @@ function popup(status, payload) {
 
 export async function onRequestGet({ request, env }) {
   const url = new URL(request.url);
-  if (url.origin !== "https://mangen-site.pages.dev" || !env.GITHUB_CLIENT_ID || !env.GITHUB_CLIENT_SECRET) {
+  if (url.origin !== "https://mangen.jp" || !env.GITHUB_CLIENT_ID || !env.GITHUB_CLIENT_SECRET) {
     return new Response("CMS authentication is not configured", { status: 503 });
   }
   const state = url.searchParams.get("state");
