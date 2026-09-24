@@ -14,7 +14,7 @@
 
 后台将 Markdown 写入 `content/posts/`；每篇必须使用英文短横线 slug、中文标题与摘要、发布日期及正文。每次 GitHub 提交触发 Pages 构建，脚本自动更新文章页、列表与 sitemap，无须手动维护 `_index.json`。正式环境可删除旧索引数据。
 
-Decap CMS GitHub backend 需要独立的 GitHub OAuth 服务；Cloudflare Pages 的 GitHub 部署授权不能替代它。在认证服务设置完成前，管理员可先直接在 GitHub 编辑文章。不要将 OAuth client secret 写进仓库。上线前需实际验证 `/admin/` 登录、保存和重新部署。
+CMS 地址：`https://mangen.jp/admin/`。GitHub 登录由 Pages Functions 的 `/api/auth` 和 `/api/callback` 提供。用有仓库写入权限的 GitHub 账号创建 OAuth App：Homepage URL `https://mangen.jp/`，Authorization callback URL **必须是** `https://mangen.jp/api/callback`。如果之前创建的 OAuth App 使用 `mangen-site.pages.dev`，先在 GitHub 开发者设置中改回调网址。将 Client ID 和 Client Secret 分别设为 Pages 项目**生产环境**变量 `GITHUB_CLIENT_ID`、`GITHUB_CLIENT_SECRET`；Secret 选择加密，不要写进仓库或聊天。设置变量后重新部署，并用有仓库写入权限的 GitHub 账号登录后台，新增文章并保存，核查 GitHub 提交和 Pages 构建。Cloudflare Pages 的 GitHub 部署授权不能替代 CMS 登录。请从 `mangen.jp` 登录，避免预览域名与正式域名之间的弹窗来源不一致。
 
 ## 上线验收
 

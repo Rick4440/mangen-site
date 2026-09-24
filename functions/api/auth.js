@@ -1,7 +1,7 @@
 // GitHub OAuth entrypoint for the Decap CMS popup.
 export async function onRequestGet({ request, env }) {
   const origin = new URL(request.url).origin;
-  if (origin !== "https://mangen-site.pages.dev" || !env.GITHUB_CLIENT_ID || !env.GITHUB_CLIENT_SECRET) {
+  if (origin !== "https://mangen.jp" || !env.GITHUB_CLIENT_ID || !env.GITHUB_CLIENT_SECRET) {
     return new Response("CMS authentication is not configured", { status: 503 });
   }
   const state = crypto.randomUUID();
