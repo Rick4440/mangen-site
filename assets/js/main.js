@@ -320,7 +320,12 @@
         form.reset();
       } catch (err) {
         status.classList.add('error');
-        status.textContent = (window.I18N_FORM_ERROR || '送信に失敗しました。お手数ですが直接お電話ください。');
+        status.textContent = (window.I18N_FORM_ERROR || '送信できませんでした。メールでお問い合わせください。') + ' ';
+        const mail = document.createElement('a');
+        const details = Object.fromEntries(new FormData(form));
+        mail.href = 'mailto:mangeninc@gmail.com?subject=' + encodeURIComponent('万源网站咨询') + '&body=' + encodeURIComponent(Object.entries(details).map(([key, value]) => key + ': ' + value).join('\n'));
+        mail.textContent = document.documentElement.lang === 'en' ? 'Open email draft' : document.documentElement.lang === 'ja' ? 'メールで問い合わせる' : '打开邮件草稿';
+        status.appendChild(mail);
       } finally {
         btn.disabled = false;
       }
