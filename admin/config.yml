@@ -181,7 +181,8 @@ collections:
     description: "中文 SEO 博客。新增后会自动出现在 /blog/ 列表。"
     folder: "content/posts"
     create: true
-    slug: "{{slug}}"
+    identifier_field: slug
+    slug: "{{fields.slug}}"
     extension: "md"
     format: "frontmatter"
     fields:
