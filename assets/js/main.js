@@ -160,9 +160,9 @@
     if (!idx) {
       // 降级：硬编码三个文章（首版部署时 Decap 未启用）
       idx = [
-        { slug: 'green-plate-guide.html',      title_i18n: { zh: '日本旅行用车｜绿牌白牌一字之差', ja: '緑ナンバーと白ナンバー', en: 'Green vs White Plate in Japan' }, date: '2026-09-22' },
-        { slug: 'japan-travel-etiquette.html', title_i18n: { zh: '访日旅游礼仪与注意事项', ja: '訪日マナー', en: 'Japan Travel Etiquette' }, date: '2026-09-22' },
-        { slug: 'osaka-kyoto-nara-3days.html', title_i18n: { zh: '大阪・京都・奈良 3 日包车路线', ja: '大阪・京都・奈良 3 日コース', en: 'Osaka-Kyoto-Nara 3 Days' }, date: '2026-09-22' }
+        { slug: 'green-plate-guide',      title_i18n: { zh: '日本旅行用车｜绿牌白牌一字之差', ja: '緑ナンバーと白ナンバー', en: 'Green vs White Plate in Japan' }, date: '2026-09-22' },
+        { slug: 'japan-travel-etiquette', title_i18n: { zh: '访日旅游礼仪与注意事项', ja: '訪日マナー', en: 'Japan Travel Etiquette' }, date: '2026-09-22' },
+        { slug: 'osaka-kyoto-nara-3days', title_i18n: { zh: '大阪・京都・奈良 3 日包车路线', ja: '大阪・京都・奈良 3 日コース', en: 'Osaka-Kyoto-Nara 3 Days' }, date: '2026-09-22' }
       ];
     }
     list.innerHTML = idx.map(p => {

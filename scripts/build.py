@@ -49,7 +49,7 @@ def main():
                   "publisher": {"@type": "Organization", "name": "株式会社万源"}}
         page = template
         for key, value in {"TITLE": text(title), "DESCRIPTION": text(excerpt), "DATE": text(published),
-                           "BODY": body, "URL": f"{BASE}/blog/{slug}.html",
+                           "BODY": body, "URL": f"{BASE}/blog/{slug}",
                            "SCHEMA": json.dumps(schema, ensure_ascii=False).replace("<", "\\u003c")}.items():
             page = page.replace("{{" + key + "}}", value)
         (BLOG / f"{slug}.html").write_text(page, encoding="utf-8")
@@ -58,7 +58,7 @@ def main():
     for data, slug, published, _ in posts:
         title = data.get("title_i18n", {}).get("zh") or data.get("title") or slug
         excerpt = data.get("excerpt_i18n", {}).get("zh") or data.get("excerpt") or ""
-        cards.append(f'<a class="blog-card" href="/blog/{slug}.html"><time datetime="{text(published)}">{text(published)}</time><h3>{text(title)}</h3><p>{text(excerpt)}</p></a>')
+        cards.append(f'<a class="blog-card" href="/blog/{slug}"><time datetime="{text(published)}">{text(published)}</time><h3>{text(title)}</h3><p>{text(excerpt)}</p></a>')
     index_path = BLOG / "index.html"
     index = index_path.read_text(encoding="utf-8")
     index = re.sub(r'<div class="blog-list"(?: data-bind="blog-list")?>.*?</div>\s*</section>',
@@ -68,7 +68,7 @@ def main():
     ET.register_namespace("", "http://www.sitemaps.org/schemas/sitemap/0.9")
     ns = "{http://www.sitemaps.org/schemas/sitemap/0.9}"
     urls = ET.Element(ns + "urlset")
-    for path in ["/", "/zh.html", "/en.html", "/blog/", *(f"/blog/{p[1]}.html" for p in posts)]:
+    for path in ["/", "/zh", "/en", "/blog/", *(f"/blog/{p[1]}" for p in posts)]:
         entry = ET.SubElement(urls, ns + "url")
         ET.SubElement(entry, ns + "loc").text = BASE + path
     ET.ElementTree(urls).write(ROOT / "sitemap.xml", encoding="utf-8", xml_declaration=True)
