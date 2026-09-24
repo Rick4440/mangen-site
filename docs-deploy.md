@@ -14,7 +14,7 @@
 
 后台将 Markdown 写入 `content/posts/`；每篇必须使用英文短横线 slug、中文标题与摘要、发布日期及正文。每次 GitHub 提交触发 Pages 构建，脚本自动更新文章页、列表与 sitemap，无须手动维护 `_index.json`。正式环境可删除旧索引数据。
 
-CMS 地址：`https://mangen.jp/admin/`。GitHub 登录由 Pages Functions 的 `/api/auth` 和 `/api/callback` 提供。用有仓库写入权限的 GitHub 账号创建 OAuth App：Homepage URL `https://mangen.jp/`，Authorization callback URL **必须是** `https://mangen.jp/api/callback`。如果之前创建的 OAuth App 使用 `mangen-site.pages.dev`，先在 GitHub 开发者设置中改回调网址。将 Client ID 和 Client Secret 分别设为 Pages 项目**生产环境**变量 `GITHUB_CLIENT_ID`、`GITHUB_CLIENT_SECRET`；Secret 选择加密，不要写进仓库或聊天。设置变量后重新部署，并用有仓库写入权限的 GitHub 账号登录后台，新增文章并保存，核查 GitHub 提交和 Pages 构建。Cloudflare Pages 的 GitHub 部署授权不能替代 CMS 登录。请从 `mangen.jp` 登录，避免预览域名与正式域名之间的弹窗来源不一致。
+CMS 地址：`https://mangen.jp/admin/`。GitHub 登录由 Pages Functions 的 `/api/auth` 和 `/api/callback` 提供。用有仓库写入权限的 GitHub 账号创建 OAuth App：Homepage URL `https://mangen.jp/`，Authorization callback URL **必须是** `https://mangen.jp/api/callback`。如果之前创建的 OAuth App 使用 `mangen-site.pages.dev`，先在 GitHub 开发者设置中改回调网址。将 Client ID 和 Client Secret 分别设为 Pages 项目**生产环境**变量 `GITHUB_CLIENT_ID`、`GITHUB_CLIENT_SECRET`；Secret 选择加密，不要写进仓库或聊天。注意两个变量值不同；更新生产环境变量后必须重新部署，才能供 Pages Functions 使用。重新部署后用有仓库写入权限的 GitHub 账号登录后台，新增文章并保存，核查 GitHub 提交和 Pages 构建。Cloudflare Pages 的 GitHub 部署授权不能替代 CMS 登录。请从 `mangen.jp` 登录，避免预览域名与正式域名之间的弹窗来源不一致。
 
 ## 上线验收
 
@@ -22,4 +22,4 @@ CMS 地址：`https://mangen.jp/admin/`。GitHub 登录由 Pages Functions 的 `
 
 ## 域名与公司邮箱
 
-域名拟在 Xserver 注册，注册完成后在 Cloudflare 添加站点，按 Cloudflare 给出的两条名称服务器到注册商后台修改。先保留 Gmail 收件；是否启用域名邮箱可在正式上线后决定。Logo 使用现有资源，待新设计完成再替换。
+域名 `mangen.jp` 已注册并接入 Cloudflare DNS；网站通过 Cloudflare Pages 托管。先保留 Gmail 收件；是否启用域名邮箱可在正式上线后决定。Logo 使用现有资源，待新设计完成再替换。
