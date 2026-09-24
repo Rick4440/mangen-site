@@ -10,7 +10,7 @@
 
 网页表单使用 Web3Forms，三语首页的 `access_key` 对应“万源官网咨询”表单，通知收件人是 `mangeninc@gmail.com`。表单由浏览器直接提交，提交成功以 Web3Forms JSON 的 `success: true` 为准。发布后从正式网页真实提交一次，在 Web3Forms Submissions 及 Gmail 收件箱同时核对；无法送达时页面保留邮件草稿入口。旧 `/api/contact` 的 Formspree 转发接口已不再被前端调用。
 
-对外邮箱待 Cloudflare Email Routing 把 `info@mangen.jp` 转发至 `mangeninc@gmail.com` 并用另一邮箱发信测试成功后，才在 `content/settings/company.json` 和 `assets/js/main.js` 替换网页显示及回退邮件地址。转发仅解决收信；需要以 `info@mangen.jp` 发信还需另配 SMTP 发信服务。
+对外邮箱 `info@mangen.jp` 已由 Cloudflare Email Routing 转发至 `mangeninc@gmail.com`，并已用另一邮箱发信测试成功（初次邮件进入垃圾邮件）。网站展示地址及表单失败时的邮件草稿地址均使用 `info@mangen.jp`；Web3Forms 表单通知仍直接发送至 Gmail。请在 Gmail 中把测试邮件标记为“非垃圾邮件”，并检查后续真实咨询能否进入收件箱。转发仅解决收信；需要以 `info@mangen.jp` 发信还需另配 SMTP 发信服务。
 
 ## 文章发布
 
@@ -24,4 +24,4 @@ CMS 地址：`https://mangen.jp/admin/`。GitHub 登录由 Pages Functions 的 `
 
 ## 域名与公司邮箱
 
-域名 `mangen.jp` 已注册并接入 Cloudflare DNS；网站通过 Cloudflare Pages 托管。先保留 Gmail 收件；是否启用域名邮箱可在正式上线后决定。Logo 使用现有资源，待新设计完成再替换。
+域名 `mangen.jp` 已注册并接入 Cloudflare DNS；网站通过 Cloudflare Pages 托管。已启用 `info@mangen.jp` 转发至 Gmail 收件。Logo 使用现有资源，待新设计完成再替换。
