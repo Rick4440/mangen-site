@@ -8,7 +8,9 @@
 
 ## 咨询表单
 
-在 Formspree 创建表单，收件人设为 `mangeninc@gmail.com` 并验证该邮箱，在 Pages 生产环境变量设置 `FORMSPREE_ENDPOINT` 为完整的 `https://formspree.io/f/...` 地址。实际提交一次并核查邮箱收到内容。未配置时接口返回 503，页面提示访客电话联系。
+网页表单使用 Web3Forms，三语首页的 `access_key` 对应“万源官网咨询”表单，通知收件人是 `mangeninc@gmail.com`。表单由浏览器直接提交，提交成功以 Web3Forms JSON 的 `success: true` 为准。发布后从正式网页真实提交一次，在 Web3Forms Submissions 及 Gmail 收件箱同时核对；无法送达时页面保留邮件草稿入口。旧 `/api/contact` 的 Formspree 转发接口已不再被前端调用。
+
+对外邮箱待 Cloudflare Email Routing 把 `info@mangen.jp` 转发至 `mangeninc@gmail.com` 并用另一邮箱发信测试成功后，才在 `content/settings/company.json` 和 `assets/js/main.js` 替换网页显示及回退邮件地址。转发仅解决收信；需要以 `info@mangen.jp` 发信还需另配 SMTP 发信服务。
 
 ## 文章发布
 

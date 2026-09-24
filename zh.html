@@ -103,7 +103,9 @@
         <div class="channels" data-bind="channels"></div>
       </div>
       <div>
-        <form class="form" data-form="contact" action="/api/contact" method="POST">
+        <form class="form" data-form="contact" action="https://api.web3forms.com/submit" method="POST">
+          <input type="hidden" name="access_key" value="2f2afa1a-06dd-4f39-b01c-650ccff4fcf5">
+          <input type="hidden" name="subject" value="【万源官网】新咨询">
           <div class="form-honeypot" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
           <div><label for="zh-name">姓名</label><input id="zh-name" name="name" required></div>
           <div><label for="zh-contact">联系方式（电话 / 邮箱 / 微信）</label><input id="zh-contact" name="contact" required></div>

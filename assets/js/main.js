@@ -308,12 +308,19 @@
       status.className = 'status'; status.textContent = '';
       try {
         const data = Object.fromEntries(new FormData(form));
-        const r = await fetch('/api/contact', {
+        if (data.website) return;
+        delete data.website;
+        data.subject = '【万源网站】新咨询 - ' + data.name;
+        data.from_name = '株式会社万源 官网';
+        data.botcheck = false;
+        if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.contact)) data.email = data.contact;
+        const r = await fetch('https://api.web3forms.com/submit', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
           body: JSON.stringify(data)
         });
         if (!r.ok) throw new Error(r.status === 429 ? 'rate-limited' : 'submit-failed');
+        if ((await r.json()).success !== true) throw new Error('submit-failed');
         status.classList.add('success');
         status.textContent = (window.I18N_FORM_SUCCESS || '送信が完了しました。担当者より折り返しご連絡いたします。');
         form.reset();
