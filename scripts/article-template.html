@@ -9,7 +9,7 @@
   <meta property="og:title" content="{{TITLE}}">
   <meta property="og:description" content="{{DESCRIPTION}}">
   <meta property="og:url" content="{{URL}}">
-  <meta property="og:image" content="https://mangen.jp/assets/img/logo.png">
+  <meta property="og:image" content="{{OG_IMAGE}}">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="canonical" href="{{URL}}">
   <link rel="icon" type="image/png" href="/assets/img/favicon.png">
@@ -34,8 +34,9 @@
   <nav class="crumb"><a href="/zh.html">首页</a> &gt; <a href="/blog/">博客</a> &gt; <span>{{TITLE}}</span></nav>
   <header>
     <h1>{{TITLE}}</h1>
-    <div class="meta"><time datetime="{{DATE}}">{{DATE}}</time> · 株式会社万源</div>
+    <div class="meta"><time datetime="{{DATE}}">{{DATE}}</time> · {{CATEGORY}} · 株式会社万源</div>
   </header>
+  {{COVER}}
   <div class="body">{{BODY}}</div>
 
   <div class="cta-block">

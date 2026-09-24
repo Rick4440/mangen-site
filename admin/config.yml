@@ -29,7 +29,7 @@ site_url: https://mangen.jp
 display_url: https://mangen.jp
 logo_url: /assets/img/logo.png
 
-# 7 个 Collection：公司信息、车型、博客
+# 3 个 Collection：公司信息、车型、博客
 collections:
   # 1. 全局公司信息（电话、地址、资质、邮箱、Schema）
   - name: "company-info"
@@ -183,6 +183,16 @@ collections:
     create: true
     identifier_field: slug
     slug: "{{fields.slug}}"
+    summary: "{{title_i18n.zh}} · {{category | default('旅行指南')}} · {{date}}"
+    sortable_fields: ["date", "title_i18n.zh", "category", "commit_date"]
+    view_filters:
+      - { label: "科普知识", field: "category", pattern: "科普知识" }
+      - { label: "包车指南", field: "category", pattern: "包车指南" }
+      - { label: "线路规划", field: "category", pattern: "线路规划" }
+      - { label: "已下线", field: "draft", pattern: true }
+    view_groups:
+      - { label: "发布日期", field: "date", pattern: "\\d{4}-\\d{2}" }
+      - { label: "分类", field: "category" }
     extension: "md"
     format: "frontmatter"
     fields:
@@ -194,6 +204,9 @@ collections:
         date_format: "YYYY-MM-DD"
         time_format: false
         picker_utc: true
+      - { label: "分类", name: "category", widget: "select", options: ["科普知识", "包车指南", "线路规划", "公司动态"], default: "科普知识" }
+      - { label: "下线（勾选后从网站及 sitemap 移除）", name: "draft", widget: "boolean", default: false, required: false }
+      - { label: "文章封面图（可选）", name: "cover_image", widget: "image", required: false, hint: "上传后用于文章顶部及分享卡片；正文可用图片按钮插图。" }
       - label: "标题"
         name: "title_i18n"
         widget: "object"

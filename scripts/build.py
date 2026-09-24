@@ -35,7 +35,7 @@ def load_post(path):
 
 
 def main():
-    posts = [load_post(path) for path in POSTS.glob("*.md")]
+    posts = [post for path in POSTS.glob("*.md") if not (post := load_post(path))[0].get("draft", False)]
     posts.sort(key=lambda item: (item[2], item[1]), reverse=True)
     if not posts:
         raise ValueError("No articles found in content/posts")
@@ -49,23 +49,39 @@ def main():
         )
         title = data.get("title_i18n", {}).get("zh") or data.get("title") or slug
         excerpt = data.get("excerpt_i18n", {}).get("zh") or data.get("excerpt") or ""
+        cover = data.get("cover_image") or ""
+        if cover and (not cover.startswith("/assets/uploads/") or ".." in cover.split("/")):
+            raise ValueError(f"Invalid cover image path: {slug}")
+        category = data.get("category") or "旅行指南"
         schema = {"@context": "https://schema.org", "@type": "Article", "headline": title,
                   "description": excerpt, "inLanguage": "zh-CN",
                   "mainEntityOfPage": f"{BASE}/blog/{slug}",
                   "datePublished": published, "dateModified": published, "author": {"@type": "Organization", "name": "株式会社万源"},
                   "publisher": {"@type": "Organization", "name": "株式会社万源"}}
+        if cover:
+            schema["image"] = BASE + cover
         page = template
         for key, value in {"TITLE": text(title), "DESCRIPTION": text(excerpt), "DATE": text(published),
                            "BODY": body, "URL": f"{BASE}/blog/{slug}", "RELATED": related_links,
+                           "CATEGORY": text(category),
+                           "COVER": f'<figure class="article-cover"><img src="{text(cover)}" alt="{text(title)}" loading="eager"></figure>' if cover else "",
+                           "OG_IMAGE": text(BASE + cover if cover else BASE + "/assets/img/logo.png"),
                            "SCHEMA": json.dumps(schema, ensure_ascii=False).replace("<", "\\u003c")}.items():
             page = page.replace("{{" + key + "}}", value)
         (BLOG / f"{slug}.html").write_text(page, encoding="utf-8")
+
+    # Generated article pages are disposable: remove pages for deleted or unpublished posts.
+    active = {f"{slug}.html" for _, slug, _, _ in posts}
+    for page in BLOG.glob("*.html"):
+        if page.name != "index.html" and page.name not in active:
+            page.unlink()
 
     cards = []
     for data, slug, published, _ in posts:
         title = data.get("title_i18n", {}).get("zh") or data.get("title") or slug
         excerpt = data.get("excerpt_i18n", {}).get("zh") or data.get("excerpt") or ""
-        cards.append(f'<a class="blog-card" href="/blog/{slug}"><time datetime="{text(published)}">{text(published)}</time><h3>{text(title)}</h3><p>{text(excerpt)}</p></a>')
+        category = data.get("category") or "旅行指南"
+        cards.append(f'<a class="blog-card" href="/blog/{slug}"><time datetime="{text(published)}">{text(published)}</time><span>{text(category)}</span><h3>{text(title)}</h3><p>{text(excerpt)}</p></a>')
     index_path = BLOG / "index.html"
     index = index_path.read_text(encoding="utf-8")
     index = re.sub(r'<div class="blog-list"(?: data-bind="blog-list")?>.*?</div>\s*</section>',
