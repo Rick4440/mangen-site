@@ -104,6 +104,7 @@
       </div>
       <div>
         <form class="form" data-form="contact" action="/api/contact" method="POST">
+          <div class="form-honeypot" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
           <div><label for="en-name">Name</label><input id="en-name" name="name" required></div>
           <div><label for="en-contact">Phone / Email / WhatsApp</label><input id="en-contact" name="contact" required></div>
           <div><label for="en-date">Date</label><input id="en-date" name="date" type="date"></div>
@@ -118,7 +119,7 @@
           </div>
           <div><label for="en-msg">Notes</label><textarea id="en-msg" name="message"></textarea></div>
           <button type="submit">Send</button>
-          <div class="status"></div>
+          <div class="status" role="status" aria-live="polite"></div>
         </form>
       </div>
     </div>

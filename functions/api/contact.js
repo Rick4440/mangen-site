@@ -5,56 +5,67 @@
 //   FORMSPREE_ENDPOINT  — 例如 https://formspree.io/f/xxxxxxxx
 //   或直接转发到 Zoho SMTP（推荐后续切换到 Resend/Brevo）
 //
-// 当前实现：转发到 Formspree（免费 50/月）。后续可改为 Resend。
+// 当前实现：服务端转发到 Formspree，终端访客只访问本站接口。
+
+const json = (body, status = 200) => new Response(JSON.stringify(body), {
+  status, headers: { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' }
+});
 
 export async function onRequestPost({ request, env }) {
+  if (request.headers.get('content-type')?.split(';')[0].trim() !== 'application/json') {
+    return json({ error: 'invalid content type' }, 415);
+  }
+  if (Number(request.headers.get('content-length')) > 10000) {
+    return json({ error: 'request too large' }, 413);
+  }
   let data;
   try {
     data = await request.json();
-  } catch (e) {
-    return new Response(JSON.stringify({ error: 'invalid json' }), {
-      status: 400, headers: { 'Content-Type': 'application/json' }
-    });
+  } catch {
+    return json({ error: 'invalid json' }, 400);
   }
 
-  // 简易校验
-  if (!data.name || !data.contact) {
-    return new Response(JSON.stringify({ error: 'missing fields' }), {
-      status: 400, headers: { 'Content-Type': 'application/json' }
-    });
+  if (!data || typeof data !== 'object' || Array.isArray(data)) {
+    return json({ error: 'invalid fields' }, 400);
   }
 
-  // 转发到 Formspree（设置 env.FORMSPREE_ENDPOINT 后生效）
+  // 蜜罐字段：自动填写的垃圾提交不发送通知。
+  if (data.website) return json({ ok: true });
+  const name = String(data.name || '').trim();
+  const contact = String(data.contact || '').trim();
+  if (!name || !contact || name.length > 120 || contact.length > 240 ||
+      String(data.message || '').length > 3000) {
+    return json({ error: 'invalid fields' }, 400);
+  }
+
+  // Cloudflare Pages 的生产环境变量；请勿把 Formspree 地址放进前端脚本。
   const endpoint = env.FORMSPREE_ENDPOINT;
-  if (!endpoint) {
-    return new Response(JSON.stringify({ error: 'contact service unavailable' }), {
-      status: 503, headers: { 'Content-Type': 'application/json' }
-    });
+  if (!/^https:\/\/formspree\.io\/f\/[a-zA-Z0-9]+$/.test(endpoint || '')) {
+    return json({ error: 'contact service unavailable' }, 503);
   }
 
-  const r = await fetch(endpoint, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-    body: JSON.stringify({
-      name: data.name,
-      contact: data.contact,
-      date: data.date,
-      pax: data.pax,
-      message: data.message,
-      _subject: `【万源网站】新咨询 - ${data.name}`,
-      _language: data._language || 'ja'
-    })
-  });
+  let r;
+  try {
+    r = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        name, contact,
+        date: String(data.date || '').slice(0, 30),
+        pax: String(data.pax || '').slice(0, 120),
+        message: String(data.message || ''),
+        _subject: `【万源网站】新咨询 - ${name}`,
+        _language: String(data._language || 'ja').slice(0, 10)
+      })
+    });
+  } catch {
+    return json({ error: 'delivery unavailable' }, 502);
+  }
 
   if (!r.ok) {
-    return new Response(JSON.stringify({ error: 'forward failed', status: r.status }), {
-      status: 502, headers: { 'Content-Type': 'application/json' }
-    });
+    return json({ error: r.status === 429 ? 'rate limited' : 'delivery failed' }, r.status === 429 ? 429 : 502);
   }
-  const out = await r.json().catch(() => ({}));
-  return new Response(JSON.stringify({ ok: true, upstream: out }), {
-    headers: { 'Content-Type': 'application/json' }
-  });
+  return json({ ok: true });
 }
 
 export async function onRequest({ request }) {

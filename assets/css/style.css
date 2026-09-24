@@ -102,6 +102,7 @@ img{max-width:100%;height:auto;display:block}
 .form button:hover{background:var(--accent-ink);border-color:var(--accent-ink)}
 .form button:disabled{opacity:.5;cursor:not-allowed}
 .form .status{font-size:13px;padding:10px;border-radius:8px;display:none}
+.form-honeypot{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .form .status.success{display:block;background:#e8f5e9;color:#2e7d32}
 .form .status.error{display:block;background:#fce4ec;color:#c62828}
 

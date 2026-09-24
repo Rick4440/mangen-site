@@ -308,21 +308,23 @@
       status.className = 'status'; status.textContent = '';
       try {
         const data = Object.fromEntries(new FormData(form));
-        const endpoint = form.action || window.FORMSPREE_ENDPOINT || '/api/contact';
-        const r = await fetch(endpoint, {
+        const r = await fetch('/api/contact', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
         });
-        if (!r.ok) throw new Error('submit failed');
+        if (!r.ok) throw new Error(r.status === 429 ? 'rate-limited' : 'submit-failed');
         status.classList.add('success');
         status.textContent = (window.I18N_FORM_SUCCESS || '送信が完了しました。担当者より折り返しご連絡いたします。');
         form.reset();
       } catch (err) {
         status.classList.add('error');
-        status.textContent = (window.I18N_FORM_ERROR || '送信できませんでした。メールでお問い合わせください。') + ' ';
+        const lang = document.documentElement.lang;
+        status.textContent = err.message === 'rate-limited'
+          ? (lang === 'en' ? 'Too many requests. Please try again later.' : lang === 'ja' ? '送信回数が多すぎます。時間をおいて再試行してください。' : '提交过于频繁，请稍后重试。') + ' '
+          : (window.I18N_FORM_ERROR || '送信できませんでした。メールでお問い合わせください。') + ' ';
         const mail = document.createElement('a');
-        const details = Object.fromEntries(new FormData(form));
+        const details = Object.fromEntries([...new FormData(form)].filter(([key]) => key !== 'website'));
         mail.href = 'mailto:mangeninc@gmail.com?subject=' + encodeURIComponent('万源网站咨询') + '&body=' + encodeURIComponent(Object.entries(details).map(([key, value]) => key + ': ' + value).join('\n'));
         mail.textContent = document.documentElement.lang === 'en' ? 'Open email draft' : document.documentElement.lang === 'ja' ? 'メールで問い合わせる' : '打开邮件草稿';
         status.appendChild(mail);

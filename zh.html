@@ -104,6 +104,7 @@
       </div>
       <div>
         <form class="form" data-form="contact" action="/api/contact" method="POST">
+          <div class="form-honeypot" aria-hidden="true"><label>Website <input name="website" tabindex="-1" autocomplete="off"></label></div>
           <div><label for="zh-name">姓名</label><input id="zh-name" name="name" required></div>
           <div><label for="zh-contact">联系方式（电话 / 邮箱 / 微信）</label><input id="zh-contact" name="contact" required></div>
           <div><label for="zh-date">用车日期</label><input id="zh-date" name="date" type="date"></div>
@@ -118,7 +119,7 @@
           </div>
           <div><label for="zh-msg">需求说明</label><textarea id="zh-msg" name="message"></textarea></div>
           <button type="submit">提交</button>
-          <div class="status"></div>
+          <div class="status" role="status" aria-live="polite"></div>
         </form>
       </div>
     </div>
