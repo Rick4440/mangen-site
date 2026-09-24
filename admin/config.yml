@@ -75,14 +75,14 @@ collections:
             name: "license"
             widget: "object"
             fields:
-              '1':
-                label: "资质 1"
+              - label: "资质 1"
+                name: "1"
                 widget: "object"
                 fields:
                   - { label: "文字", name: "value", widget: "string" }
                   - { label: "中文说明", name: "zh", widget: "string" }
-              '2':
-                label: "资质 2"
+              - label: "资质 2"
+                name: "2"
                 widget: "object"
                 fields:
                   - { label: "文字", name: "value", widget: "string" }
@@ -100,6 +100,45 @@ collections:
                   - { label: "中文", name: "zh", widget: "string" }
                   - { label: "英文", name: "en", widget: "string" }
               - { label: "实际值（ID/邮箱等，未配置填「準備中」）", name: "value", widget: "string" }
+          - label: "公司信息展示（多语言）"
+            name: "info_rows_i18n"
+            widget: "object"
+            fields:
+              - { label: "日文", name: "ja", widget: "list", fields: [{ label: "项目", name: "label", widget: "string" }, { label: "内容", name: "value", widget: "string" }] }
+              - { label: "中文", name: "zh", widget: "list", fields: [{ label: "项目", name: "label", widget: "string" }, { label: "内容", name: "value", widget: "string" }] }
+              - { label: "英文", name: "en", widget: "list", fields: [{ label: "项目", name: "label", widget: "string" }, { label: "内容", name: "value", widget: "string" }] }
+          - label: "搜索引擎公司资料"
+            name: "schema"
+            widget: "object"
+            collapsed: true
+            fields:
+              - { label: "上下文", name: "@context", widget: "hidden", default: "https://schema.org" }
+              - { label: "类型", name: "@type", widget: "hidden", default: "LocalBusiness" }
+              - { label: "公司标识", name: "@id", widget: "string" }
+              - { label: "公司名", name: "name", widget: "string" }
+              - { label: "英文名", name: "alternateName", widget: "string" }
+              - { label: "简介", name: "description", widget: "text" }
+              - { label: "网址", name: "url", widget: "string" }
+              - { label: "电话", name: "telephone", widget: "string" }
+              - { label: "价格区间", name: "priceRange", widget: "string" }
+              - label: "注册地址"
+                name: "address"
+                widget: "object"
+                fields:
+                  - { label: "类型", name: "@type", widget: "hidden", default: "PostalAddress" }
+                  - { label: "街道", name: "streetAddress", widget: "string" }
+                  - { label: "市区", name: "addressLocality", widget: "string" }
+                  - { label: "都道府县", name: "addressRegion", widget: "string" }
+                  - { label: "邮编", name: "postalCode", widget: "string" }
+                  - { label: "国家", name: "addressCountry", widget: "string" }
+              - label: "服务地区"
+                name: "areaServed"
+                widget: "object"
+                fields:
+                  - { label: "类型", name: "@type", widget: "hidden", default: "Country" }
+                  - { label: "国家", name: "name", widget: "string" }
+              - { label: "服务语言", name: "availableLanguage", widget: "list", field: { label: "语言代码", name: "language", widget: "string" } }
+              - { label: "营业时间", name: "openingHours", widget: "string" }
 
   # 2. 车型
   - name: "fleet"
