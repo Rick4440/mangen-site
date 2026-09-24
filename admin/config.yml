@@ -185,26 +185,28 @@ collections:
     extension: "md"
     format: "frontmatter"
     fields:
-      - { label: "URL slug", name: "slug", widget: "string", pattern: ["^[a-z0-9]+(?:-[a-z0-9]+)*$", "仅使用小写英文字母、数字和中间短横线"] }
+      - { label: "URL slug", name: "slug", widget: "string", hint: "填写英文网址名，例如 first-trip-japan-2026", pattern: ["^[a-z0-9]+(?:-[a-z0-9]+)*$", "仅使用小写英文字母、数字和中间短横线"] }
       - label: "发布日期"
         name: "date"
         widget: "datetime"
-        format: "YYYY-MM-DD"
-        picker_utc: false
+        default: "{{now}}"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        picker_utc: true
       - label: "标题"
         name: "title_i18n"
         widget: "object"
         fields:
-          - { label: "日文", name: "ja", widget: "string" }
+          - { label: "日文（可选）", name: "ja", widget: "string", required: false }
           - { label: "中文", name: "zh", widget: "string" }
-          - { label: "英文", name: "en", widget: "string" }
+          - { label: "英文（可选）", name: "en", widget: "string", required: false }
       - label: "摘要"
         name: "excerpt_i18n"
         widget: "object"
         fields:
-          - { label: "日文", name: "ja", widget: "text" }
+          - { label: "日文（可选）", name: "ja", widget: "text", required: false }
           - { label: "中文", name: "zh", widget: "text" }
-          - { label: "英文", name: "en", widget: "text" }
+          - { label: "英文（可选）", name: "en", widget: "text", required: false }
       - { label: "正文（Markdown）", name: "body", widget: "markdown" }
 
 # 文章列表和 sitemap 由构建脚本自动生成，无需手动维护索引。
