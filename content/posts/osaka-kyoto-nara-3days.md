@@ -2,6 +2,7 @@
 title: "大阪・京都・奈良 3 日包车路线规划（含推荐车型）"
 slug: "osaka-kyoto-nara-3days"
 date: "2026-09-22"
+category: d
 excerpt: "关西最经典的 3 日路线：大阪吃、京都看、奈良摸鹿。每天的路线、餐厅、推荐车型一次说清。"
 title_i18n:
   ja: "大阪・京都・奈良 3 日間モデルコース"
