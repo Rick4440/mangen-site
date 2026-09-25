@@ -221,7 +221,7 @@ collections:
           - { label: "日文（可选）", name: "ja", widget: "text", required: false }
           - { label: "中文", name: "zh", widget: "text" }
           - { label: "英文（可选）", name: "en", widget: "text", required: false }
-      - { label: "正文（Markdown）", name: "body", widget: "markdown" }
+      - { label: "正文（Markdown）", name: "body", widget: "markdown", hint: "列表请使用编辑器的列表按钮；每一项的加粗标题、冒号和说明写在同一项中，不要手动输入 * 号，也不要在冒号前换行。" }
 
 # 文章列表和 sitemap 由构建脚本自动生成，无需手动维护索引。
 publish_mode: simple
