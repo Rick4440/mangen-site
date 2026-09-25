@@ -187,10 +187,10 @@ collections:
     summary: "{{title_i18n.zh}} · {{date}}"
     sortable_fields: ["date", "title_i18n.zh", "category", "commit_date"]
     view_filters:
-      - { label: "知识科普", field: "category", pattern: "knowledge" }
-      - { label: "包车指南", field: "category", pattern: "charter-guide" }
-      - { label: "旅行指南", field: "category", pattern: "travel-guide" }
-      - { label: "线路规划", field: "category", pattern: "route-plan" }
+      - { label: "知识科普", field: "category", pattern: "c" }
+      - { label: "包车指南", field: "category", pattern: "a" }
+      - { label: "旅行指南", field: "category", pattern: "b" }
+      - { label: "线路规划", field: "category", pattern: "d" }
       - { label: "已下线", field: "draft", pattern: true }
     view_groups:
       - { label: "发布日期", field: "date", pattern: "\\d{4}-\\d{2}" }
@@ -209,12 +209,12 @@ collections:
         name: "category"
         widget: "select"
         options:
-          - { label: "知识科普", value: "knowledge" }
-          - { label: "包车指南", value: "charter-guide" }
-          - { label: "旅行指南", value: "travel-guide" }
-          - { label: "线路规划", value: "route-plan" }
-          - { label: "公司动态", value: "company-news" }
-        default: "knowledge"
+          - { label: "包车指南（a）", value: "a" }
+          - { label: "旅行指南（b）", value: "b" }
+          - { label: "知识科普（c）", value: "c" }
+          - { label: "线路规划（d）", value: "d" }
+          - { label: "公司动态（e）", value: "e" }
+        default: "c"
         hint: "选择分类后，系统会自动生成网址编号，不需要另外填写英文网址名。"
       - { label: "下线（勾选后从网站及 sitemap 移除）", name: "draft", widget: "boolean", default: false, required: false }
       - { label: "文章封面图（可选）", name: "cover_image", widget: "image", required: false, hint: "上传后用于文章顶部及分享卡片；正文可用图片按钮插图。" }
