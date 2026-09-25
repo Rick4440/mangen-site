@@ -2,6 +2,7 @@
 title: "访日旅游礼仪与注意事项：让您的日本之行更顺畅"
 slug: "japan-travel-etiquette"
 date: "2026-09-22"
+category: b
 excerpt: "在日本，遵守一些本地礼仪可以让旅行体验顺滑一倍以上。本文整理访日客人最容易忽略但最重要的细节。"
 title_i18n:
   ja: "訪日マナーの基本"
