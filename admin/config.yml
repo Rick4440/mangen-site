@@ -196,7 +196,7 @@ collections:
     extension: "md"
     format: "frontmatter"
     fields:
-      - { label: "URL slug", name: "slug", widget: "string", hint: "填写英文网址名，例如 first-trip-japan-2026", pattern: ["^[a-z0-9]+(?:-[a-z0-9]+)*$", "仅使用小写英文字母、数字和中间短横线"] }
+      - { label: "URL slug", name: "slug", widget: "string", hint: "每篇文章必须使用不同的英文网址名，例如接送机文章可填写 japan-airport-transfer-guide；不要重复使用其他文章的网址名。", pattern: ["^[a-z0-9]+(?:-[a-z0-9]+)*$", "仅使用小写英文字母、数字和中间短横线"] }
       - label: "发布日期"
         name: "date"
         widget: "datetime"
