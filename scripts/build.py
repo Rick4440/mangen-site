@@ -13,6 +13,13 @@ ROOT = Path(__file__).resolve().parents[1]
 POSTS = ROOT / "content/posts"
 BLOG = ROOT / "blog"
 BASE = "https://mangen.jp"
+CATEGORY_LABELS = {
+    "knowledge": "知识科普",
+    "charter-guide": "包车指南",
+    "travel-guide": "旅行指南",
+    "route-plan": "线路规划",
+    "company-news": "公司动态",
+}
 
 
 def text(value):
@@ -60,9 +67,7 @@ def load_post(path):
         raise ValueError(f"Missing YAML front matter: {path}")
     metadata = yaml.safe_load(match.group(1))
     slug = path.stem
-    source_slug = str(metadata.get("slug") or slug)
-    dated_slug = rf"\d{{8}}-{re.escape(source_slug)}(?:-\d+)?"
-    if not re.fullmatch(r"[a-z0-9-]+", slug) or (source_slug != slug and not re.fullmatch(dated_slug, slug)):
+    if not re.fullmatch(r"[a-z0-9-]+", slug):
         raise ValueError(f"Invalid slug: {path}")
     published = metadata.get("date")
     if isinstance(published, (date, datetime)):
@@ -88,7 +93,7 @@ def main():
         cover = data.get("cover_image") or ""
         if cover and (not cover.startswith("/assets/uploads/") or ".." in cover.split("/")):
             raise ValueError(f"Invalid cover image path: {slug}")
-        category = data.get("category") or "旅行指南"
+        category = CATEGORY_LABELS.get(data.get("category"), data.get("category") or "旅行指南")
         schema = {"@context": "https://schema.org", "@type": "Article", "headline": title,
                   "description": excerpt, "inLanguage": "zh-CN",
                   "mainEntityOfPage": f"{BASE}/blog/{slug}",
@@ -116,7 +121,7 @@ def main():
     for data, slug, published, _ in posts:
         title = data.get("title_i18n", {}).get("zh") or data.get("title") or slug
         excerpt = data.get("excerpt_i18n", {}).get("zh") or data.get("excerpt") or ""
-        category = data.get("category") or "旅行指南"
+        category = CATEGORY_LABELS.get(data.get("category"), data.get("category") or "旅行指南")
         cards.append(f'<a class="blog-card" href="/blog/{slug}"><time datetime="{text(published)}">{text(published)}</time><span>{text(category)}</span><h3>{text(title)}</h3><p>{text(excerpt)}</p></a>')
     index_path = BLOG / "index.html"
     index = index_path.read_text(encoding="utf-8")
