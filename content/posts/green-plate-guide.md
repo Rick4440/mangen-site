@@ -1,16 +1,18 @@
 ---
-title: "日本旅行用车｜绿牌白牌一字之差，藏着你不了解的合规与体验差距"
-slug: "green-plate-guide"
-date: "2026-09-22"
-excerpt: "日本出租车、网约车、包车看着都像——颜色不同的车牌背后，是完全不同的法规、监管与服务标准。"
+title: 日本旅行用车｜绿牌白牌一字之差，藏着你不了解的合规与体验差距
+slug: green-plate-guide
+date: 2026-09-22
+excerpt: 日本出租车、网约车、包车看着都像——颜色不同的车牌背后，是完全不同的法规、监管与服务标准。
+category: 科普知识
 title_i18n:
-  ja: "緑ナンバーと白ナンバーの違い"
-  zh: "日本旅行用车｜绿牌白牌一字之差，藏着你不了解的合规与体验差距"
+  ja: 緑ナンバーと白ナンバーの違い
+  zh: 日本旅行用车｜绿牌白牌一字之差，藏着你不了解的合规与体验差距
   en: "Green Plate vs White Plate: what Japan's color codes really mean"
 excerpt_i18n:
-  ja: "日本のタクシー・ハイヤー・貸切送迎の違いを、法規制・保険・サービスの観点から解説します。"
-  zh: "日本出租车、网约车、包车看着都像——颜色不同的车牌背后，是完全不同的法规、监管与服务标准。"
-  en: "Japan's taxis, ride-hailing and chartered vehicles look alike, but the plate color reveals very different rules."
+  ja: 日本のタクシー・ハイヤー・貸切送迎の違いを、法規制・保険・サービスの観点から解説します。
+  zh: 日本出租车、网约车、包车看着都像——颜色不同的车牌背后，是完全不同的法规、监管与服务标准。
+  en: Japan's taxis, ride-hailing and chartered vehicles look alike, but the plate
+    color reveals very different rules.
 ---
 
 ## 绿牌和白牌分别表示什么？
