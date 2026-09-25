@@ -60,7 +60,9 @@ def load_post(path):
         raise ValueError(f"Missing YAML front matter: {path}")
     metadata = yaml.safe_load(match.group(1))
     slug = path.stem
-    if metadata.get("slug", slug) != slug or not re.fullmatch(r"[a-z0-9-]+", slug):
+    source_slug = str(metadata.get("slug") or slug)
+    dated_slug = rf"\d{{8}}-{re.escape(source_slug)}(?:-\d+)?"
+    if not re.fullmatch(r"[a-z0-9-]+", slug) or (source_slug != slug and not re.fullmatch(dated_slug, slug)):
         raise ValueError(f"Invalid slug: {path}")
     published = metadata.get("date")
     if isinstance(published, (date, datetime)):
