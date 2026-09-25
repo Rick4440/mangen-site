@@ -1,7 +1,7 @@
 ---
 slug: first-trip-japan-2026
 date: 2026-09-24
-category: 包车指南
+category: a
 title_i18n:
   zh: 第一次来日本旅行，为什么强烈建议选择包车服务？
 excerpt_i18n:
