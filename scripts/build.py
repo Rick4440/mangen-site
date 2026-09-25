@@ -14,11 +14,11 @@ POSTS = ROOT / "content/posts"
 BLOG = ROOT / "blog"
 BASE = "https://mangen.jp"
 CATEGORY_LABELS = {
-    "knowledge": "知识科普",
-    "charter-guide": "包车指南",
-    "travel-guide": "旅行指南",
-    "route-plan": "线路规划",
-    "company-news": "公司动态",
+    "a": "包车指南",
+    "b": "旅行指南",
+    "c": "知识科普",
+    "d": "线路规划",
+    "e": "公司动态",
 }
 
 
