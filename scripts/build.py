@@ -19,6 +19,40 @@ def text(value):
     return escape(str(value or ""), quote=True)
 
 
+def normalize_markdown_body(source):
+    """Repair common CMS paste/list issues before rendering Markdown."""
+    source = source.replace("\r\n", "\n").replace("\r", "\n").replace("\u00a0", " ")
+
+    # Decap users sometimes put a bold list label and its full-width colon text
+    # in separate paragraphs. Keep them in one list item so markers do not leak.
+    source = re.sub(
+        r"(?m)^[*+-]\s+\*\*([^*\n]+)\*\*\s*\n\s*\n[ \t]*：\s*([^\n]+)",
+        lambda match: f"- **{match.group(1).rstrip('：:')}：** {match.group(2).strip()}",
+        source,
+    )
+
+    # Python-Markdown requires a blank line between a normal paragraph and a
+    # following list. The CMS preview is more forgiving, so normalize the gap.
+    lines = source.split("\n")
+    normalized = []
+    bullet = re.compile(r"^\s*[-*+]\s+")
+    for line in lines:
+        if bullet.match(line) and normalized and normalized[-1].strip() and not bullet.match(normalized[-1]):
+            normalized.append("")
+        normalized.append(line)
+    return "\n".join(normalized).strip() + "\n"
+
+
+def render_markdown(source, path):
+    normalized = normalize_markdown_body(source)
+    if re.search(r"(?m)^\s*[：。；，]\s*(?:$|\*\*)", normalized):
+        raise ValueError(f"孤立的中文标点，请在 CMS 中合并到上一行: {path}")
+    rendered = markdown.markdown(normalized, extensions=["tables", "fenced_code", "sane_lists"])
+    if re.search(r"<p>\s*[-*+]\s+(?:<strong>|\S)", rendered):
+        raise ValueError(f"列表符号被渲染成正文，请检查列表格式: {path}")
+    return rendered
+
+
 def load_post(path):
     source = path.read_text(encoding="utf-8")
     match = re.match(r"\A---\s*\n(.*?)\n---\s*\n(.*)\Z", source, re.S)
@@ -31,7 +65,7 @@ def load_post(path):
     published = metadata.get("date")
     if isinstance(published, (date, datetime)):
         published = published.isoformat()[:10]
-    return metadata, slug, str(published), markdown.markdown(match.group(2), extensions=["tables", "fenced_code"])
+    return metadata, slug, str(published), render_markdown(match.group(2), path)
 
 
 def main():
