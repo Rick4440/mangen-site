@@ -155,4 +155,4 @@ img{max-width:100%;height:auto;display:block}
 
 /* Loading state */
 [data-loading]{opacity:.6;pointer-events:none}
-@media(max-width:520px){.site-header .brand img{width:128px;padding:6px 8px}.site-header .inner{gap:9px;padding:10px 14px}.lang-switch{gap:1px}.lang-switch a{padding:3px 5px}}
+@media(max-width:520px){.site-header .brand{min-width:7.9rem}.site-header .brand-ja{font-size:1.02rem;letter-spacing:.07em}.site-header .brand-en{font-size:.48rem;letter-spacing:.16em;margin-top:.28rem}.site-header .inner{gap:9px;padding:10px 14px}.lang-switch{gap:1px}.lang-switch a{padding:3px 5px}}
