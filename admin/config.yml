@@ -182,7 +182,8 @@ collections:
     folder: "content/posts"
     create: true
     identifier_field: slug
-    slug: "{{fields.slug}}"
+    slug: "{{year}}{{month}}{{day}}-{{fields.slug}}"
+    preview_path: "blog/{{filename}}"
     summary: "{{title_i18n.zh}} · {{category | default('旅行指南')}} · {{date}}"
     sortable_fields: ["date", "title_i18n.zh", "category", "commit_date"]
     view_filters:
@@ -196,7 +197,7 @@ collections:
     extension: "md"
     format: "frontmatter"
     fields:
-      - { label: "URL slug", name: "slug", widget: "string", hint: "每篇文章必须使用不同的英文网址名，例如接送机文章可填写 japan-airport-transfer-guide；不要重复使用其他文章的网址名。", pattern: ["^[a-z0-9]+(?:-[a-z0-9]+)*$", "仅使用小写英文字母、数字和中间短横线"] }
+      - { label: "文章英文关键词", name: "slug", widget: "string", hint: "只填写 1～3 个与文章主题相关的英文词，例如 airport-transfer。系统会自动加上发布日期，生成类似 20260925-airport-transfer 的网址。", pattern: ["^[a-z0-9]+(?:-[a-z0-9]+)*$", "请使用小写英文字母；多个词之间用短横线连接，例如 airport-transfer"] }
       - label: "发布日期"
         name: "date"
         widget: "datetime"
