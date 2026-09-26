@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Mangen 内部用车报价系统 | 株式会社万源</title>
+  <meta name="description" content="株式会社万源内部使用的日本用车快速报价工具，支持微信询价内容识别与报价核对。">
+  <link rel="canonical" href="https://mangen.jp/quote.html">
+  <link rel="icon" type="image/png" href="/assets/img/favicon.png">
+  <link rel="apple-touch-icon" href="/assets/img/favicon.png">
+  <meta property="og:title" content="Mangen 内部用车报价系统">
+  <meta property="og:description" content="粘贴微信询价内容，识别行程并核对日本用车报价。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mangen.jp/quote.html">
+  <meta property="og:image" content="https://mangen.jp/assets/img/logo.png">
+  <meta name="twitter:card" content="summary">
+  <link rel="preconnect" href="https://japan-car-quote-v1.misofa.chatgpt.site">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <style>
+    html,body{height:100%}
+    body{margin:0;overflow:hidden;background:#f5f3ee}
+    .quote-page{height:100%;display:flex;flex-direction:column}
+    .quote-page .site-header{position:relative;flex:0 0 auto}
+    .quote-page .site-header .inner{max-width:none}
+    .quote-nav{display:flex;align-items:center;gap:10px}
+    .quote-nav a{font-size:13px;color:var(--sub);padding:7px 11px;border:1px solid var(--line);border-radius:8px;background:#fff}
+    .quote-nav a:hover{color:var(--accent-ink);border-color:var(--accent)}
+    .quote-status{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:8px 18px;background:#fff;border-bottom:1px solid var(--line);font-size:13px;color:var(--sub)}
+    .quote-status strong{color:var(--ink);font-weight:500}
+    .quote-frame{display:block;width:100%;flex:1 1 auto;min-height:0;border:0;background:#fff}
+    @media(max-width:640px){
+      .quote-page .site-header .inner{padding:9px 12px}
+      .quote-page .site-header .brand{min-width:0}
+      .quote-nav a:first-child{display:none}
+      .quote-nav a{font-size:12px;padding:6px 9px}
+      .quote-status{padding:7px 12px;font-size:12px}
+      .quote-status span{display:none}
+    }
+  </style>
+</head>
+<body>
+<div class="quote-page">
+  <header class="site-header">
+    <div class="inner">
+      <a class="brand" href="/">
+        <span class="brand-ja">株式会社万源</span>
+        <span class="brand-en">MANGEN CO., LTD.</span>
+      </a>
+      <div class="quote-nav">
+        <a href="/">官网首页</a>
+        <a href="https://japan-car-quote-v1.misofa.chatgpt.site/" target="_blank" rel="noopener">单独打开</a>
+      </div>
+    </div>
+  </header>
+  <div class="quote-status">
+    <strong>内部用车报价系统</strong>
+    <span>将微信询价内容粘贴到下方，识别后核对行程与价格</span>
+  </div>
+  <iframe
+    class="quote-frame"
+    src="https://japan-car-quote-v1.misofa.chatgpt.site/"
+    title="Mangen 内部用车报价系统"
+    loading="eager"
+    allow="clipboard-write"
+    referrerpolicy="strict-origin-when-cross-origin">
+    <p>当前浏览器不支持内嵌页面，请<a href="https://japan-car-quote-v1.misofa.chatgpt.site/">打开报价系统</a>。</p>
+  </iframe>
+</div>
+</body>
+</html>
