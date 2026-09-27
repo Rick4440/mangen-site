@@ -1,49 +1,75 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>日本用车快速报价系统</title>
-  <meta name="description" content="日本用车快速报价工具，支持微信询价内容识别与报价核对。">
-  <link rel="canonical" href="https://mangen.jp/quote.html">
-  <link rel="icon" type="image/png" href="/assets/img/favicon.png">
-  <link rel="apple-touch-icon" href="/assets/img/favicon.png">
-  <meta property="og:title" content="日本用车快速报价系统">
-  <meta property="og:description" content="粘贴微信询价内容，识别行程并核对日本用车报价。">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://mangen.jp/quote.html">
-  <meta property="og:image" content="https://mangen.jp/assets/img/logo.png">
-  <meta name="twitter:card" content="summary">
-  <link rel="preconnect" href="https://japan-car-quote-v1.misofa.chatgpt.site">
-  <style>
-    html,
-    body {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      overflow: hidden;
-      background: #fff;
-    }
-
-    .quote-frame {
-      display: block;
-      width: 100%;
-      height: 100%;
-      height: 100dvh;
-      border: 0;
-      background: #fff;
-    }
-  </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="株式会社万源内部使用的日本用车快速报价工具。" />
+  <title>Mangen 内部用车报价系统</title>
+  <link rel="stylesheet" href="/assets/quote/styles.css" />
 </head>
 <body>
-  <iframe
-    class="quote-frame"
-    src="https://japan-car-quote-v1.misofa.chatgpt.site/"
-    title="日本用车快速报价系统"
-    loading="eager"
-    allow="clipboard-write"
-    referrerpolicy="strict-origin-when-cross-origin">
-    <p>当前浏览器不支持内嵌页面，请<a href="https://japan-car-quote-v1.misofa.chatgpt.site/">打开报价系统</a>。</p>
-  </iframe>
+  <header class="topbar">
+    <div class="brand"><span class="brand-mark">万</span><div><strong>Mangen 内部用车报价</strong><small>INTERNAL · HONSHU V1</small></div></div>
+    <div class="top-actions"><span class="status"><i></i>2026 本州价格表</span><button class="ghost" id="resetBtn">新建报价</button></div>
+  </header>
+
+  <main class="workspace">
+    <section class="panel request-panel">
+      <div class="section-title"><div><span class="step">01</span><h1>粘贴询价内容</h1></div><span class="hint">支持微信原文，中日文地点均可</span></div>
+      <textarea id="requestInput" spellcheck="false" placeholder="将询价内容粘贴到这里…"></textarea>
+      <div class="input-footer"><span id="parseHint">第一步只识别行程，不确定内容不会自动报价</span><button class="primary" id="generateBtn">识别并拆分行程 <span>→</span></button></div>
+    </section>
+
+    <section class="panel quote-panel" id="quotePanel">
+      <div class="section-title"><div><span class="step">02</span><h2>核对后报价</h2></div><span class="quote-no" id="quoteNo">识别后请在此核对行程和价格</span></div>
+      <div class="vehicle-cards" id="vehicleCards" aria-label="快速选择车型">
+        <button class="vehicle-card" type="button" data-vehicle="埃尔法">
+          <span class="vehicle-photo"><img src="/assets/quote/vehicle-alphard.jpg" alt="黑色第四代丰田埃尔法" /></span>
+          <span class="vehicle-name"><strong>埃尔法</strong><small>Toyota Alphard</small></span><em>乘客 6 人</em>
+        </button>
+        <button class="vehicle-card" type="button" data-vehicle="hiace">
+          <span class="vehicle-photo"><img src="/assets/quote/vehicle-hiace.jpg" alt="黑色丰田海狮" /></span>
+          <span class="vehicle-name"><strong>海狮</strong><small>Toyota Hiace</small></span><em>乘客 7–14 人</em>
+        </button>
+        <button class="vehicle-card manual-price" type="button" data-vehicle="奔驰V级">
+          <span class="vehicle-photo"><img src="/assets/quote/vehicle-vclass.jpg" alt="黑色奔驰V级" /></span>
+          <span class="vehicle-name"><strong>奔驰V级</strong><small>Mercedes-Benz V-Class</small></span><em>乘客 6 人 · 现询</em>
+        </button>
+        <button class="vehicle-card manual-price" type="button" data-vehicle="奔驰S级">
+          <span class="vehicle-photo"><img src="/assets/quote/vehicle-sclass.jpg" alt="黑色奔驰S级" /></span>
+          <span class="vehicle-name"><strong>奔驰S级</strong><small>Mercedes-Benz S-Class</small></span><em>乘客 4 人 · 现询</em>
+        </button>
+        <button class="vehicle-card" type="button" data-vehicle="考斯特">
+          <span class="vehicle-photo"><img src="/assets/quote/vehicle-coaster.jpg" alt="丰田考斯特" /></span>
+          <span class="vehicle-name"><strong>考斯特</strong><small>Toyota Coaster</small></span><em>乘客 15–18 人</em>
+        </button>
+      </div>
+      <div id="emptyState"></div>
+      <div id="quoteResult" hidden>
+        <div class="summary-grid">
+          <label>车型<select id="vehicleSelect"></select></label>
+          <label>人数<input id="peopleInput" type="number" min="1" /></label>
+          <label>服务区域<input id="areaInput" /></label>
+          <label>报价系数<div class="suffix-input"><input id="factorInput" type="number" min="0.1" step="0.05" /><span>×</span></div></label>
+        </div>
+        <div class="review-guide"><b>绿色</b>可直接报价　<b>黄色</b>需确认判断　<b>红色</b>现询或人工录价</div>
+        <div class="schedule-head"><strong>标准化行程</strong><span>未确认项目不计入合计</span></div>
+        <div id="scheduleList" class="schedule-list"></div>
+        <button class="add-row" id="addRowBtn">＋ 添加一天 / 单项服务</button>
+        <div class="costs">
+          <label><span>附加费用</span><input id="extraInput" type="number" min="0" step="1000" value="0" /></label>
+          <label><span>优惠调整</span><input id="discountInput" type="number" min="0" step="1000" value="0" /></label>
+          <div class="total"><span>报价合计<small>日元 / 含税</small></span><strong id="totalPrice">¥0</strong></div>
+        </div>
+          <label class="note-field"><span>报价备注</span><textarea id="noteInput">以上为2026年度本州基础车价，包含车辆费、司机服务费及消费税；不含停车费、高速费、外宿费、回送费、导游费及超时费用。最终价格以实际路线和档期确认为准。</textarea></label>
+        <div class="output-actions"><button class="secondary" id="copyBtn">复制微信报价</button><button class="primary" id="printBtn">打印 / 保存 PDF</button></div>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">株式会社万源 <span>Mangen Co., Ltd. · Internal Use Only</span></footer>
+  <div class="toast" id="toast">已复制报价</div>
+  <script src="/assets/quote/price-data.js"></script>
+  <script src="/assets/quote/quote-engine.js"></script>
+  <script src="/assets/quote/app.js"></script>
 </body>
 </html>
