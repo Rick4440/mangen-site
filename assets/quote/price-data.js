@@ -1,0 +1,33 @@
+(function(root,factory){const data=factory();if(typeof module==="object"&&module.exports)module.exports=data;root.PRICE_DATA=data;})(typeof globalThis!=="undefined"?globalThis:this,function(){
+return {
+  source:{file:"本州报价表2026.xlsx",sheet:"本州",priority:1,version:"2026-09-14"},
+  vehicles:["埃尔法","海狮","14座海狮","考斯特","28座中巴","45座大巴","奔驰V级","奔驰S级"],
+  prices:{
+    kansai_osaka:[16000,21000,25000,40000,68000,80000,null,null],
+    kansai_other:[25000,28000,32000,48000,75000,88000,null,null],
+    haneda_tokyo:[15000,20000,25000,40000,72000,80000,null,null],
+    narita_tokyo:[22000,25000,32000,48000,72000,88000,null,null],
+    nagoya_airport:[20000,25000,30000,45000,null,null,null,null],
+    nagoya_station:[15000,20000,25000,45000,null,null,null,null],
+    chitose_sapporo:[20000,25000,35000,50000,80000,100000,null,null],
+    shinkansen:[13000,15000,18000,null,null,null,null,null],
+    usj:[13000,15000,18000,null,null,null,null,null],
+    disney:[15000,18000,18000,null,null,null,null,null],
+    osaka_city:[38000,43000,48000,65000,92000,118000,null,null],
+    osaka_suburb:[45000,50000,55000,75000,112000,135000,null,null],
+    tokyo_city:[40000,45000,50000,65000,95000,118000,null,null],
+    tokyo_suburb:[50000,55000,60000,75000,115000,138000,null,null],
+    long_distance:[50000,55000,60000,80000,115000,138000,null,null],
+    sapporo_city:[45000,50000,55000,75000,105000,118000,null,null],
+    sapporo_suburb:[55000,60000,65000,85000,125000,138000,null,null],
+    manual:[null,null,null,null,null,null,null,null]
+  },
+  rules:{
+    lodging:{埃尔法:10000,海狮:10000,"14座海狮":10000,考斯特:15000,"28座中巴":20000,"45座大巴":20000},
+    overtime:{埃尔法:5000,海狮:5000,"14座海狮":5000,考斯特:10000,"28座中巴":20000,"45座大巴":20000},
+    escort_full:{埃尔法:10000,海狮:10000,"14座海狮":10000},
+    escort_plus_parking:{埃尔法:5000,海狮:5000,"14座海狮":5000},
+    return_transfer:{埃尔法:35000,海狮:35000,"14座海狮":40000,考斯特:60000,"28座中巴":80000,"45座大巴":80000},
+    guide_cn:25000,guide_en:30000,english_service:5000,formal_attire:5000,wheelchair:1000,water:100,child_seat_extra:2000,mount_fuji_5th:10000
+  }
+};});
