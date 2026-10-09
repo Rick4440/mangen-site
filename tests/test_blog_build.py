@@ -88,6 +88,15 @@ class BuildTests(unittest.TestCase):
         self.assertIn('aria-controls="site-navigation"',page)
         self.assertNotIn('/zh.html',page)
         self.assertIn('href="https://mangen.jp/blog/osaka-kyoto-nara-3days"',page)
+    def test_generated_pages_use_four_character_chinese_navigation(self):
+        self.build()
+        # Reverting a shared navigation label must fail on every generated page.
+        for path in (self.root / 'blog').rglob('*.html'):
+            with self.subTest(page=path.relative_to(self.root)):
+                header = path.read_text().split('</header>', 1)[0]
+                for href, label in [('/zh#services', '用车服务'), ('/zh#fleet', '车型介绍'),
+                                    ('/blog/', '旅行指南'), ('/zh#contact', '联系我们')]:
+                    self.assertIn(f'href="{href}">{label}</a>', header)
     def test_explicit_optional_metadata_is_used_and_escaped(self):
         self.extra_posts(1); path=self.root/'content/posts/b-20261001-000000.md'
         path.write_text(path.read_text().replace('category: b','category: b\ndestinations: [东京]\ntopic: 季节活动\nfeatured: true\nupdated: 2026-10-02').replace('测试指南 0','测试 &lt;script&gt;指南'))
