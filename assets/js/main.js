@@ -359,8 +359,25 @@
   function bindMobileMenu() {
     const btn = $('.menu-btn');
     const nav = $('.site-header nav');
-    if (!btn || !nav) return;
-    btn.addEventListener('click', () => nav.classList.toggle('open'));
+    if (!btn || !nav || btn.dataset.menuBound) return;
+    btn.dataset.menuBound = 'true';
+    const closeLabel = document.documentElement.lang.startsWith('zh') ? '关闭导航' : 'Close menu';
+    const openLabel = document.documentElement.lang.startsWith('zh') ? '打开导航' : 'Open menu';
+    function setOpen(open) {
+      nav.classList.toggle('open', open);
+      btn.setAttribute('aria-expanded', String(open));
+      btn.setAttribute('aria-label', open ? closeLabel : openLabel);
+    }
+    btn.setAttribute('aria-expanded', 'false');
+    btn.addEventListener('click', () => setOpen(!nav.classList.contains('open')));
+    nav.addEventListener('click', event => { if (event.target.closest('a')) setOpen(false); });
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && nav.classList.contains('open')) { setOpen(false); btn.focus(); }
+    });
+    document.addEventListener('click', event => {
+      if (!nav.contains(event.target) && !btn.contains(event.target)) setOpen(false);
+    });
+    if (window.matchMedia) window.matchMedia('(min-width: 781px)').addEventListener('change', () => setOpen(false));
   }
 
   /* --------------------------------------------------------------------
