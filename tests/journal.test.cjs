@@ -4,6 +4,14 @@ const fs = require('node:fs');
 const path = require('node:path');
 const file = path.resolve(__dirname, '../assets/js/journal.js');
 const available = fs.existsSync(file);
+test('inline figures retain the full article width instead of browser side margins',()=>{
+  const {JSDOM}=require('jsdom');
+  const css=fs.readFileSync(path.resolve(__dirname,'../assets/css/journal.css'),'utf8');
+  // Explicitly model the browser UA's horizontal figure margins (jsdom's UA differs).
+  const d=new JSDOM(`<style>figure{margin:1em 40px}${css}</style><body class="journal-article-page"><article class="article"><div class="body"><figure><picture><img alt="diagram"></picture><figcaption>Full illustration</figcaption></figure></div></article></body>`);
+  const style=d.window.getComputedStyle(d.window.document.querySelector('figure'));
+  assert.equal(style.marginLeft,'0px');assert.equal(style.marginRight,'0px');d.window.close();
+});
 const journal = available ? require(file) : {};
 const posts = Array.from({length:25}, (_,i) => ({slug:`post-${i}`,url:`/blog/post-${i}`,title:i%2?'京都庭园':'东京交通',excerpt:'行程安排',search:i%2?'京都庭园 清水寺':'东京交通 机场',destinations:[i%2?'京都':'东京'],topic:i%2?'行程路线':'交通与接送',date:'2026-10-01',cover:'',coverAlt:''}));
 test('journal behavior module exists',()=>assert.ok(available,'Search/filter implementation is missing'));

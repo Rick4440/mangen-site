@@ -99,6 +99,7 @@
 .journal-article-page .article-cover img{border-radius:0;aspect-ratio:1.6}
 .article-cover figcaption{font-size:11px;line-height:1.8;color:var(--journal-muted);margin-top:7px}.article-cover figcaption a{text-decoration:underline}
 .journal-article-page .article .body img{max-width:100%;height:auto}
+.journal-article-page .article .body figure{margin:24px 0}
 .journal-article-page .related-reading{border-top:1px solid var(--journal-line);padding-top:25px;margin-top:36px}
 .journal-article-page .related-reading h2{font-size:23px}.journal-article-page .related-reading ul{padding:0;list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 .journal-article-page .related-reading li{font-size:15px;line-height:1.8}.related-reading .guide-taxonomy{display:block;margin-bottom:6px}
