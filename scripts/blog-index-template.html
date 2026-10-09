@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{PAGE_TITLE}} | 株式会社万源</title>
+  <meta name="description" content="从城市漫步到山间温泉，找到适合你的日本旅行灵感。万源整理行程路线、交通接送与实用旅行指南。">
+  <meta name="robots" content="index,follow" id="journal-robots">
+  <link rel="canonical" href="{{CANONICAL}}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{PAGE_TITLE}} | 株式会社万源">
+  <meta property="og:description" content="从城市漫步到山间温泉，找到适合你的日本旅行灵感。">
+  <meta property="og:url" content="{{CANONICAL}}">
+  <meta property="og:image" content="https://mangen.jp/assets/img/logo.png">
+  <meta property="og:locale" content="zh_CN">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/png" href="/assets/img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&family=Shippori+Mincho:wght@500;600&family=Noto+Serif+SC:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/journal.css">
+  <script src="/assets/js/main.js" defer></script>
+  <script src="/assets/js/journal.js" defer></script>
+</head>
+<body class="journal-page">
+{{HEADER}}
+<main id="main-content" class="journal wrap" data-journal data-page="{{PAGE}}" data-page-count="{{PAGE_COUNT}}">
+  <section class="journal-intro" aria-labelledby="journal-title">
+    <div><p class="eyebrow">MANGEN JOURNAL</p><h1 id="journal-title">日本旅行指南</h1><p class="journal-deck">从城市漫步到山间温泉，找到适合你的日本旅行灵感。</p></div>
+    <form class="journal-search" role="search" action="/blog/" method="get"><label for="guide-search" class="sr-only">搜索旅行指南</label><input id="guide-search" type="search" name="q" placeholder="搜索城市、景点、路线或交通问题" autocomplete="off" maxlength="200"><button type="submit">搜索</button></form>
+  </section>
+  <section class="journal-filters" aria-label="筛选指南">{{DESTINATION_FILTER}}{{TOPIC_FILTER}}</section>
+  <noscript><p class="journal-notice">所有指南均可直接阅读。启用 JavaScript 后可使用站内搜索与筛选。</p></noscript>
+  <p class="journal-notice" id="journal-error" role="status" hidden></p>
+  {{FEATURED}}
+  <section class="guide-section" aria-labelledby="guides-title">
+    <div class="section-heading"><div><h2 id="guides-title" tabindex="-1">全部指南</h2><p id="result-count" role="status" aria-live="polite">共 {{TOTAL}} 篇指南</p></div><span class="sort-label">最新发布</span></div>
+    <div id="active-filters" class="active-filters" hidden><p></p><button type="button" data-clear>清除筛选</button></div>
+    <div class="guide-grid" id="guide-grid">{{CARDS}}</div>
+    <div class="empty-state" id="empty-state" hidden><h3>暂时没有找到相关指南</h3><p>试试其他城市或关键词，或者清除筛选浏览全部内容。</p><button type="button" data-clear>查看全部指南</button></div>
+    <nav class="journal-pagination" id="journal-pagination" aria-label="指南分页">{{PAGINATION}}</nav>
+  </section>
+</main>
+<aside class="journal-cta"><div class="wrap"><div><h2>想把灵感变成行程？</h2><p>和万源聊聊你的日本包车与接送安排。</p></div><a class="outline-link" href="/zh#contact">咨询行程</a></div></aside>
+<footer class="journal-footer"><div class="wrap"><a href="/zh">株式会社万源 <span>MANGEN</span></a><p>© 2026 株式会社万源</p><a href="/zh#company">公司信息</a></div></footer>
+</body>
+</html>

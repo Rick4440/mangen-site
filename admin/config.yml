@@ -218,6 +218,29 @@ collections:
         hint: "选择分类后，系统会自动生成网址编号，不需要另外填写英文网址名。"
       - { label: "下线（勾选后从网站及 sitemap 移除）", name: "draft", widget: "boolean", default: false, required: false }
       - { label: "文章封面图（可选）", name: "cover_image", widget: "image", required: false, hint: "上传后用于文章顶部及分享卡片；正文可用图片按钮插图。" }
+      - label: "目的地（可选）"
+        name: "destinations"
+        widget: "select"
+        multiple: true
+        required: false
+        options: ["全日本", "东京", "京都", "大阪", "奈良", "富士山", "箱根", "北海道", "冲绳", "名古屋", "福冈"]
+        hint: "只选正文主要介绍的目的地。留空时按标题识别；没有明确地点则归为全日本。"
+      - label: "旅行主题（可选）"
+        name: "topic"
+        widget: "select"
+        required: false
+        options: ["行程路线", "交通与接送", "目的地攻略", "住宿美食", "季节活动", "旅行实用", "万源动态"]
+        hint: "不改变文章原有分类或永久网址。留空时使用分类对应主题。"
+      - { label: "编辑精选（可选）", name: "featured", widget: "boolean", default: false, required: false }
+      - { label: "实际更新日期（可选）", name: "updated", widget: "datetime", required: false, date_format: "YYYY-MM-DD", time_format: false, picker_utc: true, hint: "仅在实际更新文章内容时填写，不能早于发布日期。" }
+      - { label: "封面替代文字", name: "cover_alt", widget: "string", required: false }
+      - { label: "封面图注（地点、拍摄年份等）", name: "cover_caption", widget: "text", required: false }
+      - { label: "摄影作者 / 署名", name: "cover_credit", widget: "string", required: false }
+      - { label: "作者链接", name: "cover_creator_url", widget: "string", required: false }
+      - { label: "图片来源页链接", name: "cover_source", widget: "string", required: false }
+      - { label: "图片许可名称", name: "cover_license", widget: "string", required: false }
+      - { label: "图片许可链接", name: "cover_license_url", widget: "string", required: false }
+      - { label: "图片改动说明（缩小、裁切等）", name: "cover_changes", widget: "string", required: false }
       - label: "标题"
         name: "title_i18n"
         widget: "object"

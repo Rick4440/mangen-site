@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>用车指南 | 株式会社万源</title>
-  <meta name="description" content="访日用车、绿牌白牌、包车路线、文化礼仪。株式会社万源博客。">
+  <title>日本旅行指南 | 株式会社万源</title>
+  <meta name="description" content="从城市漫步到山间温泉，找到适合你的日本旅行灵感。万源整理行程路线、交通接送与实用旅行指南。">
+  <meta name="robots" content="index,follow" id="journal-robots">
   <link rel="canonical" href="https://mangen.jp/blog/">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="日本旅行与包车指南 | 株式会社万源">
-  <meta property="og:description" content="访日用车、绿牌白牌、包车路线与文化礼仪。">
+  <meta property="og:title" content="日本旅行指南 | 株式会社万源">
+  <meta property="og:description" content="从城市漫步到山间温泉，找到适合你的日本旅行灵感。">
   <meta property="og:url" content="https://mangen.jp/blog/">
   <meta property="og:image" content="https://mangen.jp/assets/img/logo.png">
   <meta property="og:locale" content="zh_CN">
@@ -16,54 +17,52 @@
   <link rel="icon" type="image/png" href="/assets/img/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@500;600&family=Noto+Serif+SC:wght@500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&family=Shippori+Mincho:wght@500;600&family=Noto+Serif+SC:wght@500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/journal.css">
+  <script src="/assets/js/main.js" defer></script>
+  <script src="/assets/js/journal.js" defer></script>
 </head>
-<body>
-
-<header class="site-header">
+<body class="journal-page">
+<a class="skip-link" href="#main-content">跳到正文</a>
+<header class="site-header journal-header">
   <div class="inner">
-    <a class="brand" href="/zh">
-      <span class="brand-ja">株式会社万源</span>\n      <span class="brand-en">MANGEN CO., LTD.</span>
-    </a>
-    <button class="menu-btn" aria-label="menu"><span></span><span></span><span></span></button>
-    <nav>
-      <ul>
-        <li><a href="/zh#services">服务</a></li>
-        <li><a href="/zh#fleet">车型</a></li>
-        <li><a href="/blog/">博客</a></li>
-        <li><a href="/zh#contact">联系</a></li>
-      </ul>
-    </nav>
-    <div class="lang-switch">
-      <a href="/">JA</a>
-      <a href="/zh" class="active">ZH</a>
-      <a href="/en">EN</a>
-    </div>
+    <a class="brand" href="/zh" aria-label="株式会社万源 首页"><span class="brand-ja">株式会社万源</span><span class="brand-en">MANGEN CO., LTD.</span></a>
+    <nav id="site-navigation" aria-label="主导航"><ul><li><a href="/zh#services">服务</a></li><li><a href="/zh#fleet">车型</a></li><li><a class="active" href="/blog/">旅行指南</a></li><li><a href="/zh#contact">联系</a></li></ul></nav>
+    <div class="lang-switch" aria-label="网站语言"><a href="/" lang="ja">JA</a><a href="/zh" class="active" lang="zh">ZH</a><a href="/en" lang="en">EN</a></div>
+    <button class="menu-btn" type="button" aria-label="打开导航" aria-controls="site-navigation" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
 </header>
 
-<main>
-<section class="wrap sec">
-  <h1>用车指南</h1>
-  <p style="color:var(--sub);margin-bottom:8px">访日用车、绿牌白牌科普、包车路线、文化礼仪。</p>
-  <p style="color:var(--sub);font-size:13px;margin-bottom:24px">由株式会社万源整理，专注为您在日本旅行期间提供实用信息。</p>
-
-  <div class="blog-list"><a class="blog-card" href="/blog/osaka-kyoto-nara-3days"><time datetime="2026-09-22">2026-09-22</time><h3>大阪・京都・奈良 3 日包车路线规划（含推荐车型）</h3><p>关西最经典的 3 日路线：大阪吃、京都看、奈良摸鹿。每天的路线、餐厅、推荐车型一次说清。</p></a>
-<a class="blog-card" href="/blog/japan-travel-etiquette"><time datetime="2026-09-22">2026-09-22</time><h3>访日旅游礼仪与注意事项：让您的日本之行更顺畅</h3><p>在日本，遵守一些本地礼仪可以让旅行体验顺滑一倍以上。本文整理访日客人最容易忽略但最重要的细节。</p></a>
-<a class="blog-card" href="/blog/green-plate-guide"><time datetime="2026-09-22">2026-09-22</time><h3>日本旅行用车｜绿牌白牌一字之差，藏着你不了解的合规与体验差距</h3><p>日本出租车、网约车、包车看着都像——颜色不同的车牌背后，是完全不同的法规、监管与服务标准。</p></a></div>
-</section>
+<main id="main-content" class="journal wrap" data-journal data-page="1" data-page-count="2">
+  <section class="journal-intro" aria-labelledby="journal-title">
+    <div><p class="eyebrow">MANGEN JOURNAL</p><h1 id="journal-title">日本旅行指南</h1><p class="journal-deck">从城市漫步到山间温泉，找到适合你的日本旅行灵感。</p></div>
+    <form class="journal-search" role="search" action="/blog/" method="get"><label for="guide-search" class="sr-only">搜索旅行指南</label><input id="guide-search" type="search" name="q" placeholder="搜索城市、景点、路线或交通问题" autocomplete="off" maxlength="200"><button type="submit">搜索</button></form>
+  </section>
+  <section class="journal-filters" aria-label="筛选指南"><div class="filter-row"><span class="filter-label">目的地</span><div class="filter-options" role="group" aria-label="目的地"><button type="button" data-filter="destination" value="" aria-pressed="true">全部</button><button type="button" data-filter="destination" value="全日本" aria-pressed="false">全日本</button><button type="button" data-filter="destination" value="东京" aria-pressed="false">东京</button><button type="button" data-filter="destination" value="京都" aria-pressed="false">京都</button><button type="button" data-filter="destination" value="大阪" aria-pressed="false">大阪</button><button type="button" data-filter="destination" value="奈良" aria-pressed="false">奈良</button><button type="button" data-filter="destination" value="富士山" aria-pressed="false">富士山</button></div></div><label class="mobile-filter"><span class="sr-only">目的地</span><select data-select="destination" aria-label="目的地"><option value="">目的地 · 全部</option><option value="全日本">全日本</option><option value="东京">东京</option><option value="京都">京都</option><option value="大阪">大阪</option><option value="奈良">奈良</option><option value="富士山">富士山</option></select></label><div class="filter-row"><span class="filter-label">旅行主题</span><div class="filter-options" role="group" aria-label="旅行主题"><button type="button" data-filter="topic" value="" aria-pressed="true">全部</button><button type="button" data-filter="topic" value="行程路线" aria-pressed="false">行程路线</button><button type="button" data-filter="topic" value="交通与接送" aria-pressed="false">交通与接送</button><button type="button" data-filter="topic" value="目的地攻略" aria-pressed="false">目的地攻略</button><button type="button" data-filter="topic" value="住宿美食" aria-pressed="false">住宿美食</button><button type="button" data-filter="topic" value="季节活动" aria-pressed="false">季节活动</button><button type="button" data-filter="topic" value="旅行实用" aria-pressed="false">旅行实用</button></div></div><label class="mobile-filter"><span class="sr-only">旅行主题</span><select data-select="topic" aria-label="旅行主题"><option value="">旅行主题 · 全部</option><option value="行程路线">行程路线</option><option value="交通与接送">交通与接送</option><option value="目的地攻略">目的地攻略</option><option value="住宿美食">住宿美食</option><option value="季节活动">季节活动</option><option value="旅行实用">旅行实用</option></select></label></section>
+  <noscript><p class="journal-notice">所有指南均可直接阅读。启用 JavaScript 后可使用站内搜索与筛选。</p></noscript>
+  <p class="journal-notice" id="journal-error" role="status" hidden></p>
+  <section class="featured-section" aria-labelledby="featured-title" id="featured-section"><h2 id="featured-title">编辑精选</h2><div class="featured"><a class="featured-image" href="/blog/osaka-kyoto-nara-3days" tabindex="-1" aria-hidden="true"><img src="/assets/uploads/journal/kyoto-eikando-autumn-2016.jpg" alt="" loading="eager" fetchpriority="high" width="1200" height="800"></a><div class="featured-copy"><div class="guide-taxonomy">京都 / 大阪 / 奈良 · 行程路线</div><h3><a href="/blog/osaka-kyoto-nara-3days">大阪・京都・奈良 3 日包车路线规划（含推荐车型）</a></h3><p>关西最经典的 3 日路线：大阪吃、京都看、奈良摸鹿。每天的路线、餐厅、推荐车型一次说清。</p><a class="text-link" href="/blog/osaka-kyoto-nara-3days">阅读指南</a></div></div><p class="image-credit">京都永观堂秋景，2016年11月拍摄；当年叶况须另查。 · <a href="https://commons.wikimedia.org/wiki/User:Martin_Falbisoner" rel="noopener noreferrer">Martin Falbisoner</a> · <a href="https://commons.wikimedia.org/wiki/File:Eikan-do_Zenrin-ji,_November_2016_-03.jpg" rel="noopener noreferrer">来源</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener noreferrer">CC BY-SA 4.0</a> · Commons 缩小副本；网页显示裁切，未改色。</p></section>
+  <section class="guide-section" aria-labelledby="guides-title">
+    <div class="section-heading"><div><h2 id="guides-title" tabindex="-1">全部指南</h2><p id="result-count" role="status" aria-live="polite">共 15 篇指南</p></div><span class="sort-label">最新发布</span></div>
+    <div id="active-filters" class="active-filters" hidden><p></p><button type="button" data-clear>清除筛选</button></div>
+    <div class="guide-grid" id="guide-grid"><article class="guide-entry"><a class="guide-card" href="/blog/d-20261009-063204"><div class="guide-image"><img src="/assets/uploads/batch-20261009/kyoto-eikando-autumn-2016.jpg" alt="京都永观堂池塘边的红叶、石桥和水中倒影。" loading="lazy" decoding="async" width="900" height="600"></div><div class="guide-copy"><div class="guide-taxonomy">京都<span> · </span>季节活动</div><h3>京都红叶路线怎么排？先分区域，再看当天叶况</h3><p>京都赏红叶别把岚山和东山硬排在一天。用两套分区路线规划参观，学会核对红叶情报年份、拥挤度与夜间参拜，并查看已公布的2026天龙寺早朝开放信息。</p><time datetime="2026-10-09">2026.10.09</time></div></a><p class="image-credit">京都永观堂秋景，2016年11月拍摄；当年叶况须另查。 · <a href="https://commons.wikimedia.org/wiki/User:Martin_Falbisoner" rel="noopener noreferrer">Martin Falbisoner</a> · <a href="https://commons.wikimedia.org/wiki/File:Eikan-do_Zenrin-ji,_November_2016_-03.jpg" rel="noopener noreferrer">来源</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener noreferrer">CC BY-SA 4.0</a> · 使用来源提供的缩小副本；网页封面显示裁切，未改色。</p></article>
+<article class="guide-entry"><a class="guide-card" href="/blog/d-20261009-063203"><div class="guide-image"><img src="/assets/uploads/batch-20261009/fuji-yamanakako-2014.jpg" alt="山中湖湖岸标牌、湖面与雪顶富士山。" loading="lazy" decoding="async" width="900" height="600"></div><div class="guide-copy"><div class="guide-taxonomy">富士山<span> · </span>行程路线</div><h3>富士山一日游选河口湖还是山中湖？先决定当天想怎么过</h3><p>东京出发去富士山，河口湖与山中湖怎么选？比较公共交通、湖边散步与观景安排，提供各自的一日游顺序，并说明出发前如何查实时画面和返程班次。</p><time datetime="2026-10-09">2026.10.09</time></div></a><p class="image-credit">山中湖眺望富士山，2014年12月拍摄；不代表出行当天景色。 · <a href="https://commons.wikimedia.org/wiki/User:Alpsdake" rel="noopener noreferrer">Alpsdake</a> · <a href="https://commons.wikimedia.org/wiki/File:Lake_Yamanaka_and_Mount_Fuji.JPG" rel="noopener noreferrer">来源</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener noreferrer">CC BY-SA 4.0</a> · 使用来源提供的缩小副本；网页封面显示裁切，未改色。</p></article>
+<article class="guide-entry"><a class="guide-card" href="/blog/d-20261009-063202"><div class="guide-image"><img src="/assets/uploads/batch-20261009/osaka-kaiyukan-2019.jpg" alt="大阪海游馆的红蓝色外墙与鲸鲨图案。" loading="lazy" decoding="async" width="900" height="600"></div><div class="guide-copy"><div class="guide-taxonomy">大阪<span> · </span>行程路线</div><h3>大阪下雨去哪玩？两套不用频繁跨区的室内备用行程</h3><p>大阪旅行遇到下雨，按天保山或中之岛选择室内行程，核对海游馆定时门票与不再允许再次入馆的规则，以及科学馆休馆日、天文馆场次和雨天移动细节。</p><time datetime="2026-10-09">2026.10.09</time></div></a><p class="image-credit">大阪海游馆外观，2019年拍摄；当天入馆与天气另行核查。 · <a href="https://commons.wikimedia.org/wiki/User:%E3%81%9D%E3%82%89%E3%81%BF%E3%81%BF" rel="noopener noreferrer">そらみみ</a> · <a href="https://commons.wikimedia.org/wiki/File:Osaka_Aquarium_%22Kaiyukan%22_20190201-2.jpg" rel="noopener noreferrer">来源</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener noreferrer">CC BY-SA 4.0</a> · 使用来源提供的缩小副本；网页封面显示裁切，未改色。</p></article>
+<article class="guide-entry"><a class="guide-card" href="/blog/b-20261009-063208"><div class="guide-image"><img src="/assets/uploads/batch-20261009/kyoto-chionin-ramp-2013.jpg" alt="京都知恩院木廊旁的坡道、扶手和轮椅通行标识。" loading="lazy" decoding="async" width="900" height="600"></div><div class="guide-copy"><div class="guide-taxonomy">全日本<span> · </span>旅行实用</div><h3>带父母去日本怎样把行程安排得更从容</h3><p>带父母去日本，怎样减少不必要的步行和转乘？从个人体力、车站电梯、酒店房型、景点通道到休息与返程安排，整理可执行的行程检查方法。</p><time datetime="2026-10-09">2026.10.09</time></div></a><p class="image-credit">知恩院坡道，2013年拍摄，仅作设施核对示例；当前开放与通行条件须另行确认。 · <a href="https://commons.wikimedia.org/w/index.php?title=User:%E9%9B%AA%E8%9E%8D&amp;action=edit&amp;redlink=1" rel="noopener noreferrer">雪融</a> · <a href="https://commons.wikimedia.org/wiki/File:Accessible_slope_in_Chion-in.jpg" rel="noopener noreferrer">来源</a> · <a href="https://creativecommons.org/licenses/by-sa/3.0" rel="noopener noreferrer">CC BY-SA 3.0</a> · 使用来源提供的缩小副本；网页封面显示裁切，未改色。</p></article>
+<article class="guide-entry"><a class="guide-card" href="/blog/b-20261009-063207"><div class="guide-image"><img src="/assets/uploads/batch-20261009/yokosuka-lockers-2010.jpg" alt="横须贺中央站内的多种尺寸行李寄存柜和操作屏。" loading="lazy" decoding="async" width="900" height="600"></div><div class="guide-copy"><div class="guide-taxonomy">全日本<span> · </span>旅行实用</div><h3>日本多城市旅行怎么安排大件行李</h3><p>日本旅行退房后寄存行李，还是把行李寄往下一家酒店？按当日取用、跨城住宿、配送截止与机场领取需求比较，附寄送前信息核对清单。</p><time datetime="2026-10-09">2026.10.09</time></div></a><p class="image-credit">横须贺中央站寄存柜，2010年拍摄；图中价格、班次和设备状态均非现行信息。 · <a href="https://commons.wikimedia.org/wiki/User:Vantey" rel="noopener noreferrer">Uploader; Vantey</a> · <a href="https://commons.wikimedia.org/wiki/File:Yokosuka-chuo_Station_coin_lockers_20100514.jpg" rel="noopener noreferrer">来源</a> · <a href="https://commons.wikimedia.org/wiki/File:Yokosuka-chuo_Station_coin_lockers_20100514.jpg#Licensing" rel="noopener noreferrer">Public domain (PD-self)</a> · 使用来源提供的缩小副本；网页封面显示裁切，未改色。</p></article>
+<article class="guide-entry"><a class="guide-card guide-card--text" href="/blog/b-20261009-063206"><div class="guide-copy"><div class="guide-taxonomy">全日本<span> · </span>住宿美食</div><h3>日本餐厅预约前要确认什么</h3><p>日本餐厅预约前要确认套餐、儿童入店、取消费与迟到规则。整理预订状态核对方法、饮食禁忌及食物过敏沟通清单，避免备注未确认就到店。</p><time datetime="2026-10-09">2026.10.09</time></div></a></article>
+<article class="guide-entry"><a class="guide-card" href="/blog/b-20261009-063205"><div class="guide-image"><img src="/assets/uploads/batch-20261009/ryokan-tatami-room-2008.jpg" alt="日式旅馆的榻榻米房间，矮桌上摆着茶具，桌旁有坐垫。" loading="lazy" decoding="async" width="900" height="600"></div><div class="guide-copy"><div class="guide-taxonomy">全日本<span> · </span>住宿美食</div><h3>日本温泉旅馆一泊二食怎么订</h3><p>预订日本温泉旅馆一泊二食，先确认每人或每房计价、儿童餐与寝具、晚餐最晚入席、私人浴池及接送安排。附可直接使用的订房核对清单。</p><time datetime="2026-10-09">2026.10.09</time></div></a><p class="image-credit">札幌一间旅馆客房，2008年拍摄，仅示意榻榻米和坐地起居；不代表在售房型或套餐。 · <a href="https://www.flickr.com/people/11302107@N05" rel="noopener noreferrer">ㇹヮィㇳ (shirokazan)</a> · <a href="https://commons.wikimedia.org/wiki/File:Interior_of_a_ryokan_room_(2999708441).jpg" rel="noopener noreferrer">来源</a> · <a href="https://creativecommons.org/licenses/by/2.0" rel="noopener noreferrer">CC BY 2.0</a> · 使用来源提供的缩小副本；网页封面显示裁切，未改色。</p></article>
+<article class="guide-entry"><a class="guide-card" href="/blog/b-20261009-063201"><div class="guide-image"><img src="/assets/uploads/batch-20261009/tokyo-station-2023.jpg" alt="东京站丸之内红砖站舍与前方广场，后方是高层建筑。" loading="lazy" decoding="async" width="900" height="600"></div><div class="guide-copy"><div class="guide-taxonomy">东京<span> · </span>目的地攻略</div><h3>东京住哪里方便？新宿、上野、东京站和银座怎么选</h3><p>东京酒店选新宿、上野、东京站还是银座？从每天的游览方向、机场交通、换酒店成本与车站出口判断，并附订房前需要核对的房型和步行路线清单。</p><time datetime="2026-10-09">2026.10.09</time></div></a><p class="image-credit">东京站丸之内口，2023年拍摄。 · <a href="https://commons.wikimedia.org/wiki/User:MaedaAkihiko" rel="noopener noreferrer">MaedaAkihiko</a> · <a href="https://commons.wikimedia.org/wiki/File:Tokyo-STA_Marunouchi-Entrance_2023.jpg" rel="noopener noreferrer">来源</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener noreferrer">CC BY-SA 4.0</a> · 使用来源提供的缩小副本；网页封面显示裁切，未改色。</p></article>
+<article class="guide-entry"><a class="guide-card" href="/blog/b-20261009-063200"><div class="guide-image"><img src="/assets/uploads/batch-20261009/packing-luggage-generic.jpg" alt="打开的旅行箱里放着衣物和耳机，旁边有打包清单与相机。" loading="lazy" decoding="async" width="900" height="600"></div><div class="guide-copy"><div class="guide-taxonomy">全日本<span> · </span>旅行实用</div><h3>日本旅行行李清单：先装好随身包，再决定行李箱带什么</h3><p>第一次去日本带什么？按证件、手机网络、充电设备、衣物和随身用品整理行李，提醒电子签证展示、充电宝运输及药品核查要点，附出发前检查清单。</p><time datetime="2026-10-09">2026.10.09</time></div></a><p class="image-credit">行李整理示意；画面不是日本地点，也不是万源实拍。 · <a href="https://familydestinationsguide.com/" rel="noopener noreferrer">Familydestinationsguide.com Images</a> · <a href="https://commons.wikimedia.org/wiki/File:Holiday_Packing_List_-_Packing_Luggage_for_Vacation.jpg" rel="noopener noreferrer">来源</a> · <a href="https://creativecommons.org/licenses/by/2.0" rel="noopener noreferrer">CC BY 2.0</a> · 使用来源提供的缩小副本；网页封面显示裁切，未改色。</p></article>
+<article class="guide-entry"><a class="guide-card guide-card--text" href="/blog/a-20261009-063209"><div class="guide-copy"><div class="guide-taxonomy">全日本<span> · </span>交通与接送</div><h3>日本包车车型怎么选才不会临时装不下</h3><p>日本包车不能只按几座车选择。预订前汇总全体乘客、箱包尺寸、婴儿车与轮椅信息，核对儿童座椅、实际座位布局、装载空间及报价范围。</p><time datetime="2026-10-09">2026.10.09</time></div></a></article>
+<article class="guide-entry"><a class="guide-card" href="/blog/a-20260925-145413"><div class="guide-image"><img src="/assets/uploads/journal/packing-luggage-generic.jpg" alt="打开的旅行箱里放着衣物和耳机，旁边有打包清单与相机。" loading="lazy" decoding="async" width="900" height="600"></div><div class="guide-copy"><div class="guide-taxonomy">全日本<span> · </span>交通与接送</div><h3>日本旅行第一站和最后一站，交给接送机服务才安心</h3><p>计划一场日本旅行时，大家往往会精心安排景点、餐厅和酒店，却容易忽略两段最容易被&quot;翻车&quot;的行程——落地那一刻和返程那一天。刚下飞机又累又兴奋，人生地不熟；赶飞机时争分夺秒，稍有闪空就可能误机。这两段体验，直接决定了整趟旅行的&quot;第一印象&quot;和&quot;回忆收尾&quot;。 这就是为什么，我们建议：日本接送机服务，值得成为你行程单上的第一项预订。</p><time datetime="2026-09-25">2026.09.25</time></div></a><p class="image-credit">行李整理示意；画面不是日本地点，也不是万源实拍。 · <a href="https://familydestinationsguide.com/" rel="noopener noreferrer">Familydestinationsguide.com Images</a> · <a href="https://commons.wikimedia.org/wiki/File:Holiday_Packing_List_-_Packing_Luggage_for_Vacation.jpg" rel="noopener noreferrer">来源</a> · <a href="https://creativecommons.org/licenses/by/2.0" rel="noopener noreferrer">CC BY 2.0</a> · Commons 缩小副本；网页显示裁切，未改色。</p></article>
+<article class="guide-entry"><a class="guide-card" href="/blog/first-trip-japan-2026"><div class="guide-image"><img src="/assets/uploads/journal/tokyo-station-2023.jpg" alt="东京站丸之内红砖站舍与前方广场，后方是高层建筑。" loading="lazy" decoding="async" width="900" height="600"></div><div class="guide-copy"><div class="guide-taxonomy">全日本<span> · </span>交通与接送</div><h3>第一次来日本旅行，为什么强烈建议选择包车服务？</h3><p>对于很多人来说，日本是一个“去过一次就还想再去”的目的地——东京的繁华、京都的古韵、北海道的雪景、冲绳的海岸，每一处都值得细细品味。但如果你是第一次来日本，在出发前一定绕不开一个现实问题：在日本怎么出行最省心？ 答案是：包车游。这篇就来聊聊，为什么包车是第一次来日本旅行方式中的“最优解”。</p><time datetime="2026-09-24">2026.09.24</time></div></a><p class="image-credit">东京站丸之内口，2023年拍摄。 · <a href="https://commons.wikimedia.org/wiki/User:MaedaAkihiko" rel="noopener noreferrer">MaedaAkihiko</a> · <a href="https://commons.wikimedia.org/wiki/File:Tokyo-STA_Marunouchi-Entrance_2023.jpg" rel="noopener noreferrer">来源</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0" rel="noopener noreferrer">CC BY-SA 4.0</a> · Commons 缩小副本；网页显示裁切，未改色。</p></article></div>
+    <div class="empty-state" id="empty-state" hidden><h3>暂时没有找到相关指南</h3><p>试试其他城市或关键词，或者清除筛选浏览全部内容。</p><button type="button" data-clear>查看全部指南</button></div>
+    <nav class="journal-pagination" id="journal-pagination" aria-label="指南分页"><span aria-disabled="true">上一页</span><a href="/blog/" aria-label="第 1 页" aria-current="page">1</a><a href="/blog/page/2/" aria-label="第 2 页">2</a><a href="/blog/page/2/" rel="next">下一页</a></nav>
+  </section>
 </main>
-
-<footer class="site-footer">
-  <div class="inner">
-    <div><h4>株式会社万源</h4><p>日本全国対応の送迎サービス。</p></div>
-    <div><h4>联系方式</h4><ul data-bind="footer-phones"></ul></div>
-    <div><h4>链接</h4><ul><li><a href="/zh">首页</a></li><li><a href="/zh#services">服务</a></li><li><a href="/zh#company">公司介绍</a></li></ul></div>
-  </div>
-  <div class="copy" data-bind="copyright">© 2026 株式会社万源.</div>
-</footer>
-
-<script src="/assets/js/main.js"></script>
+<aside class="journal-cta"><div class="wrap"><div><h2>想把灵感变成行程？</h2><p>和万源聊聊你的日本包车与接送安排。</p></div><a class="outline-link" href="/zh#contact">咨询行程</a></div></aside>
+<footer class="journal-footer"><div class="wrap"><a href="/zh">株式会社万源 <span>MANGEN</span></a><p>© 2026 株式会社万源</p><a href="/zh#company">公司信息</a></div></footer>
 </body>
 </html>

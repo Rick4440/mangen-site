@@ -1,0 +1,351 @@
+{
+  "asset_set": "Mangen first 10 travel articles",
+  "fact_check_date": "2026-10-09",
+  "license_note": "Third-party photos remain under their stated licenses. Article/site copyright does not replace photo licenses. Any ShareAlike adaptations retain the same or a compatible license. Original diagrams are commissioned illustrations, not newly CC-licensed works.",
+  "assets": [
+    {
+      "id": "charter-inquiry-checklist",
+      "creator": "dot，为万源按文章草稿原创制作",
+      "creator_url": null,
+      "license": "用户委托原创图示（非第三方CC素材）",
+      "license_url": null,
+      "source_page": null,
+      "source_photo_date": null,
+      "caption_zh": "询价信息示意 · 不表示具体车型或固定容量。依据文章草稿整理，不代表已完成预约或任何具体车辆的配置。",
+      "usage_requirements_zh": [
+        "保留“示意”说明；不能改成真实车辆、固定容量、平台截图或官方确认的表示。",
+        "可按万源项目需要编辑或使用；英文品牌文字为普通文字，不是新设计的商标。",
+        "网页显示请使用完整图，禁止裁去步骤、关键提醒或“示意”说明。",
+        "在窄屏正文使用竖版；横版用于封面或较宽版面。"
+      ],
+      "authorship_type": "original_code_native_schematic",
+      "ownership_note_zh": "根据用户要求原创绘制，交付用户用于万源项目；未使用第三方照片或图标，未另行向公众授予CC许可。"
+    },
+    {
+      "id": "fuji-kawaguchiko",
+      "creator": "Subramaniam K V",
+      "creator_url": null,
+      "license": "CC BY 3.0",
+      "license_url": "https://creativecommons.org/licenses/by/3.0",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Mount_Fuji_from_Lake_Kawaguchi.jpg",
+      "source_photo_date": "",
+      "caption_zh": "河口湖眺望富士山，2006年拍摄；能见度随天气变化。",
+      "usage_requirements_zh": [
+        "署名链接至作者（有链接时）；来源链接至单张文件页；许可证单独链接。",
+        "本地托管，不热链。图片与文章业务之间不得暗示摄影师、地点或商家背书。",
+        "本包仅使用Commons生成的缩小副本，未改画面；后续若显示裁切或改色，应标示改动。"
+      ],
+      "authorship_type": null,
+      "ownership_note_zh": null
+    },
+    {
+      "id": "fuji-yamanakako-2014",
+      "creator": "Alpsdake",
+      "creator_url": "https://commons.wikimedia.org/wiki/User:Alpsdake",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Lake_Yamanaka_and_Mount_Fuji.JPG",
+      "source_photo_date": "Taken on 6 December 2014, 08:18:06",
+      "caption_zh": "山中湖眺望富士山，2014年12月拍摄；不代表出行当天景色。",
+      "usage_requirements_zh": [
+        "署名链接至作者（有链接时）；来源链接至单张文件页；许可证单独链接。",
+        "本地托管，不热链。图片与文章业务之间不得暗示摄影师、地点或商家背书。",
+        "本包仅使用Commons生成的缩小副本，未改画面；后续若显示裁切或改色，应标示改动。",
+        "如形成改编图片，改编图片继续采用所列相同/兼容的ShareAlike许可，并保留许可提示；不要将图片纳入网站的全权保留声明。"
+      ],
+      "authorship_type": null,
+      "ownership_note_zh": null
+    },
+    {
+      "id": "kyoto-chionin-ramp-2013",
+      "creator": "雪融",
+      "creator_url": "https://commons.wikimedia.org/w/index.php?title=User:%E9%9B%AA%E8%9E%8D&amp;action=edit&amp;redlink=1",
+      "license": "CC BY-SA 3.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/3.0",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Accessible_slope_in_Chion-in.jpg",
+      "source_photo_date": "2013-08-12 00:48:05",
+      "caption_zh": "知恩院坡道，2013年拍摄，仅作设施核对示例；当前开放与通行条件须另行确认。",
+      "usage_requirements_zh": [
+        "署名链接至作者（有链接时）；来源链接至单张文件页；许可证单独链接。",
+        "本地托管，不热链。图片与文章业务之间不得暗示摄影师、地点或商家背书。",
+        "本包仅使用Commons生成的缩小副本，未改画面；后续若显示裁切或改色，应标示改动。",
+        "如形成改编图片，改编图片继续采用所列相同/兼容的ShareAlike许可，并保留许可提示；不要将图片纳入网站的全权保留声明。"
+      ],
+      "authorship_type": null,
+      "ownership_note_zh": null
+    },
+    {
+      "id": "kyoto-eikando-autumn-2016",
+      "creator": "Martin Falbisoner",
+      "creator_url": "https://commons.wikimedia.org/wiki/User:Martin_Falbisoner",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Eikan-do_Zenrin-ji,_November_2016_-03.jpg",
+      "source_photo_date": "2016-11-22 12:38:49",
+      "caption_zh": "京都永观堂秋景，2016年11月拍摄；当年叶况须另查。",
+      "usage_requirements_zh": [
+        "署名链接至作者（有链接时）；来源链接至单张文件页；许可证单独链接。",
+        "本地托管，不热链。图片与文章业务之间不得暗示摄影师、地点或商家背书。",
+        "本包仅使用Commons生成的缩小副本，未改画面；后续若显示裁切或改色，应标示改动。",
+        "如形成改编图片，改编图片继续采用所列相同/兼容的ShareAlike许可，并保留许可提示；不要将图片纳入网站的全权保留声明。"
+      ],
+      "authorship_type": null,
+      "ownership_note_zh": null
+    },
+    {
+      "id": "osaka-kaiyukan-2019",
+      "creator": "そらみみ",
+      "creator_url": "https://commons.wikimedia.org/wiki/User:%E3%81%9D%E3%82%89%E3%81%BF%E3%81%BF",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Osaka_Aquarium_%22Kaiyukan%22_20190201-2.jpg",
+      "source_photo_date": "2019-02-01 09:24:20",
+      "caption_zh": "大阪海游馆外观，2019年拍摄；当天入馆与天气另行核查。",
+      "usage_requirements_zh": [
+        "署名链接至作者（有链接时）；来源链接至单张文件页；许可证单独链接。",
+        "本地托管，不热链。图片与文章业务之间不得暗示摄影师、地点或商家背书。",
+        "本包仅使用Commons生成的缩小副本，未改画面；后续若显示裁切或改色，应标示改动。",
+        "如形成改编图片，改编图片继续采用所列相同/兼容的ShareAlike许可，并保留许可提示；不要将图片纳入网站的全权保留声明。"
+      ],
+      "authorship_type": null,
+      "ownership_note_zh": null
+    },
+    {
+      "id": "osaka-science-museum-2024",
+      "creator": "Tokumeigakarinoaoshima",
+      "creator_url": "https://commons.wikimedia.org/wiki/User:Tokumeigakarinoaoshima",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source_page": "https://commons.wikimedia.org/wiki/File:OSAKA_SCIENCE_MUSEUM.jpg",
+      "source_photo_date": "17 November 2024, 03:28:11",
+      "caption_zh": "大阪市立科学馆外观，2024年拍摄。",
+      "usage_requirements_zh": [
+        "署名链接至作者（有链接时）；来源链接至单张文件页；许可证单独链接。",
+        "本地托管，不热链。图片与文章业务之间不得暗示摄影师、地点或商家背书。",
+        "本包仅使用Commons生成的缩小副本，未改画面；后续若显示裁切或改色，应标示改动。",
+        "如形成改编图片，改编图片继续采用所列相同/兼容的ShareAlike许可，并保留许可提示；不要将图片纳入网站的全权保留声明。"
+      ],
+      "authorship_type": null,
+      "ownership_note_zh": null
+    },
+    {
+      "id": "packing-luggage-generic",
+      "creator": "Familydestinationsguide.com Images",
+      "creator_url": "https://familydestinationsguide.com/",
+      "license": "CC BY 2.0",
+      "license_url": "https://creativecommons.org/licenses/by/2.0",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Holiday_Packing_List_-_Packing_Luggage_for_Vacation.jpg",
+      "source_photo_date": "2022-02-25",
+      "caption_zh": "行李整理示意；画面不是日本地点，也不是万源实拍。",
+      "usage_requirements_zh": [
+        "署名链接至作者（有链接时）；来源链接至单张文件页；许可证单独链接。",
+        "本地托管，不热链。图片与文章业务之间不得暗示摄影师、地点或商家背书。",
+        "本包仅使用Commons生成的缩小副本，未改画面；后续若显示裁切或改色，应标示改动。",
+        "作者要求的署名链接：https://familydestinationsguide.com/ 。"
+      ],
+      "authorship_type": null,
+      "ownership_note_zh": null
+    },
+    {
+      "id": "restaurant-reservation-flow",
+      "creator": "dot，为万源按文章草稿原创制作",
+      "creator_url": null,
+      "license": "用户委托原创图示（非第三方CC素材）",
+      "license_url": null,
+      "source_page": null,
+      "source_photo_date": null,
+      "caption_zh": "预约核对流程示意 · 非平台截图。依据文章草稿整理，不代表已完成预约或任何具体车辆的配置。",
+      "usage_requirements_zh": [
+        "保留“示意”说明；不能改成真实车辆、固定容量、平台截图或官方确认的表示。",
+        "可按万源项目需要编辑或使用；英文品牌文字为普通文字，不是新设计的商标。",
+        "网页显示请使用完整图，禁止裁去步骤、关键提醒或“示意”说明。",
+        "在窄屏正文使用竖版；横版用于封面或较宽版面。"
+      ],
+      "authorship_type": "original_code_native_schematic",
+      "ownership_note_zh": "根据用户要求原创绘制，交付用户用于万源项目；未使用第三方照片或图标，未另行向公众授予CC许可。"
+    },
+    {
+      "id": "ryokan-tatami-room-2008",
+      "creator": "ㇹヮィㇳ (shirokazan)",
+      "creator_url": "https://www.flickr.com/people/11302107@N05",
+      "license": "CC BY 2.0",
+      "license_url": "https://creativecommons.org/licenses/by/2.0",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Interior_of_a_ryokan_room_(2999708441).jpg",
+      "source_photo_date": "2008-10-12 18:02",
+      "caption_zh": "札幌一间旅馆客房，2008年拍摄，仅示意榻榻米和坐地起居；不代表在售房型或套餐。",
+      "usage_requirements_zh": [
+        "署名链接至作者（有链接时）；来源链接至单张文件页；许可证单独链接。",
+        "本地托管，不热链。图片与文章业务之间不得暗示摄影师、地点或商家背书。",
+        "本包仅使用Commons生成的缩小副本，未改画面；后续若显示裁切或改色，应标示改动。"
+      ],
+      "authorship_type": null,
+      "ownership_note_zh": null
+    },
+    {
+      "id": "tokyo-station-2023",
+      "creator": "MaedaAkihiko",
+      "creator_url": "https://commons.wikimedia.org/wiki/User:MaedaAkihiko",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Tokyo-STA_Marunouchi-Entrance_2023.jpg",
+      "source_photo_date": "2023-06-29",
+      "caption_zh": "东京站丸之内口，2023年拍摄。",
+      "usage_requirements_zh": [
+        "署名链接至作者（有链接时）；来源链接至单张文件页；许可证单独链接。",
+        "本地托管，不热链。图片与文章业务之间不得暗示摄影师、地点或商家背书。",
+        "本包仅使用Commons生成的缩小副本，未改画面；后续若显示裁切或改色，应标示改动。",
+        "如形成改编图片，改编图片继续采用所列相同/兼容的ShareAlike许可，并保留许可提示；不要将图片纳入网站的全权保留声明。"
+      ],
+      "authorship_type": null,
+      "ownership_note_zh": null
+    },
+    {
+      "id": "yokosuka-lockers-2010",
+      "creator": "Uploader; Vantey",
+      "creator_url": "https://commons.wikimedia.org/wiki/User:Vantey",
+      "license": "Public domain (PD-self)",
+      "license_url": "https://commons.wikimedia.org/wiki/File:Yokosuka-chuo_Station_coin_lockers_20100514.jpg#Licensing",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Yokosuka-chuo_Station_coin_lockers_20100514.jpg",
+      "source_photo_date": "2010-05-14",
+      "caption_zh": "横须贺中央站寄存柜，2010年拍摄；图中价格、班次和设备状态均非现行信息。",
+      "usage_requirements_zh": [
+        "作者已声明公有领域；仍建议保留作者和来源链接，以便追溯。",
+        "历史示意图，不沿用图中价格或班次。"
+      ],
+      "authorship_type": null,
+      "ownership_note_zh": null
+    }
+  ],
+  "files": {
+    "assets/uploads/batch-20261009/packing-luggage-generic.jpg": {
+      "asset_id": "packing-luggage-generic",
+      "source_file": "web/packing-luggage-generic.jpg",
+      "bytes": 295820,
+      "sha256": "39c2e3501a82d688f1335841c14d82cdffa8086dc327869d7b464a77181c8b42",
+      "modified_from_supplied_web_asset": false
+    },
+    "assets/uploads/batch-20261009/tokyo-station-2023.jpg": {
+      "asset_id": "tokyo-station-2023",
+      "source_file": "web/tokyo-station-2023.jpg",
+      "bytes": 357711,
+      "sha256": "50fccce5d30df99f798a03567fa6f23a8817e8daac1fb78aedfbcb3df9f19265",
+      "modified_from_supplied_web_asset": false
+    },
+    "assets/uploads/batch-20261009/osaka-kaiyukan-2019.jpg": {
+      "asset_id": "osaka-kaiyukan-2019",
+      "source_file": "web/osaka-kaiyukan-2019.jpg",
+      "bytes": 329113,
+      "sha256": "ff2436215ceaeb258da3e6e5f7bceb03f412e7d87f0967c9eaa5a1f719afac5a",
+      "modified_from_supplied_web_asset": false
+    },
+    "assets/uploads/batch-20261009/osaka-science-museum-2024.jpg": {
+      "asset_id": "osaka-science-museum-2024",
+      "source_file": "web/osaka-science-museum-2024.jpg",
+      "bytes": 435135,
+      "sha256": "1789ee6fe717b930907bf8218f041217e0e329b9354574e81acbdea4bcf7950f",
+      "modified_from_supplied_web_asset": false
+    },
+    "assets/uploads/batch-20261009/fuji-yamanakako-2014.jpg": {
+      "asset_id": "fuji-yamanakako-2014",
+      "source_file": "web/fuji-yamanakako-2014.jpg",
+      "bytes": 356643,
+      "sha256": "1d02145d76038e3de83bd57e9d724ba7ec32b1b10b0beebde154c695576584c8",
+      "modified_from_supplied_web_asset": false
+    },
+    "assets/uploads/batch-20261009/fuji-kawaguchiko.jpg": {
+      "asset_id": "fuji-kawaguchiko",
+      "source_file": "web/fuji-kawaguchiko.jpg",
+      "bytes": 143452,
+      "sha256": "be9005ff16350c9121f94b0f87d7055dca71b641a38c4825ad00394cee74b801",
+      "modified_from_supplied_web_asset": false
+    },
+    "assets/uploads/batch-20261009/kyoto-eikando-autumn-2016.jpg": {
+      "asset_id": "kyoto-eikando-autumn-2016",
+      "source_file": "web/kyoto-eikando-autumn-2016.jpg",
+      "bytes": 499944,
+      "sha256": "6b329f5a822acd310906219162ef90b29c0e917d89345b4c4ad116727ce062db",
+      "modified_from_supplied_web_asset": false
+    },
+    "assets/uploads/batch-20261009/ryokan-tatami-room-2008.jpg": {
+      "asset_id": "ryokan-tatami-room-2008",
+      "source_file": "web/ryokan-tatami-room-2008.jpg",
+      "bytes": 309263,
+      "sha256": "411fd5cde6d99fcedc285c7ecab17a56e021ae08f94117f93e91c00f517c1021",
+      "modified_from_supplied_web_asset": false
+    },
+    "assets/uploads/batch-20261009/restaurant-reservation-flow.svg": {
+      "asset_id": "restaurant-reservation-flow",
+      "source_file": "web/restaurant-reservation-flow.svg",
+      "bytes": 146547,
+      "sha256": "0ddd270b786fc301b69ace8c49282bc25fec17cca04b905ad2e0b88ed91af2b5",
+      "modified_from_supplied_web_asset": true,
+      "changes": "Removed nonvisual editorial draft metadata; artwork and visible attribution unchanged."
+    },
+    "assets/uploads/batch-20261009/restaurant-reservation-flow-mobile.svg": {
+      "asset_id": "restaurant-reservation-flow",
+      "source_file": "web/restaurant-reservation-flow-mobile.svg",
+      "bytes": 105693,
+      "sha256": "a68770be0c98964002acd1e3852244698f7b41b69799164b3a9b190b99bada34",
+      "modified_from_supplied_web_asset": true,
+      "changes": "Removed nonvisual editorial draft metadata; artwork and visible attribution unchanged."
+    },
+    "assets/uploads/batch-20261009/restaurant-reservation-flow.png": {
+      "asset_id": "restaurant-reservation-flow",
+      "source_file": "web/restaurant-reservation-flow.png",
+      "bytes": 179464,
+      "sha256": "076a8a18dee0bd95d155c1281692aec72fcfd87f2b9f324b59be63ed8cc495f8",
+      "modified_from_supplied_web_asset": false
+    },
+    "assets/uploads/batch-20261009/restaurant-reservation-flow-mobile.png": {
+      "asset_id": "restaurant-reservation-flow",
+      "source_file": "web/restaurant-reservation-flow-mobile.png",
+      "bytes": 152182,
+      "sha256": "68cac306512235918461d9753fa913d6d164650a0a4181257b64f0ef5df27920",
+      "modified_from_supplied_web_asset": false
+    },
+    "assets/uploads/batch-20261009/yokosuka-lockers-2010.jpg": {
+      "asset_id": "yokosuka-lockers-2010",
+      "source_file": "web/yokosuka-lockers-2010.jpg",
+      "bytes": 262420,
+      "sha256": "25522f0d8280a707274d12a120cd80463c1f17bb954c194766561d2318af636f",
+      "modified_from_supplied_web_asset": false
+    },
+    "assets/uploads/batch-20261009/kyoto-chionin-ramp-2013.jpg": {
+      "asset_id": "kyoto-chionin-ramp-2013",
+      "source_file": "web/kyoto-chionin-ramp-2013.jpg",
+      "bytes": 360073,
+      "sha256": "c43a2c84a6016a5810968879e16cfd8f032421c2161ca2f49681f71bdf6de2a0",
+      "modified_from_supplied_web_asset": false
+    },
+    "assets/uploads/batch-20261009/charter-inquiry-checklist.svg": {
+      "asset_id": "charter-inquiry-checklist",
+      "source_file": "web/charter-inquiry-checklist.svg",
+      "bytes": 151951,
+      "sha256": "b5a650b980a3c88409eb1e2d24c4573d770522dcae340dd73b06e9d72748178b",
+      "modified_from_supplied_web_asset": true,
+      "changes": "Removed nonvisual editorial draft metadata; artwork and visible attribution unchanged."
+    },
+    "assets/uploads/batch-20261009/charter-inquiry-checklist-mobile.svg": {
+      "asset_id": "charter-inquiry-checklist",
+      "source_file": "web/charter-inquiry-checklist-mobile.svg",
+      "bytes": 107738,
+      "sha256": "f50894f2a8c87f5d66b698eda2da700612a3e882c7c5274bb8cf93143d5edf49",
+      "modified_from_supplied_web_asset": true,
+      "changes": "Removed nonvisual editorial draft metadata; artwork and visible attribution unchanged."
+    },
+    "assets/uploads/batch-20261009/charter-inquiry-checklist.png": {
+      "asset_id": "charter-inquiry-checklist",
+      "source_file": "web/charter-inquiry-checklist.png",
+      "bytes": 182113,
+      "sha256": "1dcaaeb1e5fc619a6867766f8684a4c5620f7802002a2b2dc95a7e3c439255ab",
+      "modified_from_supplied_web_asset": false
+    },
+    "assets/uploads/batch-20261009/charter-inquiry-checklist-mobile.png": {
+      "asset_id": "charter-inquiry-checklist",
+      "source_file": "web/charter-inquiry-checklist-mobile.png",
+      "bytes": 150903,
+      "sha256": "b13083fb8899268322b289089349680582141002a9b52fd5e6305ee7426c0f59",
+      "modified_from_supplied_web_asset": false
+    }
+  }
+}

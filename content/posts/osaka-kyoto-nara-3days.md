@@ -1,4 +1,14 @@
 ---
+cover_image: /assets/uploads/journal/kyoto-eikando-autumn-2016.jpg
+cover_alt: 京都永观堂池塘边的红叶、石桥和水中倒影。
+cover_caption: 京都永观堂秋景，2016年11月拍摄；当年叶况须另查。
+cover_credit: Martin Falbisoner
+cover_creator_url: https://commons.wikimedia.org/wiki/User:Martin_Falbisoner
+cover_source: https://commons.wikimedia.org/wiki/File:Eikan-do_Zenrin-ji,_November_2016_-03.jpg
+cover_license: CC BY-SA 4.0
+cover_license_url: https://creativecommons.org/licenses/by-sa/4.0
+cover_changes: Commons 缩小副本；网页显示裁切，未改色。
+featured: true
 title: "大阪・京都・奈良 3 日包车路线规划（含推荐车型）"
 slug: "osaka-kyoto-nara-3days"
 date: "2026-09-22"

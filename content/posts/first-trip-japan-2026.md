@@ -1,4 +1,13 @@
 ---
+cover_image: /assets/uploads/journal/tokyo-station-2023.jpg
+cover_alt: 东京站丸之内红砖站舍与前方广场，后方是高层建筑。
+cover_caption: 东京站丸之内口，2023年拍摄。
+cover_credit: MaedaAkihiko
+cover_creator_url: https://commons.wikimedia.org/wiki/User:MaedaAkihiko
+cover_source: https://commons.wikimedia.org/wiki/File:Tokyo-STA_Marunouchi-Entrance_2023.jpg
+cover_license: CC BY-SA 4.0
+cover_license_url: https://creativecommons.org/licenses/by-sa/4.0
+cover_changes: Commons 缩小副本；网页显示裁切，未改色。
 slug: first-trip-japan-2026
 date: 2026-09-24
 category: a

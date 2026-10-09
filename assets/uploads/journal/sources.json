@@ -1,0 +1,134 @@
+{
+  "checked_at_utc": "2026-10-09T06:09:21Z",
+  "assets": [
+    {
+      "id": "kyoto-eikando-autumn-2016",
+      "status": "ready_cover",
+      "file_title": "File:Eikan-do Zenrin-ji, November 2016 -03.jpg",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Eikan-do_Zenrin-ji,_November_2016_-03.jpg",
+      "creator": "Martin Falbisoner",
+      "creator_url": "https://commons.wikimedia.org/wiki/User:Martin_Falbisoner",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "attribution_text_zh": "Martin Falbisoner / Wikimedia Commons · CC BY-SA 4.0",
+      "usage_requirements_zh": [
+        "署名链接至作者（有链接时）；来源链接至单张文件页；许可证单独链接。",
+        "本地托管，不热链。图片与文章业务之间不得暗示摄影师、地点或商家背书。",
+        "本包仅使用Commons生成的缩小副本，未改画面；后续若显示裁切或改色，应标示改动。",
+        "如形成改编图片，改编图片继续采用所列相同/兼容的ShareAlike许可，并保留许可提示；不要将图片纳入网站的全权保留声明。"
+      ],
+      "original_url": "https://upload.wikimedia.org/wikipedia/commons/4/4a/Eikan-do_Zenrin-ji%2C_November_2016_-03.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "downloaded_web_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4a/Eikan-do_Zenrin-ji%2C_November_2016_-03.jpg/1280px-Eikan-do_Zenrin-ji%2C_November_2016_-03.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original_file": "originals/kyoto-eikando-autumn-2016.jpg",
+      "web_file": "web/kyoto-eikando-autumn-2016.jpg",
+      "original_dimensions": [
+        5816,
+        3877
+      ],
+      "web_dimensions": [
+        1280,
+        853
+      ],
+      "original_bytes": 23305879,
+      "web_bytes": 499944,
+      "source_sha1": "dc059ed65448bd66ee008c395c25ee82f0c9c5fb",
+      "downloaded_sha1": "dc059ed65448bd66ee008c395c25ee82f0c9c5fb",
+      "checksum_verified": true,
+      "visually_inspected": true,
+      "source_photo_date": "2016-11-22 12:38:49",
+      "alt_zh": "京都永观堂池塘边的红叶、石桥和水中倒影。",
+      "caption_zh": "京都永观堂秋景，2016年11月拍摄；当年叶况须另查。",
+      "suggested_cover_crop": "16:9；50% 55%；保留左侧红叶、桥和倒影；不得称为2026实时叶况。",
+      "provenance_files": [
+        "provenance/kyoto-eikando-autumn-2016.json",
+        "provenance/kyoto-eikando-autumn-2016.html"
+      ]
+    },
+    {
+      "id": "tokyo-station-2023",
+      "status": "ready_cover",
+      "file_title": "File:Tokyo-STA Marunouchi-Entrance 2023.jpg",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Tokyo-STA_Marunouchi-Entrance_2023.jpg",
+      "creator": "MaedaAkihiko",
+      "creator_url": "https://commons.wikimedia.org/wiki/User:MaedaAkihiko",
+      "license": "CC BY-SA 4.0",
+      "license_url": "https://creativecommons.org/licenses/by-sa/4.0",
+      "attribution_text_zh": "MaedaAkihiko / Wikimedia Commons · CC BY-SA 4.0",
+      "usage_requirements_zh": [
+        "署名链接至作者（有链接时）；来源链接至单张文件页；许可证单独链接。",
+        "本地托管，不热链。图片与文章业务之间不得暗示摄影师、地点或商家背书。",
+        "本包仅使用Commons生成的缩小副本，未改画面；后续若显示裁切或改色，应标示改动。",
+        "如形成改编图片，改编图片继续采用所列相同/兼容的ShareAlike许可，并保留许可提示；不要将图片纳入网站的全权保留声明。"
+      ],
+      "original_url": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Tokyo-STA_Marunouchi-Entrance_2023.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "downloaded_web_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1d/Tokyo-STA_Marunouchi-Entrance_2023.jpg/1280px-Tokyo-STA_Marunouchi-Entrance_2023.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original_file": "originals/tokyo-station-2023.jpg",
+      "web_file": "web/tokyo-station-2023.jpg",
+      "original_dimensions": [
+        5395,
+        3597
+      ],
+      "web_dimensions": [
+        1280,
+        853
+      ],
+      "original_bytes": 15124160,
+      "web_bytes": 357711,
+      "source_sha1": "954e95ae69986e6c0d4bbc884dca904590f89738",
+      "downloaded_sha1": "954e95ae69986e6c0d4bbc884dca904590f89738",
+      "checksum_verified": true,
+      "visually_inspected": true,
+      "source_photo_date": "2023-06-29",
+      "alt_zh": "东京站丸之内红砖站舍与前方广场，后方是高层建筑。",
+      "caption_zh": "东京站丸之内口，2023年拍摄。",
+      "suggested_cover_crop": "16:9；中心50% 65%；保留完整红砖站舍，不把天空当主体。",
+      "provenance_files": [
+        "provenance/tokyo-station-2023.json",
+        "provenance/tokyo-station-2023.html"
+      ]
+    },
+    {
+      "id": "packing-luggage-generic",
+      "status": "ready_cover",
+      "file_title": "File:Holiday Packing List - Packing Luggage for Vacation.jpg",
+      "source_page": "https://commons.wikimedia.org/wiki/File:Holiday_Packing_List_-_Packing_Luggage_for_Vacation.jpg",
+      "creator": "Familydestinationsguide.com Images",
+      "creator_url": "https://familydestinationsguide.com/",
+      "license": "CC BY 2.0",
+      "license_url": "https://creativecommons.org/licenses/by/2.0",
+      "attribution_text_zh": "Familydestinationsguide.com Images / Wikimedia Commons · CC BY 2.0",
+      "usage_requirements_zh": [
+        "署名链接至作者（有链接时）；来源链接至单张文件页；许可证单独链接。",
+        "本地托管，不热链。图片与文章业务之间不得暗示摄影师、地点或商家背书。",
+        "本包仅使用Commons生成的缩小副本，未改画面；后续若显示裁切或改色，应标示改动。",
+        "作者要求的署名链接：https://familydestinationsguide.com/ 。"
+      ],
+      "original_url": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Holiday_Packing_List_-_Packing_Luggage_for_Vacation.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "downloaded_web_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c8/Holiday_Packing_List_-_Packing_Luggage_for_Vacation.jpg/1280px-Holiday_Packing_List_-_Packing_Luggage_for_Vacation.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "original_file": "originals/packing-luggage-generic.jpg",
+      "web_file": "web/packing-luggage-generic.jpg",
+      "original_dimensions": [
+        4500,
+        3000
+      ],
+      "web_dimensions": [
+        1280,
+        853
+      ],
+      "original_bytes": 4364326,
+      "web_bytes": 295820,
+      "source_sha1": "6f5427a2d1ac48d8af80744457cee7664ba13ab4",
+      "downloaded_sha1": "6f5427a2d1ac48d8af80744457cee7664ba13ab4",
+      "checksum_verified": true,
+      "visually_inspected": true,
+      "source_photo_date": "2022-02-25",
+      "alt_zh": "打开的旅行箱里放着衣物和耳机，旁边有打包清单与相机。",
+      "caption_zh": "行李整理示意；画面不是日本地点，也不是万源实拍。",
+      "suggested_cover_crop": "16:9；中心50% 50%；保留清单和箱子边缘，地图并非日本行程图。",
+      "provenance_files": [
+        "provenance/packing-luggage-generic.json",
+        "provenance/packing-luggage-generic.html"
+      ]
+    }
+  ]
+}
