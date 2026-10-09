@@ -2,6 +2,7 @@
 from pathlib import Path
 from html.parser import HTMLParser
 import json
+import math
 import os
 import shutil
 import subprocess
@@ -33,9 +34,9 @@ class BuildTests(unittest.TestCase):
     def extra_posts(self, count):
         for i in range(count):
             (self.root / 'content/posts' / f'b-20261001-{i:06}.md').write_text(f'---\ndate: 2026-10-01\ncategory: b\ntitle: "测试指南 {i}"\nexcerpt: "正文摘要"\n---\n## 准备\n内容\n')
-    def test_real_cards_and_generated_search_catalog_keep_all_five_urls(self):
+    def test_real_cards_and_generated_search_catalog_keep_all_source_urls(self):
         self.build(); index = Elements(self.read('blog/index.html'))
-        self.assertEqual(len(index.cards()), 5)
+        self.assertEqual(len(index.cards()), min(12, len(self.original)))
         payload = json.loads(self.read('blog/articles.json'))
         self.assertEqual(sorted(p['slug'] for p in payload['posts']), self.original)
         self.assertEqual(payload['perPage'], 12)
@@ -44,16 +45,18 @@ class BuildTests(unittest.TestCase):
             self.assertIn(f'https://mangen.jp/blog/{slug}', self.read('sitemap.xml'))
     def test_pagination_has_real_links_distinct_canonicals_and_no_overlap(self):
         self.extra_posts(20); self.build()
-        routes = ['blog/index.html', 'blog/page/2/index.html', 'blog/page/3/index.html']
+        total = len(self.original) + 20
+        routes = ['blog/index.html'] + [f'blog/page/{n}/index.html' for n in range(2, math.ceil(total / 12) + 1)]
         self.assertTrue((self.root / routes[1]).exists(), 'More than 12 posts must produce page 2')
         all_urls=[]
         for i, route in enumerate(routes, 1):
             page = Elements(self.read(route)); cards = page.cards(); all_urls += [c['href'] for c in cards]
-            self.assertEqual(len(cards), 12 if i < 3 else 1)
+            self.assertEqual(len(cards), min(12, total - (i - 1) * 12))
             canonical='https://mangen.jp/blog/' if i==1 else f'https://mangen.jp/blog/page/{i}/'
             self.assertEqual(page.attrs('link', rel='canonical')[0]['href'], canonical)
             self.assertIn(canonical, self.read('sitemap.xml'))
-        self.assertEqual(len(set(all_urls)), 25)
+        self.assertEqual(len(all_urls), total)
+        self.assertEqual(len(set(all_urls)), total)
         self.assertIn('href="/blog/page/2/"', self.read(routes[0]))
         self.assertIn('href="/blog/"', self.read(routes[1]))
     def test_repeat_build_is_identical_and_removed_posts_remove_stale_pages(self):
@@ -64,7 +67,8 @@ class BuildTests(unittest.TestCase):
         self.assertEqual(before,after)
         for path in (self.root/'content/posts').glob('b-20261001*.md'): path.unlink()
         self.build()
-        self.assertFalse((self.root/'blog/page/2/index.html').exists())
+        stale_page = math.ceil(len(self.original) / 12) + 1
+        self.assertFalse((self.root/f'blog/page/{stale_page}/index.html').exists())
         self.assertFalse((self.root/'blog/b-20261001-000000.html').exists())
     def test_filters_are_grounded_and_no_mock_articles_exist(self):
         self.build(); source=self.read('blog/index.html')
