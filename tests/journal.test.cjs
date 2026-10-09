@@ -42,6 +42,13 @@ test('cards escape arbitrary metadata rather than execute markup',()=>{
   assert.ok(html.includes('&lt;img'));assert.ok(!html.includes('onerror=alert(1)>'));
 });
 const { JSDOM } = require('jsdom');
+test('Chinese homepage navigation uses four-character labels and keeps its links',()=>{
+  const html=fs.readFileSync(path.resolve(__dirname,'../zh.html'),'utf8');
+  const d=new JSDOM(html);
+  const links=[...d.window.document.querySelectorAll('.site-header nav a')].map(a=>[a.getAttribute('href'),a.textContent]);
+  assert.deepEqual(links,[['#services','用车服务'],['#fleet','车型介绍'],['/blog/','旅行指南'],['#contact','联系我们'],['#company','公司介绍']]);
+  d.window.close();
+});
 const tick = () => new Promise(resolve => setImmediate(resolve));
 function dom(url='https://mangen.jp/blog/',fetcher) {
   const html=fs.readFileSync(path.resolve(__dirname,'../blog/index.html'),'utf8');
