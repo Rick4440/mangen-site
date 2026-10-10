@@ -1,0 +1,632 @@
+{
+  "asset_set": "Mangen Japan article batch 2026-10-10 — 10 original illustrations",
+  "created_at_utc": "2026-10-09T21:08:44Z",
+  "license_note": "All illustrations are original code-native schematics generated for the Mangen project; no third-party image or font assets are incorporated. Delivery for project use is not a representation that copyright exists in AI-generated material or a new public CC license.",
+  "palette": {
+    "ivory": "#F4F1EB",
+    "ink": "#20211F",
+    "muted_gold": "#A58A58",
+    "pale": "#E5DDCF",
+    "line": "#D4C9B5"
+  },
+  "source_file": "illustration-source.py",
+  "assets": [
+    {
+      "id": "01-ic-card",
+      "svg": "01-ic-card.svg",
+      "png": "01-ic-card.png",
+      "title_zh": "日本交通 IC 卡准备示意",
+      "alt_zh": "无品牌交通卡靠近感应读卡器，卡片与读卡动作以金色线条强调，原创示意非实景。",
+      "caption_zh": "交通 IC 卡与感应读卡动作的概念图；不对应某一发行商或实际设备。 原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "creator_url": null,
+      "source": "为万源文章批次按主题以原创代码绘制；未引用第三方照片、图标、路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "用户委托原创图示（非第三方 CC 素材）",
+      "license_url": null,
+      "authorship_type": "original_code_native_schematic",
+      "ownership_note_zh": "为万源项目生成并交付使用；未宣称新增法定著作权，未另行向公众授予 CC 许可。",
+      "limitations_zh": "不表示卡片互通范围、余额、票价或可用服务。",
+      "usage_requirements_zh": [
+        "使用时保留“原创示意非实景”图注。",
+        "不得表示官方图标、地图、实景照片、票券或支付工具样式，也不得暗示服务商背书。",
+        "原图 1200×800；主体中心构图，建议居中裁切，最窄使用 1:1，不用于强竖向裁切。"
+      ],
+      "dimensions": {
+        "width": 1200,
+        "height": 800
+      },
+      "safe_crop": {
+        "center": [
+          600,
+          400
+        ],
+        "tested_aspect_ratios": [
+          "1:1",
+          "1.5:1",
+          "1.8:1",
+          "2:1"
+        ]
+      },
+      "visible_text": false,
+      "embedded_fonts": false,
+      "external_resources": false,
+      "files": [
+        {
+          "format": "svg",
+          "file": "01-ic-card.svg",
+          "sha256": "7aa368a4517c6222a3dc81e29d02ece6cd2cf495ddcba3c62f0224e69ce55ef0",
+          "bytes": 2922,
+          "width": 1200,
+          "height": 800
+        },
+        {
+          "format": "png",
+          "file": "01-ic-card.png",
+          "sha256": "2ed358d1422f784cf04ee28d13e1a70b6d341c585f4918e1d5b17221d7d2d3a1",
+          "bytes": 63106,
+          "width": 1200,
+          "height": 800
+        }
+      ]
+    },
+    {
+      "id": "02-shinkansen",
+      "svg": "02-shinkansen.svg",
+      "png": "02-shinkansen.png",
+      "title_zh": "新干线出行准备示意",
+      "alt_zh": "流线型高速列车、轨道与行李箱组成的简洁插画，原创示意非实景。",
+      "caption_zh": "新干线出行与行李准备的概念图；列车为原创抽象造型。 原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "creator_url": null,
+      "source": "为万源文章批次按主题以原创代码绘制；未引用第三方照片、图标、路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "用户委托原创图示（非第三方 CC 素材）",
+      "license_url": null,
+      "authorship_type": "original_code_native_schematic",
+      "ownership_note_zh": "为万源项目生成并交付使用；未宣称新增法定著作权，未另行向公众授予 CC 许可。",
+      "limitations_zh": "不表示具体列车型号、座位、班次、车站或行李政策。",
+      "usage_requirements_zh": [
+        "使用时保留“原创示意非实景”图注。",
+        "不得表示官方图标、地图、实景照片、票券或支付工具样式，也不得暗示服务商背书。",
+        "原图 1200×800；主体中心构图，建议居中裁切，最窄使用 1:1，不用于强竖向裁切。"
+      ],
+      "dimensions": {
+        "width": 1200,
+        "height": 800
+      },
+      "safe_crop": {
+        "center": [
+          600,
+          400
+        ],
+        "tested_aspect_ratios": [
+          "1:1",
+          "1.5:1",
+          "1.8:1",
+          "2:1"
+        ]
+      },
+      "visible_text": false,
+      "embedded_fonts": false,
+      "external_resources": false,
+      "files": [
+        {
+          "format": "svg",
+          "file": "02-shinkansen.svg",
+          "sha256": "23b8ab00f44159fc5bc711841222524dc068eb459b33b792ff310e71afba45ae",
+          "bytes": 3742,
+          "width": 1200,
+          "height": 800
+        },
+        {
+          "format": "png",
+          "file": "02-shinkansen.png",
+          "sha256": "d36af5726f41373e6ebe99e8d9c52eb1e2240fa60bc3b6d01298361a646a7aa5",
+          "bytes": 50190,
+          "width": 1200,
+          "height": 800
+        }
+      ]
+    },
+    {
+      "id": "03-hakone",
+      "svg": "03-hakone.svg",
+      "png": "03-hakone.png",
+      "title_zh": "箱根山水与缆车示意",
+      "alt_zh": "山峦、湖面波纹和悬挂式缆车的原创组合图，原创示意非实景。",
+      "caption_zh": "箱根山地交通与湖景的意象组合；构图不是地理地图。 原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "creator_url": null,
+      "source": "为万源文章批次按主题以原创代码绘制；未引用第三方照片、图标、路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "用户委托原创图示（非第三方 CC 素材）",
+      "license_url": null,
+      "authorship_type": "original_code_native_schematic",
+      "ownership_note_zh": "为万源项目生成并交付使用；未宣称新增法定著作权，未另行向公众授予 CC 许可。",
+      "limitations_zh": "不对应实际观景位置、交通连接、缆车运营状态或富士山能见度。",
+      "usage_requirements_zh": [
+        "使用时保留“原创示意非实景”图注。",
+        "不得表示官方图标、地图、实景照片、票券或支付工具样式，也不得暗示服务商背书。",
+        "原图 1200×800；主体中心构图，建议居中裁切，最窄使用 1:1，不用于强竖向裁切。"
+      ],
+      "dimensions": {
+        "width": 1200,
+        "height": 800
+      },
+      "safe_crop": {
+        "center": [
+          600,
+          400
+        ],
+        "tested_aspect_ratios": [
+          "1:1",
+          "1.5:1",
+          "1.8:1",
+          "2:1"
+        ]
+      },
+      "visible_text": false,
+      "embedded_fonts": false,
+      "external_resources": false,
+      "files": [
+        {
+          "format": "svg",
+          "file": "03-hakone.svg",
+          "sha256": "066cc6cee834731905080099ca481c92a28daadd42a85ce7a89810a0137d3253",
+          "bytes": 2600,
+          "width": 1200,
+          "height": 800
+        },
+        {
+          "format": "png",
+          "file": "03-hakone.png",
+          "sha256": "ad357177fff622befbadc2105d7f36a9607c26801e2ad8f42b0db69f54396c6c",
+          "bytes": 57179,
+          "width": 1200,
+          "height": 800
+        }
+      ]
+    },
+    {
+      "id": "04-kamakura",
+      "svg": "04-kamakura.svg",
+      "png": "04-kamakura.png",
+      "title_zh": "镰仓寺社与海岸示意",
+      "alt_zh": "简化寺院门楼、海岸波纹和树木组成的镰仓主题插画，原创示意非实景。",
+      "caption_zh": "镰仓寺社与海边散步的意象组合；门楼为原创抽象造型。 原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "creator_url": null,
+      "source": "为万源文章批次按主题以原创代码绘制；未引用第三方照片、图标、路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "用户委托原创图示（非第三方 CC 素材）",
+      "license_url": null,
+      "authorship_type": "original_code_native_schematic",
+      "ownership_note_zh": "为万源项目生成并交付使用；未宣称新增法定著作权，未另行向公众授予 CC 许可。",
+      "limitations_zh": "不描绘具体寺社建筑、路线、海岸位置或花期。",
+      "usage_requirements_zh": [
+        "使用时保留“原创示意非实景”图注。",
+        "不得表示官方图标、地图、实景照片、票券或支付工具样式，也不得暗示服务商背书。",
+        "原图 1200×800；主体中心构图，建议居中裁切，最窄使用 1:1，不用于强竖向裁切。"
+      ],
+      "dimensions": {
+        "width": 1200,
+        "height": 800
+      },
+      "safe_crop": {
+        "center": [
+          600,
+          400
+        ],
+        "tested_aspect_ratios": [
+          "1:1",
+          "1.5:1",
+          "1.8:1",
+          "2:1"
+        ]
+      },
+      "visible_text": false,
+      "embedded_fonts": false,
+      "external_resources": false,
+      "files": [
+        {
+          "format": "svg",
+          "file": "04-kamakura.svg",
+          "sha256": "04163c67f170dee196af1a67f1c8983d4327e1ebffcc3aa18be3f5c012ce3d57",
+          "bytes": 2718,
+          "width": 1200,
+          "height": 800
+        },
+        {
+          "format": "png",
+          "file": "04-kamakura.png",
+          "sha256": "1f2e637034b03d7ae468094860b8135a021d72b1ac1e4a11c4f2a4c7b36fa7ec",
+          "bytes": 57003,
+          "width": 1200,
+          "height": 800
+        }
+      ]
+    },
+    {
+      "id": "05-connectivity",
+      "svg": "05-connectivity.svg",
+      "png": "05-connectivity.png",
+      "title_zh": "日本旅行上网准备示意",
+      "alt_zh": "手机上的无线信号与一张无品牌 SIM 卡并置，原创示意非实景。",
+      "caption_zh": "手机联网与 SIM 卡的概念图；界面及卡片均为原创抽象造型。 原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "creator_url": null,
+      "source": "为万源文章批次按主题以原创代码绘制；未引用第三方照片、图标、路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "用户委托原创图示（非第三方 CC 素材）",
+      "license_url": null,
+      "authorship_type": "original_code_native_schematic",
+      "ownership_note_zh": "为万源项目生成并交付使用；未宣称新增法定著作权，未另行向公众授予 CC 许可。",
+      "limitations_zh": "不表示特定运营商、eSIM 兼容性、网络覆盖、流量套餐或网速。",
+      "usage_requirements_zh": [
+        "使用时保留“原创示意非实景”图注。",
+        "不得表示官方图标、地图、实景照片、票券或支付工具样式，也不得暗示服务商背书。",
+        "原图 1200×800；主体中心构图，建议居中裁切，最窄使用 1:1，不用于强竖向裁切。"
+      ],
+      "dimensions": {
+        "width": 1200,
+        "height": 800
+      },
+      "safe_crop": {
+        "center": [
+          600,
+          400
+        ],
+        "tested_aspect_ratios": [
+          "1:1",
+          "1.5:1",
+          "1.8:1",
+          "2:1"
+        ]
+      },
+      "visible_text": false,
+      "embedded_fonts": false,
+      "external_resources": false,
+      "files": [
+        {
+          "format": "svg",
+          "file": "05-connectivity.svg",
+          "sha256": "d431a3042c23398a581525bd2bcc54fd05b029b005c633a4e0a0f9e3d544c46d",
+          "bytes": 2622,
+          "width": 1200,
+          "height": 800
+        },
+        {
+          "format": "png",
+          "file": "05-connectivity.png",
+          "sha256": "dc0f0f5cdacdc6d380afc8f0d9f69a9fca79f9cd6272d87ffca8eba90e9fbcbf",
+          "bytes": 61027,
+          "width": 1200,
+          "height": 800
+        }
+      ]
+    },
+    {
+      "id": "06-payment",
+      "svg": "06-payment.svg",
+      "png": "06-payment.png",
+      "title_zh": "日本旅行支付准备示意",
+      "alt_zh": "抽象日元纸钞、硬币与无品牌银行卡交叠，原创示意非实景。",
+      "caption_zh": "现金与银行卡的概念图；不是实际纸钞、银行卡或支付标识。 原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "creator_url": null,
+      "source": "为万源文章批次按主题以原创代码绘制；未引用第三方照片、图标、路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "用户委托原创图示（非第三方 CC 素材）",
+      "license_url": null,
+      "authorship_type": "original_code_native_schematic",
+      "ownership_note_zh": "为万源项目生成并交付使用；未宣称新增法定著作权，未另行向公众授予 CC 许可。",
+      "limitations_zh": "不表示商户受理范围、手续费、汇率或任一支付方式一定可用。",
+      "usage_requirements_zh": [
+        "使用时保留“原创示意非实景”图注。",
+        "不得表示官方图标、地图、实景照片、票券或支付工具样式，也不得暗示服务商背书。",
+        "原图 1200×800；主体中心构图，建议居中裁切，最窄使用 1:1，不用于强竖向裁切。"
+      ],
+      "dimensions": {
+        "width": 1200,
+        "height": 800
+      },
+      "safe_crop": {
+        "center": [
+          600,
+          400
+        ],
+        "tested_aspect_ratios": [
+          "1:1",
+          "1.5:1",
+          "1.8:1",
+          "2:1"
+        ]
+      },
+      "visible_text": false,
+      "embedded_fonts": false,
+      "external_resources": false,
+      "files": [
+        {
+          "format": "svg",
+          "file": "06-payment.svg",
+          "sha256": "0ff24de53ba19d3aa82ed6843dc051e5b0718299d7971be06a4a2b2e89fbd3a3",
+          "bytes": 2717,
+          "width": 1200,
+          "height": 800
+        },
+        {
+          "format": "png",
+          "file": "06-payment.png",
+          "sha256": "8ae3168ef3ac2447fc05afe7baa3b9248a6834033448321d5ccb8f0d5ce633c6",
+          "bytes": 71999,
+          "width": 1200,
+          "height": 800
+        }
+      ]
+    },
+    {
+      "id": "07-arrival",
+      "svg": "07-arrival.svg",
+      "png": "07-arrival.png",
+      "title_zh": "日本抵达准备示意",
+      "alt_zh": "抽象护照、行李箱与飞机符号组合，虚线表示旅途概念，原创示意非实景。",
+      "caption_zh": "抵达日本前的证件与行李准备概念图；护照和航线均为抽象造型。 原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "creator_url": null,
+      "source": "为万源文章批次按主题以原创代码绘制；未引用第三方照片、图标、路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "用户委托原创图示（非第三方 CC 素材）",
+      "license_url": null,
+      "authorship_type": "original_code_native_schematic",
+      "ownership_note_zh": "为万源项目生成并交付使用；未宣称新增法定著作权，未另行向公众授予 CC 许可。",
+      "limitations_zh": "不表示任何国籍、有效证件、入境许可、实际航线或机场流程顺序。",
+      "usage_requirements_zh": [
+        "使用时保留“原创示意非实景”图注。",
+        "不得表示官方图标、地图、实景照片、票券或支付工具样式，也不得暗示服务商背书。",
+        "原图 1200×800；主体中心构图，建议居中裁切，最窄使用 1:1，不用于强竖向裁切。"
+      ],
+      "dimensions": {
+        "width": 1200,
+        "height": 800
+      },
+      "safe_crop": {
+        "center": [
+          600,
+          400
+        ],
+        "tested_aspect_ratios": [
+          "1:1",
+          "1.5:1",
+          "1.8:1",
+          "2:1"
+        ]
+      },
+      "visible_text": false,
+      "embedded_fonts": false,
+      "external_resources": false,
+      "files": [
+        {
+          "format": "svg",
+          "file": "07-arrival.svg",
+          "sha256": "148f490d50136af77e0dd97d2fea311bb51cd3d4783c56a0e3eb65a7943acce4",
+          "bytes": 2930,
+          "width": 1200,
+          "height": 800
+        },
+        {
+          "format": "png",
+          "file": "07-arrival.png",
+          "sha256": "486d7b10cbe6fb4297c9bc9b4798772135b2a12bc0821d200a2ee40c14a14256",
+          "bytes": 65356,
+          "width": 1200,
+          "height": 800
+        }
+      ]
+    },
+    {
+      "id": "08-nara",
+      "svg": "08-nara.svg",
+      "png": "08-nara.png",
+      "title_zh": "奈良鹿与散步示意",
+      "alt_zh": "一只斑点鹿站在草地与叶片之间的原创插画，原创示意非实景。",
+      "caption_zh": "奈良鹿与公园散步的意象图；不是野生动物接触或喂食指引。 原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "creator_url": null,
+      "source": "为万源文章批次按主题以原创代码绘制；未引用第三方照片、图标、路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "用户委托原创图示（非第三方 CC 素材）",
+      "license_url": null,
+      "authorship_type": "original_code_native_schematic",
+      "ownership_note_zh": "为万源项目生成并交付使用；未宣称新增法定著作权，未另行向公众授予 CC 许可。",
+      "limitations_zh": "不对应实际拍摄地点、动物个体、鹿角季节状态或可接近距离。",
+      "usage_requirements_zh": [
+        "使用时保留“原创示意非实景”图注。",
+        "不得表示官方图标、地图、实景照片、票券或支付工具样式，也不得暗示服务商背书。",
+        "原图 1200×800；主体中心构图，建议居中裁切，最窄使用 1:1，不用于强竖向裁切。"
+      ],
+      "dimensions": {
+        "width": 1200,
+        "height": 800
+      },
+      "safe_crop": {
+        "center": [
+          600,
+          400
+        ],
+        "tested_aspect_ratios": [
+          "1:1",
+          "1.5:1",
+          "1.8:1",
+          "2:1"
+        ]
+      },
+      "visible_text": false,
+      "embedded_fonts": false,
+      "external_resources": false,
+      "files": [
+        {
+          "format": "svg",
+          "file": "08-nara.svg",
+          "sha256": "3d4cc03d360b8ecc3859de3c8c279aa1b3fe1cb7a4f4c9ed9d2de0346ba1fb3b",
+          "bytes": 2989,
+          "width": 1200,
+          "height": 800
+        },
+        {
+          "format": "png",
+          "file": "08-nara.png",
+          "sha256": "591945ef9c21a453b5475a20e29fff8dbbaf038a1774fdfdd72aed9e67fe6520",
+          "bytes": 68892,
+          "width": 1200,
+          "height": 800
+        }
+      ]
+    },
+    {
+      "id": "09-kobe",
+      "svg": "09-kobe.svg",
+      "png": "09-kobe.png",
+      "title_zh": "神户港湾散步示意",
+      "alt_zh": "抽象港湾塔楼、船只与水面波纹组成神户主题插画，原创示意非实景。",
+      "caption_zh": "神户港湾与城市散步的意象组合；不是实际港区位置关系图。 原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "creator_url": null,
+      "source": "为万源文章批次按主题以原创代码绘制；未引用第三方照片、图标、路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "用户委托原创图示（非第三方 CC 素材）",
+      "license_url": null,
+      "authorship_type": "original_code_native_schematic",
+      "ownership_note_zh": "为万源项目生成并交付使用；未宣称新增法定著作权，未另行向公众授予 CC 许可。",
+      "limitations_zh": "塔楼与船只均经过抽象化，不表示真实尺寸、泊位、游船班次或观景视角。",
+      "usage_requirements_zh": [
+        "使用时保留“原创示意非实景”图注。",
+        "不得表示官方图标、地图、实景照片、票券或支付工具样式，也不得暗示服务商背书。",
+        "原图 1200×800；主体中心构图，建议居中裁切，最窄使用 1:1，不用于强竖向裁切。"
+      ],
+      "dimensions": {
+        "width": 1200,
+        "height": 800
+      },
+      "safe_crop": {
+        "center": [
+          600,
+          400
+        ],
+        "tested_aspect_ratios": [
+          "1:1",
+          "1.5:1",
+          "1.8:1",
+          "2:1"
+        ]
+      },
+      "visible_text": false,
+      "embedded_fonts": false,
+      "external_resources": false,
+      "files": [
+        {
+          "format": "svg",
+          "file": "09-kobe.svg",
+          "sha256": "a944ef5360bd3c5c0329c800dcfafa0cb464c541ea25adafffe7efa85e269af2",
+          "bytes": 3093,
+          "width": 1200,
+          "height": 800
+        },
+        {
+          "format": "png",
+          "file": "09-kobe.png",
+          "sha256": "b9daa8a90f3f222ef4becf83ed3c5204c8a8457a06e5979d00a75bab5743ca13",
+          "bytes": 57234,
+          "width": 1200,
+          "height": 800
+        }
+      ]
+    },
+    {
+      "id": "10-museums",
+      "svg": "10-museums.svg",
+      "png": "10-museums.png",
+      "title_zh": "日本博物馆参观示意",
+      "alt_zh": "展墙上的抽象画、环形雕塑展台与无品牌入场券组成的原创图，原创示意非实景。",
+      "caption_zh": "博物馆观展与门票准备的概念图；展品均为原创几何造型。 原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "creator_url": null,
+      "source": "为万源文章批次按主题以原创代码绘制；未引用第三方照片、图标、路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "用户委托原创图示（非第三方 CC 素材）",
+      "license_url": null,
+      "authorship_type": "original_code_native_schematic",
+      "ownership_note_zh": "为万源项目生成并交付使用；未宣称新增法定著作权，未另行向公众授予 CC 许可。",
+      "limitations_zh": "不复刻真实艺术作品、展馆或门票，不表示展览内容、预约状态或营业时间。",
+      "usage_requirements_zh": [
+        "使用时保留“原创示意非实景”图注。",
+        "不得表示官方图标、地图、实景照片、票券或支付工具样式，也不得暗示服务商背书。",
+        "原图 1200×800；主体中心构图，建议居中裁切，最窄使用 1:1，不用于强竖向裁切。"
+      ],
+      "dimensions": {
+        "width": 1200,
+        "height": 800
+      },
+      "safe_crop": {
+        "center": [
+          600,
+          400
+        ],
+        "tested_aspect_ratios": [
+          "1:1",
+          "1.5:1",
+          "1.8:1",
+          "2:1"
+        ]
+      },
+      "visible_text": false,
+      "embedded_fonts": false,
+      "external_resources": false,
+      "files": [
+        {
+          "format": "svg",
+          "file": "10-museums.svg",
+          "sha256": "a4c744f44916bba803b87bafd33d6ae4858314ac1b55f7cb0aa5dc749eb217ca",
+          "bytes": 2720,
+          "width": 1200,
+          "height": 800
+        },
+        {
+          "format": "png",
+          "file": "10-museums.png",
+          "sha256": "6845ebb216e0d9034d4f888e04df5711618cceef0fc318371b59f020353eca02",
+          "bytes": 57394,
+          "width": 1200,
+          "height": 800
+        }
+      ]
+    }
+  ],
+  "source_sha256": "a4e8e4ae4fdc6ff5568442f510a8f1a296ae0c9c5ee9a1b4f661453322db6422",
+  "visual_qa": {
+    "reviewed_at_utc": "2026-10-09T21:08:44Z",
+    "render_engine": "sharp / librsvg",
+    "views": [
+      "full 3:2 composition",
+      "centered square crop",
+      "centered 2:1 crop"
+    ],
+    "result_zh": "10 张全部通过接触表人工视觉检查；主题主体未被测试裁切截断。",
+    "contact_sheets": [
+      "qa/illustrations-full.png",
+      "qa/illustrations-square.png",
+      "qa/illustrations-wide.png"
+    ],
+    "notice_zh": "“原创示意非实景”位于 SVG 无障碍描述及配套图注，未作为字样烧录到图片；文章必须显示配套图注。"
+  }
+}
