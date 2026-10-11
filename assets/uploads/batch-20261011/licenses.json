@@ -1,0 +1,585 @@
+{
+  "asset_set": "Mangen Japan article batch 2026-10-11 — 10 original illustrations",
+  "created_at_utc": "2026-10-10T21:04:35Z",
+  "asset_directory": "assets/uploads/batch-20261011/",
+  "license_note": "Original AI-assisted code-native conceptual illustrations created for the Mangen project, with no third-party photographs, stock artwork, logos, or embedded font assets. Delivered for project use; this is not a claim of exclusive copyright or a new public Creative Commons license.",
+  "palette": {
+    "ivory": "#F4F1EB",
+    "ink": "#20211F",
+    "muted_gold": "#A58A58",
+    "pale": "#E5DDCF",
+    "line": "#D4C9B5"
+  },
+  "assets": [
+    {
+      "id": "01-lost-property",
+      "filename": "01-lost-property.png",
+      "svg": "01-lost-property.svg",
+      "png": "01-lost-property.png",
+      "title_zh": "日本旅行失物寻找示意",
+      "alt_zh": "长椅上的手提包、撑开的雨伞与放大镜构成失物寻找概念，原创示意非实景。",
+      "caption_zh": "旅行失物处理主题的原创图示；非车站或失物招领处实景。原创示意非实景。",
+      "limitations_zh": "不表示实际失物去向、柜台位置、领取流程或找回保证。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次以原创 SVG 代码绘制，并以 Sharp 渲染 PNG；未引用第三方照片、图标、现成路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "ownership_note_zh": "为万源项目生成并交付使用；不对 AI 辅助材料能否取得著作权作法律保证，不宣称排他权利，也未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称作官方地图、真实实景、实际商品界面、御朱印或经营者背书。",
+        "建议居中裁切；已查看 16:9 全图与 1:1 居中裁切的实际渲染像素。"
+      ],
+      "dimensions": {
+        "width": 1280,
+        "height": 720
+      },
+      "safe_crop": {
+        "center": [
+          640,
+          360
+        ],
+        "tested_aspect_ratios": [
+          "16:9",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          280,
+          0,
+          1000,
+          720
+        ],
+        "note_zh": "所有主题主体均位于居中正方形内；不建议强竖向裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "01-lost-property.svg",
+          "bytes": 2984,
+          "sha256": "6d1b944180fb9db229294d44401215f898729fa869ae9f31fefdfcbadb99e5f3"
+        },
+        "png": {
+          "filename": "01-lost-property.png",
+          "bytes": 48834,
+          "sha256": "37e95c2907737822f2593e3bab331d92a1dbd2a9ce90a26a36dcd0e87c0f9b7b"
+        }
+      }
+    },
+    {
+      "id": "02-laundry",
+      "filename": "02-laundry.png",
+      "svg": "02-laundry.svg",
+      "png": "02-laundry.png",
+      "title_zh": "日本旅行洗衣示意",
+      "alt_zh": "衣绳上的上衣、滚筒洗衣机与折叠衣物，原创示意非实景。",
+      "caption_zh": "投币洗衣与旅行衣物管理主题的原创图示；未描绘具体品牌或机型。原创示意非实景。",
+      "limitations_zh": "不表示机器收费、干燥功能、清洗时间或具体使用方法。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次以原创 SVG 代码绘制，并以 Sharp 渲染 PNG；未引用第三方照片、图标、现成路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "ownership_note_zh": "为万源项目生成并交付使用；不对 AI 辅助材料能否取得著作权作法律保证，不宣称排他权利，也未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称作官方地图、真实实景、实际商品界面、御朱印或经营者背书。",
+        "建议居中裁切；已查看 16:9 全图与 1:1 居中裁切的实际渲染像素。"
+      ],
+      "dimensions": {
+        "width": 1280,
+        "height": 720
+      },
+      "safe_crop": {
+        "center": [
+          640,
+          360
+        ],
+        "tested_aspect_ratios": [
+          "16:9",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          280,
+          0,
+          1000,
+          720
+        ],
+        "note_zh": "所有主题主体均位于居中正方形内；不建议强竖向裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "02-laundry.svg",
+          "bytes": 3402,
+          "sha256": "fc2b3e3b889f4865406bbaf9f603b5c7cf351f85ed2d2ab7339480490052fa30"
+        },
+        "png": {
+          "filename": "02-laundry.png",
+          "bytes": 46739,
+          "sha256": "c841e9a5366d1c398e03a0a5b9b11598b608dbbba1b2d60f36ef5d7ccb1743c3"
+        }
+      }
+    },
+    {
+      "id": "03-travel-waste",
+      "filename": "03-travel-waste.png",
+      "svg": "03-travel-waste.svg",
+      "png": "03-travel-waste.png",
+      "title_zh": "日本旅行垃圾随身收纳示意",
+      "alt_zh": "小行李箱旁，随身收纳袋装着无品牌空杯、瓶子与纸片，原创示意非实景。",
+      "caption_zh": "随身整理旅行中产生的小垃圾的概念图。原创示意非实景。",
+      "limitations_zh": "不构成垃圾分类标识，不表示杯瓶材质、可回收性或当地投放规定。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次以原创 SVG 代码绘制，并以 Sharp 渲染 PNG；未引用第三方照片、图标、现成路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "ownership_note_zh": "为万源项目生成并交付使用；不对 AI 辅助材料能否取得著作权作法律保证，不宣称排他权利，也未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称作官方地图、真实实景、实际商品界面、御朱印或经营者背书。",
+        "建议居中裁切；已查看 16:9 全图与 1:1 居中裁切的实际渲染像素。"
+      ],
+      "dimensions": {
+        "width": 1280,
+        "height": 720
+      },
+      "safe_crop": {
+        "center": [
+          640,
+          360
+        ],
+        "tested_aspect_ratios": [
+          "16:9",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          280,
+          0,
+          1000,
+          720
+        ],
+        "note_zh": "所有主题主体均位于居中正方形内；不建议强竖向裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "03-travel-waste.svg",
+          "bytes": 4004,
+          "sha256": "8b5e9512ea36208e6e68cffded8fb6b90f17cbd9b7562021095902b865b5e32c"
+        },
+        "png": {
+          "filename": "03-travel-waste.png",
+          "bytes": 64939,
+          "sha256": "6ef01168b3d578727e71ff2eacdc82fdb3c595d6e5771c20abe0f10437798246"
+        }
+      }
+    },
+    {
+      "id": "04-yokohama",
+      "filename": "04-yokohama.png",
+      "svg": "04-yokohama.svg",
+      "png": "04-yokohama.png",
+      "title_zh": "横滨港湾散步主题示意",
+      "alt_zh": "抽象港口楼群、码头灯与水面帆船构成港湾散步场景，原创示意非实景。",
+      "caption_zh": "横滨港湾旅行主题的概念插画；建筑、水面与位置关系经过艺术化处理。原创示意非实景。",
+      "limitations_zh": "并非横滨真实天际线、实景照片、路线图或当前船班示意。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次以原创 SVG 代码绘制，并以 Sharp 渲染 PNG；未引用第三方照片、图标、现成路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "ownership_note_zh": "为万源项目生成并交付使用；不对 AI 辅助材料能否取得著作权作法律保证，不宣称排他权利，也未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称作官方地图、真实实景、实际商品界面、御朱印或经营者背书。",
+        "建议居中裁切；已查看 16:9 全图与 1:1 居中裁切的实际渲染像素。"
+      ],
+      "dimensions": {
+        "width": 1280,
+        "height": 720
+      },
+      "safe_crop": {
+        "center": [
+          640,
+          360
+        ],
+        "tested_aspect_ratios": [
+          "16:9",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          280,
+          0,
+          1000,
+          720
+        ],
+        "note_zh": "所有主题主体均位于居中正方形内；不建议强竖向裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "04-yokohama.svg",
+          "bytes": 4096,
+          "sha256": "b810ee79171f5281578cc585a612986865794f5076718ee88d992cb004485323"
+        },
+        "png": {
+          "filename": "04-yokohama.png",
+          "bytes": 36787,
+          "sha256": "b1475d17eed38883d9a77ee1950b5fab83cb7bbfb64fd1cb55f2b640a6068354"
+        }
+      }
+    },
+    {
+      "id": "05-uji",
+      "filename": "05-uji.png",
+      "svg": "05-uji.svg",
+      "png": "05-uji.png",
+      "title_zh": "宇治茶与河畔散步主题示意",
+      "alt_zh": "一碗茶、茶叶枝条与抽象河桥及远山，原创示意非实景。",
+      "caption_zh": "宇治茶文化与河畔散步主题的概念插画；桥梁与景观并非现场复刻。原创示意非实景。",
+      "limitations_zh": "不表示具体茶店、茶品等级、宇治桥结构、步行路线或现场景观。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次以原创 SVG 代码绘制，并以 Sharp 渲染 PNG；未引用第三方照片、图标、现成路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "ownership_note_zh": "为万源项目生成并交付使用；不对 AI 辅助材料能否取得著作权作法律保证，不宣称排他权利，也未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称作官方地图、真实实景、实际商品界面、御朱印或经营者背书。",
+        "建议居中裁切；已查看 16:9 全图与 1:1 居中裁切的实际渲染像素。"
+      ],
+      "dimensions": {
+        "width": 1280,
+        "height": 720
+      },
+      "safe_crop": {
+        "center": [
+          640,
+          360
+        ],
+        "tested_aspect_ratios": [
+          "16:9",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          280,
+          0,
+          1000,
+          720
+        ],
+        "note_zh": "所有主题主体均位于居中正方形内；不建议强竖向裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "05-uji.svg",
+          "bytes": 4894,
+          "sha256": "8a642fbbf01285fc23b63d65d2bb189081f37a27df92b0902f33ead5e736e96e"
+        },
+        "png": {
+          "filename": "05-uji.png",
+          "bytes": 55300,
+          "sha256": "c1d264a85cbcb589b8101d0cf727654bb2ded78b4493940e2dd0a003d7b0fb55"
+        }
+      }
+    },
+    {
+      "id": "06-kawagoe",
+      "filename": "06-kawagoe.png",
+      "svg": "06-kawagoe.svg",
+      "png": "06-kawagoe.png",
+      "title_zh": "川越老街散步主题示意",
+      "alt_zh": "黑瓦老街店面、格栅窗与街巷远处的抽象木塔，原创示意非实景。",
+      "caption_zh": "川越老街氛围的概念插画；店面和木塔为原创组合。原创示意非实景。",
+      "limitations_zh": "不是时之钟或真实商家的建筑复刻，也不是街道地图或营业信息。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次以原创 SVG 代码绘制，并以 Sharp 渲染 PNG；未引用第三方照片、图标、现成路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "ownership_note_zh": "为万源项目生成并交付使用；不对 AI 辅助材料能否取得著作权作法律保证，不宣称排他权利，也未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称作官方地图、真实实景、实际商品界面、御朱印或经营者背书。",
+        "建议居中裁切；已查看 16:9 全图与 1:1 居中裁切的实际渲染像素。"
+      ],
+      "dimensions": {
+        "width": 1280,
+        "height": 720
+      },
+      "safe_crop": {
+        "center": [
+          640,
+          360
+        ],
+        "tested_aspect_ratios": [
+          "16:9",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          280,
+          0,
+          1000,
+          720
+        ],
+        "note_zh": "所有主题主体均位于居中正方形内；不建议强竖向裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "06-kawagoe.svg",
+          "bytes": 6850,
+          "sha256": "46efaa0cd3ebc096e8f116e7ae7feb29bd2d45879a41ef485ff35509fab6cb3a"
+        },
+        "png": {
+          "filename": "06-kawagoe.png",
+          "bytes": 40475,
+          "sha256": "f19d578eb9de6dac1db0f801b44413cc1ffaa72f8ab65e0b90a87d151b7d329e"
+        }
+      }
+    },
+    {
+      "id": "07-supermarket",
+      "filename": "07-supermarket.png",
+      "svg": "07-supermarket.svg",
+      "png": "07-supermarket.png",
+      "title_zh": "日本超市简餐主题示意",
+      "alt_zh": "俯视便当餐盘、米饭、配菜、小碗与购物篮的组合，原创示意非实景。",
+      "caption_zh": "超市采购与旅行简餐主题的原创图示；食物内容仅作概念表达。原创示意非实景。",
+      "limitations_zh": "不代表某家超市的在售商品、配料、过敏原、价格或折扣时间。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次以原创 SVG 代码绘制，并以 Sharp 渲染 PNG；未引用第三方照片、图标、现成路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "ownership_note_zh": "为万源项目生成并交付使用；不对 AI 辅助材料能否取得著作权作法律保证，不宣称排他权利，也未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称作官方地图、真实实景、实际商品界面、御朱印或经营者背书。",
+        "建议居中裁切；已查看 16:9 全图与 1:1 居中裁切的实际渲染像素。"
+      ],
+      "dimensions": {
+        "width": 1280,
+        "height": 720
+      },
+      "safe_crop": {
+        "center": [
+          640,
+          360
+        ],
+        "tested_aspect_ratios": [
+          "16:9",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          280,
+          0,
+          1000,
+          720
+        ],
+        "note_zh": "所有主题主体均位于居中正方形内；不建议强竖向裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "07-supermarket.svg",
+          "bytes": 5382,
+          "sha256": "28155f932d03d6548b4aed8843a4b2f23e92d06de5dcf7b84502b87ef1eecc3b"
+        },
+        "png": {
+          "filename": "07-supermarket.png",
+          "bytes": 70955,
+          "sha256": "1c077a02c7c622ba90487f115269c2e0595f540b444fc6802b47095a5c0a9c82"
+        }
+      }
+    },
+    {
+      "id": "08-shrine-temple",
+      "filename": "08-shrine-temple.png",
+      "svg": "08-shrine-temple.svg",
+      "png": "08-shrine-temple.png",
+      "title_zh": "神社寺院参拜与御朱印本主题示意",
+      "alt_zh": "抽象鸟居前放着翻开的无真实印章笔记本，原创示意非实景。",
+      "caption_zh": "参拜与御朱印本主题的概念插画；书页没有复制实际御朱印。原创示意非实景。",
+      "limitations_zh": "鸟居为神社相关符号，不表示所有寺院的入口形式；非真实神社、寺院、御朱印或礼仪步骤图。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次以原创 SVG 代码绘制，并以 Sharp 渲染 PNG；未引用第三方照片、图标、现成路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "ownership_note_zh": "为万源项目生成并交付使用；不对 AI 辅助材料能否取得著作权作法律保证，不宣称排他权利，也未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称作官方地图、真实实景、实际商品界面、御朱印或经营者背书。",
+        "建议居中裁切；已查看 16:9 全图与 1:1 居中裁切的实际渲染像素。"
+      ],
+      "dimensions": {
+        "width": 1280,
+        "height": 720
+      },
+      "safe_crop": {
+        "center": [
+          640,
+          360
+        ],
+        "tested_aspect_ratios": [
+          "16:9",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          280,
+          0,
+          1000,
+          720
+        ],
+        "note_zh": "所有主题主体均位于居中正方形内；不建议强竖向裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "08-shrine-temple.svg",
+          "bytes": 3130,
+          "sha256": "9b130cb77395669725bb184b5dbe46c52db2b475ef56f5d43301a6084db950a6"
+        },
+        "png": {
+          "filename": "08-shrine-temple.png",
+          "bytes": 51785,
+          "sha256": "960a71621d08b7145664d8941dd0d66c80674a3d97961b73cb62839ad8354779"
+        }
+      }
+    },
+    {
+      "id": "09-art-museum",
+      "filename": "09-art-museum.png",
+      "svg": "09-art-museum.svg",
+      "png": "09-art-museum.png",
+      "title_zh": "日本美术馆参观主题示意",
+      "alt_zh": "原创抽象画作、长椅与安静驻足的观众组成美术馆展厅，原创示意非实景。",
+      "caption_zh": "美术馆参观主题的原创插画；画框中的图案同为原创几何构图。原创示意非实景。",
+      "limitations_zh": "并非某座美术馆或真实展览，不表示可拍照政策、藏品、开放日或建筑结构。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次以原创 SVG 代码绘制，并以 Sharp 渲染 PNG；未引用第三方照片、图标、现成路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "ownership_note_zh": "为万源项目生成并交付使用；不对 AI 辅助材料能否取得著作权作法律保证，不宣称排他权利，也未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称作官方地图、真实实景、实际商品界面、御朱印或经营者背书。",
+        "建议居中裁切；已查看 16:9 全图与 1:1 居中裁切的实际渲染像素。"
+      ],
+      "dimensions": {
+        "width": 1280,
+        "height": 720
+      },
+      "safe_crop": {
+        "center": [
+          640,
+          360
+        ],
+        "tested_aspect_ratios": [
+          "16:9",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          280,
+          0,
+          1000,
+          720
+        ],
+        "note_zh": "所有主题主体均位于居中正方形内；不建议强竖向裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "09-art-museum.svg",
+          "bytes": 3574,
+          "sha256": "fb151ab2417ec66cc97dd7af36ea2233aa0e470a969c64c753d4e4fb79598d5c"
+        },
+        "png": {
+          "filename": "09-art-museum.png",
+          "bytes": 41503,
+          "sha256": "f178eb3ceb3f593d15807e53cdcadb7782678512eac67a9f2bb17dee7ab11602"
+        }
+      }
+    },
+    {
+      "id": "10-convenience",
+      "filename": "10-convenience.png",
+      "svg": "10-convenience.svg",
+      "png": "10-convenience.png",
+      "title_zh": "日本便利店打印主题示意",
+      "alt_zh": "无品牌便利店门面旁的多功能打印机与纸张，原创示意非实景。",
+      "caption_zh": "便利店打印与旅行便民服务主题的原创图示；未使用连锁商标或真实界面。原创示意非实景。",
+      "limitations_zh": "不表示某一门店有打印机，也不保证文件格式、支持语言、收费或具体操作方式。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次以原创 SVG 代码绘制，并以 Sharp 渲染 PNG；未引用第三方照片、图标、现成路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "ownership_note_zh": "为万源项目生成并交付使用；不对 AI 辅助材料能否取得著作权作法律保证，不宣称排他权利，也未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称作官方地图、真实实景、实际商品界面、御朱印或经营者背书。",
+        "建议居中裁切；已查看 16:9 全图与 1:1 居中裁切的实际渲染像素。"
+      ],
+      "dimensions": {
+        "width": 1280,
+        "height": 720
+      },
+      "safe_crop": {
+        "center": [
+          640,
+          360
+        ],
+        "tested_aspect_ratios": [
+          "16:9",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          280,
+          0,
+          1000,
+          720
+        ],
+        "note_zh": "所有主题主体均位于居中正方形内；不建议强竖向裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "10-convenience.svg",
+          "bytes": 3867,
+          "sha256": "87043f3e628cb4fc62e6b00ac8f13d348b4fcb5fa935f82b9d3790901a650e4e"
+        },
+        "png": {
+          "filename": "10-convenience.png",
+          "bytes": 35930,
+          "sha256": "fdeb03287ebfcbcf1ebd1b8c1d92bc689b5ad0b9af46bf868ce889889b09c0c1"
+        }
+      }
+    }
+  ]
+}
