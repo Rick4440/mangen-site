@@ -180,7 +180,9 @@
           "bytes": 36329,
           "sha256": "b381bbb41478f4ebf5de9d89ce4da27fea484abb91cdeb63fbf48d53bf9cb701"
         }
-      }
+      },
+      "production_cache_alias": "03-sento-v1.png",
+      "production_cache_alias_note": "Byte-identical filename alias used to avoid a stale HTML fallback cached at the original production image URL. Original credit, source and hashes apply."
     },
     {
       "id": "04-hotel-checkout",
@@ -294,7 +296,9 @@
           "bytes": 48438,
           "sha256": "0b9f6ec4544c3ef936c10a0b062159fe9abce61d57b6e47a000f5887f54dbef2"
         }
-      }
+      },
+      "production_cache_alias": "05-ekiben-v1.png",
+      "production_cache_alias_note": "Byte-identical filename alias used to avoid a stale HTML fallback cached at the original production image URL. Original credit, source and hashes apply."
     },
     {
       "id": "06-kanazawa",
@@ -465,7 +469,9 @@
           "bytes": 46434,
           "sha256": "4424343d3dc36f967b38aa8d529ca3d96516273261373a281b65b09473fed247"
         }
-      }
+      },
+      "production_cache_alias": "08-nikko-v1.png",
+      "production_cache_alias_note": "Byte-identical filename alias used to avoid a stale HTML fallback cached at the original production image URL. Original credit, source and hashes apply."
     },
     {
       "id": "09-nagoya",
@@ -579,7 +585,9 @@
           "bytes": 41137,
           "sha256": "e1a8732eec1ff693960491f7a9204ce5fe69dc58493a416df3296865a40cc41a"
         }
-      }
+      },
+      "production_cache_alias": "10-takayama-v1.png",
+      "production_cache_alias_note": "Byte-identical filename alias used to avoid a stale HTML fallback cached at the original production image URL. Original credit, source and hashes apply."
     }
   ]
 }
