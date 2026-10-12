@@ -1,0 +1,585 @@
+{
+  "asset_set": "Mangen Japan article batch 2026-10-12 — 10 original illustrations",
+  "created_at_utc": "2026-10-11T21:02:10.413243+00:00",
+  "asset_directory": "assets/uploads/batch-20261012/",
+  "license_note": "Original AI-assisted code-native conceptual illustrations created for the Mangen project. No third-party photographs, stock artwork, logos or embedded fonts. Delivered for project use; no claim of exclusive copyright or new public license.",
+  "palette": {
+    "ivory": "#F4F1EB",
+    "ink": "#20211F",
+    "muted_gold": "#A58A58",
+    "pale": "#E5DDCF",
+    "line": "#D4C9B5"
+  },
+  "assets": [
+    {
+      "id": "01-highway-bus",
+      "title_zh": "高速巴士上车核对示意",
+      "alt_zh": "无品牌巴士旁的三项勾选清单，原创示意非实景。",
+      "limitations_zh": "不表示实际站点、车型、座位或任何运营商的乘车要求。",
+      "filename": "01-highway-bus.png",
+      "svg": "01-highway-bus.svg",
+      "png": "01-highway-bus.png",
+      "caption_zh": "高速巴士上车核对示意；原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次以原创 SVG 代码绘制，并以 Sharp 渲染 PNG；未引用第三方照片、图标、现成路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "ownership_note_zh": "为万源项目生成并交付使用；不对 AI 辅助材料能否取得著作权作法律保证，不宣称排他权利，也未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称作官方地图、真实实景、实际设施或经营者背书。",
+        "建议居中裁切；已查看 16:9 全图与 1:1 居中裁切的实际渲染像素。"
+      ],
+      "dimensions": {
+        "width": 1280,
+        "height": 720
+      },
+      "safe_crop": {
+        "center": [
+          640,
+          360
+        ],
+        "tested_aspect_ratios": [
+          "16:9",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          280,
+          0,
+          1000,
+          720
+        ],
+        "note_zh": "主题主体位于中央正方形内；不建议强竖向裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "01-highway-bus.svg",
+          "bytes": 2665,
+          "sha256": "d8d1c1d8c9fb78be4632ef67c69436c559f4064596574b412e874b906ba4a259"
+        },
+        "png": {
+          "filename": "01-highway-bus.png",
+          "bytes": 35572,
+          "sha256": "a2c12f7ea81340bd15428f87137aaf45b7237a83699c584c1bdf0e870266d205"
+        }
+      }
+    },
+    {
+      "id": "02-stroller",
+      "title_zh": "车站推车与电梯路线示意",
+      "alt_zh": "婴儿推车与双开门电梯之间的简短方向箭头，原创示意非实景。",
+      "limitations_zh": "箭头仅表达优先核实电梯路线的概念，不是任何车站地图或无障碍通行保证。",
+      "filename": "02-stroller.png",
+      "svg": "02-stroller.svg",
+      "png": "02-stroller.png",
+      "caption_zh": "车站推车与电梯路线示意；原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次以原创 SVG 代码绘制，并以 Sharp 渲染 PNG；未引用第三方照片、图标、现成路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "ownership_note_zh": "为万源项目生成并交付使用；不对 AI 辅助材料能否取得著作权作法律保证，不宣称排他权利，也未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称作官方地图、真实实景、实际设施或经营者背书。",
+        "建议居中裁切；已查看 16:9 全图与 1:1 居中裁切的实际渲染像素。"
+      ],
+      "dimensions": {
+        "width": 1280,
+        "height": 720
+      },
+      "safe_crop": {
+        "center": [
+          640,
+          360
+        ],
+        "tested_aspect_ratios": [
+          "16:9",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          280,
+          0,
+          1000,
+          720
+        ],
+        "note_zh": "主题主体位于中央正方形内；不建议强竖向裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "02-stroller.svg",
+          "bytes": 2225,
+          "sha256": "de38a4e5c1d2e9480894f22ee2d27e8c7705819a2e6c4e890ffaa86dbedf9470"
+        },
+        "png": {
+          "filename": "02-stroller.png",
+          "bytes": 39806,
+          "sha256": "62ac841d28aabe9c834f819cfc513bfa23654f60200b49c4e8a880fc19451c9f"
+        }
+      }
+    },
+    {
+      "id": "03-sento",
+      "title_zh": "公共浴场随身物品示意",
+      "alt_zh": "储物柜、叠放的毛巾、洗澡凳与水桶，原创示意非实景。",
+      "limitations_zh": "不是具体浴场设施或操作指南；不表示该浴场提供毛巾、洗浴用品或特定储物设备。",
+      "filename": "03-sento.png",
+      "svg": "03-sento.svg",
+      "png": "03-sento.png",
+      "caption_zh": "公共浴场随身物品示意；原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次以原创 SVG 代码绘制，并以 Sharp 渲染 PNG；未引用第三方照片、图标、现成路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "ownership_note_zh": "为万源项目生成并交付使用；不对 AI 辅助材料能否取得著作权作法律保证，不宣称排他权利，也未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称作官方地图、真实实景、实际设施或经营者背书。",
+        "建议居中裁切；已查看 16:9 全图与 1:1 居中裁切的实际渲染像素。"
+      ],
+      "dimensions": {
+        "width": 1280,
+        "height": 720
+      },
+      "safe_crop": {
+        "center": [
+          640,
+          360
+        ],
+        "tested_aspect_ratios": [
+          "16:9",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          280,
+          0,
+          1000,
+          720
+        ],
+        "note_zh": "主题主体位于中央正方形内；不建议强竖向裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "03-sento.svg",
+          "bytes": 2260,
+          "sha256": "994b5e1301c03176696cddcee4661b6d6aa2aa5e6b850261fd8c8d01fec3a54e"
+        },
+        "png": {
+          "filename": "03-sento.png",
+          "bytes": 36329,
+          "sha256": "b381bbb41478f4ebf5de9d89ce4da27fea484abb91cdeb63fbf48d53bf9cb701"
+        }
+      }
+    },
+    {
+      "id": "04-hotel-checkout",
+      "title_zh": "退房与行李时间安排示意",
+      "alt_zh": "大小行李箱、时钟和无品牌房卡，原创示意非实景。",
+      "limitations_zh": "时钟为概念符号，不代表退房时刻；不保证酒店可寄存行李或延迟退房。",
+      "filename": "04-hotel-checkout.png",
+      "svg": "04-hotel-checkout.svg",
+      "png": "04-hotel-checkout.png",
+      "caption_zh": "退房与行李时间安排示意；原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次以原创 SVG 代码绘制，并以 Sharp 渲染 PNG；未引用第三方照片、图标、现成路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "ownership_note_zh": "为万源项目生成并交付使用；不对 AI 辅助材料能否取得著作权作法律保证，不宣称排他权利，也未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称作官方地图、真实实景、实际设施或经营者背书。",
+        "建议居中裁切；已查看 16:9 全图与 1:1 居中裁切的实际渲染像素。"
+      ],
+      "dimensions": {
+        "width": 1280,
+        "height": 720
+      },
+      "safe_crop": {
+        "center": [
+          640,
+          360
+        ],
+        "tested_aspect_ratios": [
+          "16:9",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          280,
+          0,
+          1000,
+          720
+        ],
+        "note_zh": "主题主体位于中央正方形内；不建议强竖向裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "04-hotel-checkout.svg",
+          "bytes": 2258,
+          "sha256": "996f70fd96ee85db2f6ba850ab4a6c95c51c5b0db78e228cfc6a6142d7132864"
+        },
+        "png": {
+          "filename": "04-hotel-checkout.png",
+          "bytes": 39981,
+          "sha256": "1d4b0935f6d0b4c44c49452d116e33268fc8155ec80524fc43ff0eff8616b83b"
+        }
+      }
+    },
+    {
+      "id": "05-ekiben",
+      "title_zh": "列车便当用餐示意",
+      "alt_zh": "列车窗景前的圆形分格便当和筷子，原创示意非实景。",
+      "limitations_zh": "不代表真实便当商品、份量或列车设施，也不表示所有车厢均适合用餐。",
+      "filename": "05-ekiben.png",
+      "svg": "05-ekiben.svg",
+      "png": "05-ekiben.png",
+      "caption_zh": "列车便当用餐示意；原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次以原创 SVG 代码绘制，并以 Sharp 渲染 PNG；未引用第三方照片、图标、现成路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "ownership_note_zh": "为万源项目生成并交付使用；不对 AI 辅助材料能否取得著作权作法律保证，不宣称排他权利，也未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称作官方地图、真实实景、实际设施或经营者背书。",
+        "建议居中裁切；已查看 16:9 全图与 1:1 居中裁切的实际渲染像素。"
+      ],
+      "dimensions": {
+        "width": 1280,
+        "height": 720
+      },
+      "safe_crop": {
+        "center": [
+          640,
+          360
+        ],
+        "tested_aspect_ratios": [
+          "16:9",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          280,
+          0,
+          1000,
+          720
+        ],
+        "note_zh": "主题主体位于中央正方形内；不建议强竖向裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "05-ekiben.svg",
+          "bytes": 2353,
+          "sha256": "c208b4044d4716b4c89db63ea393f244cdf1d83f6157e6cfabbc60aeb92047b3"
+        },
+        "png": {
+          "filename": "05-ekiben.png",
+          "bytes": 48438,
+          "sha256": "0b9f6ec4544c3ef936c10a0b062159fe9abce61d57b6e47a000f5887f54dbef2"
+        }
+      }
+    },
+    {
+      "id": "06-kanazawa",
+      "title_zh": "金泽庭园与市场主题示意",
+      "alt_zh": "庭园树木、水纹与蔬果摊位并置，原创示意非实景。",
+      "limitations_zh": "不描绘兼六园或近江町市场真实布局、树形、建筑、营业情况或可行步行路线。",
+      "filename": "06-kanazawa.png",
+      "svg": "06-kanazawa.svg",
+      "png": "06-kanazawa.png",
+      "caption_zh": "金泽庭园与市场主题示意；原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次以原创 SVG 代码绘制，并以 Sharp 渲染 PNG；未引用第三方照片、图标、现成路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "ownership_note_zh": "为万源项目生成并交付使用；不对 AI 辅助材料能否取得著作权作法律保证，不宣称排他权利，也未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称作官方地图、真实实景、实际设施或经营者背书。",
+        "建议居中裁切；已查看 16:9 全图与 1:1 居中裁切的实际渲染像素。"
+      ],
+      "dimensions": {
+        "width": 1280,
+        "height": 720
+      },
+      "safe_crop": {
+        "center": [
+          640,
+          360
+        ],
+        "tested_aspect_ratios": [
+          "16:9",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          280,
+          0,
+          1000,
+          720
+        ],
+        "note_zh": "主题主体位于中央正方形内；不建议强竖向裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "06-kanazawa.svg",
+          "bytes": 2913,
+          "sha256": "404d5a7a197073c8ece3a9d4f3bac01b4bda5449512c4dce7b5e89cdb1b4c70f"
+        },
+        "png": {
+          "filename": "06-kanazawa.png",
+          "bytes": 40056,
+          "sha256": "c67d074fe5f40f321140564c71a611c831e266eae9385f462b976438fde09c79"
+        }
+      }
+    },
+    {
+      "id": "07-miyajima",
+      "title_zh": "宫岛渡轮与潮位主题示意",
+      "alt_zh": "渡轮旁的抽象水位刻度与上下箭头，原创示意非实景。",
+      "limitations_zh": "不是实际船型、航线、潮汐预报或涨退潮时间；刻度无测量数值，不表示可步行区域。",
+      "filename": "07-miyajima.png",
+      "svg": "07-miyajima.svg",
+      "png": "07-miyajima.png",
+      "caption_zh": "宫岛渡轮与潮位主题示意；原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次以原创 SVG 代码绘制，并以 Sharp 渲染 PNG；未引用第三方照片、图标、现成路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "ownership_note_zh": "为万源项目生成并交付使用；不对 AI 辅助材料能否取得著作权作法律保证，不宣称排他权利，也未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称作官方地图、真实实景、实际设施或经营者背书。",
+        "建议居中裁切；已查看 16:9 全图与 1:1 居中裁切的实际渲染像素。"
+      ],
+      "dimensions": {
+        "width": 1280,
+        "height": 720
+      },
+      "safe_crop": {
+        "center": [
+          640,
+          360
+        ],
+        "tested_aspect_ratios": [
+          "16:9",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          280,
+          0,
+          1000,
+          720
+        ],
+        "note_zh": "主题主体位于中央正方形内；不建议强竖向裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "07-miyajima.svg",
+          "bytes": 2548,
+          "sha256": "5ff54643b653ed1e4ea69a863cce783e0fc21f31c636b61c6e7cc6a51d7894ce"
+        },
+        "png": {
+          "filename": "07-miyajima.png",
+          "bytes": 38549,
+          "sha256": "80bd7d36796e9232af41843cd02d4cf997f7bcf7b1669de8d728078c789afa1d"
+        }
+      }
+    },
+    {
+      "id": "08-nikko",
+      "title_zh": "日光森林与寺社主题示意",
+      "alt_zh": "高树环绕一座泛化的传统屋顶建筑与台阶，原创示意非实景。",
+      "limitations_zh": "为森林与寺社游览主题符号，不描绘东照宫或任何真实寺社的外观、比例与布局。",
+      "filename": "08-nikko.png",
+      "svg": "08-nikko.svg",
+      "png": "08-nikko.png",
+      "caption_zh": "日光森林与寺社主题示意；原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次以原创 SVG 代码绘制，并以 Sharp 渲染 PNG；未引用第三方照片、图标、现成路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "ownership_note_zh": "为万源项目生成并交付使用；不对 AI 辅助材料能否取得著作权作法律保证，不宣称排他权利，也未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称作官方地图、真实实景、实际设施或经营者背书。",
+        "建议居中裁切；已查看 16:9 全图与 1:1 居中裁切的实际渲染像素。"
+      ],
+      "dimensions": {
+        "width": 1280,
+        "height": 720
+      },
+      "safe_crop": {
+        "center": [
+          640,
+          360
+        ],
+        "tested_aspect_ratios": [
+          "16:9",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          280,
+          0,
+          1000,
+          720
+        ],
+        "note_zh": "主题主体位于中央正方形内；不建议强竖向裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "08-nikko.svg",
+          "bytes": 2589,
+          "sha256": "65f788a6a244a2082dbdc8e40c24c5c7c55dcac33b951652571a9b8c104ad845"
+        },
+        "png": {
+          "filename": "08-nikko.png",
+          "bytes": 46434,
+          "sha256": "4424343d3dc36f967b38aa8d529ca3d96516273261373a281b65b09473fed247"
+        }
+      }
+    },
+    {
+      "id": "09-nagoya",
+      "title_zh": "名古屋城市与博物馆主题示意",
+      "alt_zh": "城市楼宇旁的抽象齿轮展品与展示台，原创示意非实景。",
+      "limitations_zh": "不描绘某座博物馆、真实藏品或城市天际线，不表示具体展览、地址或开放状态。",
+      "filename": "09-nagoya.png",
+      "svg": "09-nagoya.svg",
+      "png": "09-nagoya.png",
+      "caption_zh": "名古屋城市与博物馆主题示意；原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次以原创 SVG 代码绘制，并以 Sharp 渲染 PNG；未引用第三方照片、图标、现成路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "ownership_note_zh": "为万源项目生成并交付使用；不对 AI 辅助材料能否取得著作权作法律保证，不宣称排他权利，也未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称作官方地图、真实实景、实际设施或经营者背书。",
+        "建议居中裁切；已查看 16:9 全图与 1:1 居中裁切的实际渲染像素。"
+      ],
+      "dimensions": {
+        "width": 1280,
+        "height": 720
+      },
+      "safe_crop": {
+        "center": [
+          640,
+          360
+        ],
+        "tested_aspect_ratios": [
+          "16:9",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          280,
+          0,
+          1000,
+          720
+        ],
+        "note_zh": "主题主体位于中央正方形内；不建议强竖向裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "09-nagoya.svg",
+          "bytes": 4432,
+          "sha256": "5e033d82d1f82cd28ba9b467f0cd0575eeb5f8d00107fd7c70d2f266cd696d79"
+        },
+        "png": {
+          "filename": "09-nagoya.png",
+          "bytes": 36692,
+          "sha256": "eedf74634a3d116f97efacd1faa1126892e6bb1a5c6769573918992eb938b570"
+        }
+      }
+    },
+    {
+      "id": "10-takayama",
+      "title_zh": "高山早市主题示意",
+      "alt_zh": "晨光下的条纹摊篷、蔬果篮与植物，原创示意非实景。",
+      "limitations_zh": "不描绘宫川朝市或阵屋前朝市实际摊位、商品、经营时间或天气。",
+      "filename": "10-takayama.png",
+      "svg": "10-takayama.svg",
+      "png": "10-takayama.png",
+      "caption_zh": "高山早市主题示意；原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次以原创 SVG 代码绘制，并以 Sharp 渲染 PNG；未引用第三方照片、图标、现成路径或字库。",
+      "source_page": null,
+      "source_photo_date": null,
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "ownership_note_zh": "为万源项目生成并交付使用；不对 AI 辅助材料能否取得著作权作法律保证，不宣称排他权利，也未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称作官方地图、真实实景、实际设施或经营者背书。",
+        "建议居中裁切；已查看 16:9 全图与 1:1 居中裁切的实际渲染像素。"
+      ],
+      "dimensions": {
+        "width": 1280,
+        "height": 720
+      },
+      "safe_crop": {
+        "center": [
+          640,
+          360
+        ],
+        "tested_aspect_ratios": [
+          "16:9",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          280,
+          0,
+          1000,
+          720
+        ],
+        "note_zh": "主题主体位于中央正方形内；不建议强竖向裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "10-takayama.svg",
+          "bytes": 3615,
+          "sha256": "1414afe77a06527d84344d2b7129b7223a3fc963a51e258b62afda71baac7d57"
+        },
+        "png": {
+          "filename": "10-takayama.png",
+          "bytes": 41137,
+          "sha256": "e1a8732eec1ff693960491f7a9204ce5fe69dc58493a416df3296865a40cc41a"
+        }
+      }
+    }
+  ]
+}
