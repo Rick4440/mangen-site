@@ -73,7 +73,17 @@ class BuildTests(unittest.TestCase):
     def test_filters_are_grounded_and_no_mock_articles_exist(self):
         self.build(); source=self.read('blog/index.html')
         self.assertIn('data-filter="destination"', source)
-        self.assertNotIn('value="北海道"',source)
+        # Options follow the real article catalog, including newly covered destinations.
+        catalog = json.loads(self.read('blog/articles.json'))['posts']
+        expected = {destination for post in catalog for destination in post['destinations']}
+        buttons = Elements(source).attrs('button', **{'data-filter': 'destination'})
+        desktop = [item['value'] for item in buttons if item['value']]
+        self.assertEqual(set(desktop), expected)
+        self.assertEqual(len(desktop), len(expected), 'No duplicate destination filters')
+        mobile_source = source.split('data-select="destination"', 1)[1].split('</select>', 1)[0]
+        mobile = [item['value'] for item in Elements(mobile_source).attrs('option') if item['value']]
+        self.assertEqual(set(mobile), expected)
+        self.assertEqual(len(mobile), len(expected), 'No duplicate mobile destination filters')
         self.assertNotIn('富士山一日游，把风景留给旅途', source)
         self.assertIn('value="京都"',source)
     def test_drafts_never_enter_catalog_and_related_links(self):

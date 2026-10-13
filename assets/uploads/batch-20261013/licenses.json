@@ -1,0 +1,662 @@
+{
+  "asset_set": "Mangen Japan article batch 2026-10-13 — original concept illustrations",
+  "batch_date_jst": "2026-10-13",
+  "creation_date_jst": "2026-10-13",
+  "created_at_utc": "2026-10-12T21:07:26.979274+00:00",
+  "created_at_jst": "2026-10-13T06:07:26.979274+09:00",
+  "asset_directory": "assets/uploads/batch-20261013/",
+  "creator": "Mangen original artwork, AI-assisted SVG code",
+  "license_note": "Original AI-assisted, code-native concept illustrations made for Mangen. Delivered for the Mangen project to use, reproduce, adapt, crop, publish and distribute with its editorial content. No third-party photographs, stock illustrations, icon paths, logos, embedded fonts or external resources. This record does not guarantee copyright eligibility or exclusive ownership of AI-assisted material and does not apply a new public Creative Commons license.",
+  "assets": [
+    {
+      "id": "01-lockers",
+      "title_zh": "车站寄物柜尺寸与取件核对",
+      "alt_zh": "不同尺寸寄物柜、行李箱、钥匙和取件勾选卡，原创示意非实景。",
+      "limitations_zh": "为寄物与取件主题概念图，不代表任何车站的实际柜型、尺寸、收费、支付方式或可用数量；钥匙仅作取件凭证的概念符号。",
+      "palette": {
+        "accent": "#3E7C7C",
+        "pale": "#E2EAE2",
+        "secondary": "#D5AD70"
+      },
+      "filename": "01-lockers.png",
+      "svg": "01-lockers.svg",
+      "png": "01-lockers.png",
+      "caption_zh": "车站寄物柜尺寸与取件核对；原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次原创编写 SVG 几何路径，以 Sharp 直接渲染 PNG；未使用第三方照片、素材、现成图标、字库或外链资源。",
+      "source_page": null,
+      "source_photo_date": null,
+      "creation_date_jst": "2026-10-13",
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "project_usage_rights": "Original AI-assisted, code-native concept illustrations made for Mangen. Delivered for the Mangen project to use, reproduce, adapt, crop, publish and distribute with its editorial content. No third-party photographs, stock illustrations, icon paths, logos, embedded fonts or external resources. This record does not guarantee copyright eligibility or exclusive ownership of AI-assisted material and does not apply a new public Creative Commons license.",
+      "ownership_note_zh": "为万源项目原创生成并交付使用，可随项目内容复制、修改、裁切、发布及分发；不保证 AI 辅助材料的著作权适格性或排他权利，未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称为官方地图、实景照片、实际设施、有效票券或经营者背书。",
+        "城郭与城市图不得作为当日修复、开放、运营或季节状态证据。",
+        "建议居中裁切；3:2 原图与 1:1 中心裁切已提供检查图。"
+      ],
+      "dimensions": {
+        "width": 1200,
+        "height": 800
+      },
+      "safe_crop": {
+        "center": [
+          600,
+          400
+        ],
+        "tested_aspect_ratios": [
+          "3:2",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          200,
+          0,
+          1000,
+          800
+        ],
+        "note_zh": "全部主要形象及装饰位于中央正方形内；勿强行作窄竖图裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "01-lockers.svg",
+          "bytes": 4124,
+          "sha256": "a2802dd86ef30d43b329b59b073d196c0c6f36c58879cb5dee32eded0c9eca69"
+        },
+        "png": {
+          "filename": "01-lockers.png",
+          "bytes": 29742,
+          "sha256": "c2e2b4b6ddb9038146c666f4c4be9183075bf55b7b779fac9eac3cdda0ae268a"
+        }
+      }
+    },
+    {
+      "id": "02-train-disruption",
+      "title_zh": "列车运行变更与替代方案",
+      "alt_zh": "无品牌列车、提醒告示和抽象双向转换箭头，原创示意非实景。",
+      "limitations_zh": "告示没有真实运行信息；箭头仅表达查询替代方案，不是地图、线路、换乘路径、官方告示或可通行保证。",
+      "palette": {
+        "accent": "#607DA0",
+        "pale": "#E3E7ED",
+        "secondary": "#DEB270"
+      },
+      "filename": "02-train-disruption.png",
+      "svg": "02-train-disruption.svg",
+      "png": "02-train-disruption.png",
+      "caption_zh": "列车运行变更与替代方案；原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次原创编写 SVG 几何路径，以 Sharp 直接渲染 PNG；未使用第三方照片、素材、现成图标、字库或外链资源。",
+      "source_page": null,
+      "source_photo_date": null,
+      "creation_date_jst": "2026-10-13",
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "project_usage_rights": "Original AI-assisted, code-native concept illustrations made for Mangen. Delivered for the Mangen project to use, reproduce, adapt, crop, publish and distribute with its editorial content. No third-party photographs, stock illustrations, icon paths, logos, embedded fonts or external resources. This record does not guarantee copyright eligibility or exclusive ownership of AI-assisted material and does not apply a new public Creative Commons license.",
+      "ownership_note_zh": "为万源项目原创生成并交付使用，可随项目内容复制、修改、裁切、发布及分发；不保证 AI 辅助材料的著作权适格性或排他权利，未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称为官方地图、实景照片、实际设施、有效票券或经营者背书。",
+        "城郭与城市图不得作为当日修复、开放、运营或季节状态证据。",
+        "建议居中裁切；3:2 原图与 1:1 中心裁切已提供检查图。"
+      ],
+      "dimensions": {
+        "width": 1200,
+        "height": 800
+      },
+      "safe_crop": {
+        "center": [
+          600,
+          400
+        ],
+        "tested_aspect_ratios": [
+          "3:2",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          200,
+          0,
+          1000,
+          800
+        ],
+        "note_zh": "全部主要形象及装饰位于中央正方形内；勿强行作窄竖图裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "02-train-disruption.svg",
+          "bytes": 3356,
+          "sha256": "cbe782fe0336946087fe284d0e5bb197b6442a5b898fae6f512ac77d757b7f6e"
+        },
+        "png": {
+          "filename": "02-train-disruption.png",
+          "bytes": 26705,
+          "sha256": "0efbe31be1cc05c4f123d848294af5106d6f36c625fdfd887fdfb30ab4149897"
+        }
+      }
+    },
+    {
+      "id": "03-cafe",
+      "title_zh": "日本咖啡店早餐主题",
+      "alt_zh": "窗边一杯咖啡与一盘鸡蛋吐司早餐，原创示意非实景。",
+      "limitations_zh": "不是实际店铺或商品照片，不代表具体套餐内容、供应时段、份量、价格或饮食限制适用性。",
+      "palette": {
+        "accent": "#B77957",
+        "pale": "#EFE3D7",
+        "secondary": "#DAB78C"
+      },
+      "filename": "03-cafe.png",
+      "svg": "03-cafe.svg",
+      "png": "03-cafe.png",
+      "caption_zh": "日本咖啡店早餐主题；原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次原创编写 SVG 几何路径，以 Sharp 直接渲染 PNG；未使用第三方照片、素材、现成图标、字库或外链资源。",
+      "source_page": null,
+      "source_photo_date": null,
+      "creation_date_jst": "2026-10-13",
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "project_usage_rights": "Original AI-assisted, code-native concept illustrations made for Mangen. Delivered for the Mangen project to use, reproduce, adapt, crop, publish and distribute with its editorial content. No third-party photographs, stock illustrations, icon paths, logos, embedded fonts or external resources. This record does not guarantee copyright eligibility or exclusive ownership of AI-assisted material and does not apply a new public Creative Commons license.",
+      "ownership_note_zh": "为万源项目原创生成并交付使用，可随项目内容复制、修改、裁切、发布及分发；不保证 AI 辅助材料的著作权适格性或排他权利，未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称为官方地图、实景照片、实际设施、有效票券或经营者背书。",
+        "城郭与城市图不得作为当日修复、开放、运营或季节状态证据。",
+        "建议居中裁切；3:2 原图与 1:1 中心裁切已提供检查图。"
+      ],
+      "dimensions": {
+        "width": 1200,
+        "height": 800
+      },
+      "safe_crop": {
+        "center": [
+          600,
+          400
+        ],
+        "tested_aspect_ratios": [
+          "3:2",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          200,
+          0,
+          1000,
+          800
+        ],
+        "note_zh": "全部主要形象及装饰位于中央正方形内；勿强行作窄竖图裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "03-cafe.svg",
+          "bytes": 3745,
+          "sha256": "4ccee835fc601d72cb91ad3b8fcdcd1815d79b0d6f2cdba232144bfe2c0a65d1"
+        },
+        "png": {
+          "filename": "03-cafe.png",
+          "bytes": 59322,
+          "sha256": "8c871f31ef701133bcb24adf7dd0d14356029c0e0635229b60d806ffe3125fea"
+        }
+      }
+    },
+    {
+      "id": "04-entry-tickets",
+      "title_zh": "预约入场时段与电子票",
+      "alt_zh": "带勾选标记的手机、无号码票券与时钟，原创示意非实景。",
+      "limitations_zh": "时钟不表示任何真实入场时间；票券无有效条码、二维码或预约信息，不代表某景点的验票界面、入场政策或票种。",
+      "palette": {
+        "accent": "#83728D",
+        "pale": "#E9E2E9",
+        "secondary": "#CFC0D2"
+      },
+      "filename": "04-entry-tickets.png",
+      "svg": "04-entry-tickets.svg",
+      "png": "04-entry-tickets.png",
+      "caption_zh": "预约入场时段与电子票；原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次原创编写 SVG 几何路径，以 Sharp 直接渲染 PNG；未使用第三方照片、素材、现成图标、字库或外链资源。",
+      "source_page": null,
+      "source_photo_date": null,
+      "creation_date_jst": "2026-10-13",
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "project_usage_rights": "Original AI-assisted, code-native concept illustrations made for Mangen. Delivered for the Mangen project to use, reproduce, adapt, crop, publish and distribute with its editorial content. No third-party photographs, stock illustrations, icon paths, logos, embedded fonts or external resources. This record does not guarantee copyright eligibility or exclusive ownership of AI-assisted material and does not apply a new public Creative Commons license.",
+      "ownership_note_zh": "为万源项目原创生成并交付使用，可随项目内容复制、修改、裁切、发布及分发；不保证 AI 辅助材料的著作权适格性或排他权利，未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称为官方地图、实景照片、实际设施、有效票券或经营者背书。",
+        "城郭与城市图不得作为当日修复、开放、运营或季节状态证据。",
+        "建议居中裁切；3:2 原图与 1:1 中心裁切已提供检查图。"
+      ],
+      "dimensions": {
+        "width": 1200,
+        "height": 800
+      },
+      "safe_crop": {
+        "center": [
+          600,
+          400
+        ],
+        "tested_aspect_ratios": [
+          "3:2",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          200,
+          0,
+          1000,
+          800
+        ],
+        "note_zh": "全部主要形象及装饰位于中央正方形内；勿强行作窄竖图裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "04-entry-tickets.svg",
+          "bytes": 5320,
+          "sha256": "38c0a88f894ee9add5066bfe64402628764572183c39a93ff34dba5933875168"
+        },
+        "png": {
+          "filename": "04-entry-tickets.png",
+          "bytes": 33914,
+          "sha256": "fe22a625d7c52696c41db8a176f893e34ee4499ffbd78bf5703b65efe841f1a6"
+        }
+      }
+    },
+    {
+      "id": "05-fukuoka",
+      "title_zh": "福冈公园与滨水城市主题",
+      "alt_zh": "绿树长椅、抽象楼宇与水面并置的城市休闲场景，原创示意非实景。",
+      "limitations_zh": "是福冈城市休闲主题的概念插画，不描绘真实天际线、公园布局、海岸线、地理相对位置或步行路线。",
+      "palette": {
+        "accent": "#548F8F",
+        "pale": "#DFEBE7",
+        "secondary": "#DDB36D"
+      },
+      "filename": "05-fukuoka.png",
+      "svg": "05-fukuoka.svg",
+      "png": "05-fukuoka.png",
+      "caption_zh": "福冈公园与滨水城市主题；原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次原创编写 SVG 几何路径，以 Sharp 直接渲染 PNG；未使用第三方照片、素材、现成图标、字库或外链资源。",
+      "source_page": null,
+      "source_photo_date": null,
+      "creation_date_jst": "2026-10-13",
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "project_usage_rights": "Original AI-assisted, code-native concept illustrations made for Mangen. Delivered for the Mangen project to use, reproduce, adapt, crop, publish and distribute with its editorial content. No third-party photographs, stock illustrations, icon paths, logos, embedded fonts or external resources. This record does not guarantee copyright eligibility or exclusive ownership of AI-assisted material and does not apply a new public Creative Commons license.",
+      "ownership_note_zh": "为万源项目原创生成并交付使用，可随项目内容复制、修改、裁切、发布及分发；不保证 AI 辅助材料的著作权适格性或排他权利，未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称为官方地图、实景照片、实际设施、有效票券或经营者背书。",
+        "城郭与城市图不得作为当日修复、开放、运营或季节状态证据。",
+        "建议居中裁切；3:2 原图与 1:1 中心裁切已提供检查图。"
+      ],
+      "dimensions": {
+        "width": 1200,
+        "height": 800
+      },
+      "safe_crop": {
+        "center": [
+          600,
+          400
+        ],
+        "tested_aspect_ratios": [
+          "3:2",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          200,
+          0,
+          1000,
+          800
+        ],
+        "note_zh": "全部主要形象及装饰位于中央正方形内；勿强行作窄竖图裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "05-fukuoka.svg",
+          "bytes": 5851,
+          "sha256": "4764fa894aa627dbfd49ed453abb5fb96d15259a34f738f94e5b9eb3eea18787"
+        },
+        "png": {
+          "filename": "05-fukuoka.png",
+          "bytes": 36408,
+          "sha256": "cc2dc4eaa2c4ca889147c9686bda995f95dbe2fc38365690d8960f96ca7d6763"
+        }
+      }
+    },
+    {
+      "id": "06-naha",
+      "title_zh": "那霸单轨电车与首里门楼主题",
+      "alt_zh": "泛化的高架单轨电车、首里风格门楼和亚热带叶片，原创示意非实景。",
+      "limitations_zh": "门楼仅为首里文化主题符号，不描绘首里城正殿，不表示正殿修复、开放或现状；列车与高架不代表实际车型、站点、线路或地理相对位置。",
+      "palette": {
+        "accent": "#B76855",
+        "pale": "#F0E4D8",
+        "secondary": "#9BAC8B"
+      },
+      "filename": "06-naha.png",
+      "svg": "06-naha.svg",
+      "png": "06-naha.png",
+      "caption_zh": "那霸单轨电车与首里门楼主题；原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次原创编写 SVG 几何路径，以 Sharp 直接渲染 PNG；未使用第三方照片、素材、现成图标、字库或外链资源。",
+      "source_page": null,
+      "source_photo_date": null,
+      "creation_date_jst": "2026-10-13",
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "project_usage_rights": "Original AI-assisted, code-native concept illustrations made for Mangen. Delivered for the Mangen project to use, reproduce, adapt, crop, publish and distribute with its editorial content. No third-party photographs, stock illustrations, icon paths, logos, embedded fonts or external resources. This record does not guarantee copyright eligibility or exclusive ownership of AI-assisted material and does not apply a new public Creative Commons license.",
+      "ownership_note_zh": "为万源项目原创生成并交付使用，可随项目内容复制、修改、裁切、发布及分发；不保证 AI 辅助材料的著作权适格性或排他权利，未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称为官方地图、实景照片、实际设施、有效票券或经营者背书。",
+        "城郭与城市图不得作为当日修复、开放、运营或季节状态证据。",
+        "建议居中裁切；3:2 原图与 1:1 中心裁切已提供检查图。"
+      ],
+      "dimensions": {
+        "width": 1200,
+        "height": 800
+      },
+      "safe_crop": {
+        "center": [
+          600,
+          400
+        ],
+        "tested_aspect_ratios": [
+          "3:2",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          200,
+          0,
+          1000,
+          800
+        ],
+        "note_zh": "全部主要形象及装饰位于中央正方形内；勿强行作窄竖图裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "06-naha.svg",
+          "bytes": 4199,
+          "sha256": "896da5ba8d5f155f22604ffc3ed707155406e7a77dafe409e19b7649ccfff893"
+        },
+        "png": {
+          "filename": "06-naha.png",
+          "bytes": 33737,
+          "sha256": "b025c5dbf05e3323e5a29687e583f5a8ea21e56729741310ceb69f64877e0b23"
+        }
+      }
+    },
+    {
+      "id": "07-okayama-kurashiki",
+      "title_zh": "冈山庭园与仓敷运河主题",
+      "alt_zh": "庭园松树与白墙仓房、水渠的双主题拼图，原创示意非实景。",
+      "limitations_zh": "不描绘后乐园的真实树形、建筑布局或仓敷美观地区的实际街景；两种意象并置不表示相邻、可直接步行或任何真实交通路线。",
+      "palette": {
+        "accent": "#77916F",
+        "pale": "#E7EBDD",
+        "secondary": "#7B9DA0"
+      },
+      "filename": "07-okayama-kurashiki.png",
+      "svg": "07-okayama-kurashiki.svg",
+      "png": "07-okayama-kurashiki.png",
+      "caption_zh": "冈山庭园与仓敷运河主题；原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次原创编写 SVG 几何路径，以 Sharp 直接渲染 PNG；未使用第三方照片、素材、现成图标、字库或外链资源。",
+      "source_page": null,
+      "source_photo_date": null,
+      "creation_date_jst": "2026-10-13",
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "project_usage_rights": "Original AI-assisted, code-native concept illustrations made for Mangen. Delivered for the Mangen project to use, reproduce, adapt, crop, publish and distribute with its editorial content. No third-party photographs, stock illustrations, icon paths, logos, embedded fonts or external resources. This record does not guarantee copyright eligibility or exclusive ownership of AI-assisted material and does not apply a new public Creative Commons license.",
+      "ownership_note_zh": "为万源项目原创生成并交付使用，可随项目内容复制、修改、裁切、发布及分发；不保证 AI 辅助材料的著作权适格性或排他权利，未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称为官方地图、实景照片、实际设施、有效票券或经营者背书。",
+        "城郭与城市图不得作为当日修复、开放、运营或季节状态证据。",
+        "建议居中裁切；3:2 原图与 1:1 中心裁切已提供检查图。"
+      ],
+      "dimensions": {
+        "width": 1200,
+        "height": 800
+      },
+      "safe_crop": {
+        "center": [
+          600,
+          400
+        ],
+        "tested_aspect_ratios": [
+          "3:2",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          200,
+          0,
+          1000,
+          800
+        ],
+        "note_zh": "全部主要形象及装饰位于中央正方形内；勿强行作窄竖图裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "07-okayama-kurashiki.svg",
+          "bytes": 4129,
+          "sha256": "3a08305bba4e45416ff4cd9035b096fb3120d6f80d026738fe170a4d16a9c0cd"
+        },
+        "png": {
+          "filename": "07-okayama-kurashiki.png",
+          "bytes": 42082,
+          "sha256": "341aeefb791a548deae8bc4fbe22e4c25576c06701bfeca91aa1b33d9cfc4022"
+        }
+      }
+    },
+    {
+      "id": "08-sapporo-otaru",
+      "title_zh": "札幌公园与小樽运河主题",
+      "alt_zh": "秋色树木长椅和临水仓库、路灯的双主题拼图，原创示意非实景。",
+      "limitations_zh": "不是大通公园或小樽运河的真实景观、季节实况、建筑比例与布局；并置意象不表示相邻或可行路线，也不保证行程当日有秋叶。",
+      "palette": {
+        "accent": "#668B99",
+        "pale": "#DFE9E9",
+        "secondary": "#AE9868"
+      },
+      "filename": "08-sapporo-otaru.png",
+      "svg": "08-sapporo-otaru.svg",
+      "png": "08-sapporo-otaru.png",
+      "caption_zh": "札幌公园与小樽运河主题；原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次原创编写 SVG 几何路径，以 Sharp 直接渲染 PNG；未使用第三方照片、素材、现成图标、字库或外链资源。",
+      "source_page": null,
+      "source_photo_date": null,
+      "creation_date_jst": "2026-10-13",
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "project_usage_rights": "Original AI-assisted, code-native concept illustrations made for Mangen. Delivered for the Mangen project to use, reproduce, adapt, crop, publish and distribute with its editorial content. No third-party photographs, stock illustrations, icon paths, logos, embedded fonts or external resources. This record does not guarantee copyright eligibility or exclusive ownership of AI-assisted material and does not apply a new public Creative Commons license.",
+      "ownership_note_zh": "为万源项目原创生成并交付使用，可随项目内容复制、修改、裁切、发布及分发；不保证 AI 辅助材料的著作权适格性或排他权利，未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称为官方地图、实景照片、实际设施、有效票券或经营者背书。",
+        "城郭与城市图不得作为当日修复、开放、运营或季节状态证据。",
+        "建议居中裁切；3:2 原图与 1:1 中心裁切已提供检查图。"
+      ],
+      "dimensions": {
+        "width": 1200,
+        "height": 800
+      },
+      "safe_crop": {
+        "center": [
+          600,
+          400
+        ],
+        "tested_aspect_ratios": [
+          "3:2",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          200,
+          0,
+          1000,
+          800
+        ],
+        "note_zh": "全部主要形象及装饰位于中央正方形内；勿强行作窄竖图裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "08-sapporo-otaru.svg",
+          "bytes": 5264,
+          "sha256": "8322dd8d94a413a4ea162f6c2d51a8e1f2fda24bf7008d0a51c023df7dacf6d4"
+        },
+        "png": {
+          "filename": "08-sapporo-otaru.png",
+          "bytes": 30135,
+          "sha256": "c120c7a21df50e8311b6f088893a66ad912c143c853064cb20b2fbc1241dc576"
+        }
+      }
+    },
+    {
+      "id": "09-matsumoto",
+      "title_zh": "松本黑色天守主题",
+      "alt_zh": "水面与松树旁的黑色多重屋顶城郭意象，原创示意非实景。",
+      "limitations_zh": "以松本城的黑色城郭印象为主题重新绘制，层数、屋顶、门窗、比例与周围环境均为艺术简化；不是建筑测绘、现场照片、导览平面图或开放状态证据。",
+      "palette": {
+        "accent": "#485D61",
+        "pale": "#E0E8E1",
+        "secondary": "#D8B678"
+      },
+      "filename": "09-matsumoto.png",
+      "svg": "09-matsumoto.svg",
+      "png": "09-matsumoto.png",
+      "caption_zh": "松本黑色天守主题；原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次原创编写 SVG 几何路径，以 Sharp 直接渲染 PNG；未使用第三方照片、素材、现成图标、字库或外链资源。",
+      "source_page": null,
+      "source_photo_date": null,
+      "creation_date_jst": "2026-10-13",
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "project_usage_rights": "Original AI-assisted, code-native concept illustrations made for Mangen. Delivered for the Mangen project to use, reproduce, adapt, crop, publish and distribute with its editorial content. No third-party photographs, stock illustrations, icon paths, logos, embedded fonts or external resources. This record does not guarantee copyright eligibility or exclusive ownership of AI-assisted material and does not apply a new public Creative Commons license.",
+      "ownership_note_zh": "为万源项目原创生成并交付使用，可随项目内容复制、修改、裁切、发布及分发；不保证 AI 辅助材料的著作权适格性或排他权利，未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称为官方地图、实景照片、实际设施、有效票券或经营者背书。",
+        "城郭与城市图不得作为当日修复、开放、运营或季节状态证据。",
+        "建议居中裁切；3:2 原图与 1:1 中心裁切已提供检查图。"
+      ],
+      "dimensions": {
+        "width": 1200,
+        "height": 800
+      },
+      "safe_crop": {
+        "center": [
+          600,
+          400
+        ],
+        "tested_aspect_ratios": [
+          "3:2",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          200,
+          0,
+          1000,
+          800
+        ],
+        "note_zh": "全部主要形象及装饰位于中央正方形内；勿强行作窄竖图裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "09-matsumoto.svg",
+          "bytes": 5575,
+          "sha256": "d4c369cd7995bea16e16889e465e47c69187c787cfebde4673e0738890c11545"
+        },
+        "png": {
+          "filename": "09-matsumoto.png",
+          "bytes": 40093,
+          "sha256": "81c47a2e53c7b48798d7ea89f26675cf92d247a0f038d50a02ceb6bc0ffb34bd"
+        }
+      }
+    },
+    {
+      "id": "10-himeji",
+      "title_zh": "姬路白色城郭与庭园主题",
+      "alt_zh": "小山上的白色多重屋顶城郭与松树、庭园踏石，原创示意非实景。",
+      "limitations_zh": "以姬路白色城郭与庭园为主题的艺术概括，未复刻真实天守、地形、庭园布局、入口或路线；不表示开放现状。",
+      "palette": {
+        "accent": "#7A9277",
+        "pale": "#E5EBDD",
+        "secondary": "#DDC289"
+      },
+      "filename": "10-himeji.png",
+      "svg": "10-himeji.svg",
+      "png": "10-himeji.png",
+      "caption_zh": "姬路白色城郭与庭园主题；原创示意非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "attribution_zh": "万源原创图示（AI辅助）｜原创示意非实景",
+      "source": "为万源文章批次原创编写 SVG 几何路径，以 Sharp 直接渲染 PNG；未使用第三方照片、素材、现成图标、字库或外链资源。",
+      "source_page": null,
+      "source_photo_date": null,
+      "creation_date_jst": "2026-10-13",
+      "authorship_type": "original_ai_assisted_code_native_conceptual_illustration",
+      "license": "项目原创图示；非第三方授权素材",
+      "license_url": null,
+      "project_usage_rights": "Original AI-assisted, code-native concept illustrations made for Mangen. Delivered for the Mangen project to use, reproduce, adapt, crop, publish and distribute with its editorial content. No third-party photographs, stock illustrations, icon paths, logos, embedded fonts or external resources. This record does not guarantee copyright eligibility or exclusive ownership of AI-assisted material and does not apply a new public Creative Commons license.",
+      "ownership_note_zh": "为万源项目原创生成并交付使用，可随项目内容复制、修改、裁切、发布及分发；不保证 AI 辅助材料的著作权适格性或排他权利，未新增面向公众的 CC 许可。",
+      "usage_requirements_zh": [
+        "随文章保留“原创示意非实景”图注。",
+        "不得称为官方地图、实景照片、实际设施、有效票券或经营者背书。",
+        "城郭与城市图不得作为当日修复、开放、运营或季节状态证据。",
+        "建议居中裁切；3:2 原图与 1:1 中心裁切已提供检查图。"
+      ],
+      "dimensions": {
+        "width": 1200,
+        "height": 800
+      },
+      "safe_crop": {
+        "center": [
+          600,
+          400
+        ],
+        "tested_aspect_ratios": [
+          "3:2",
+          "1:1"
+        ],
+        "square_pixel_bounds": [
+          200,
+          0,
+          1000,
+          800
+        ],
+        "note_zh": "全部主要形象及装饰位于中央正方形内；勿强行作窄竖图裁切。"
+      },
+      "files": {
+        "svg": {
+          "filename": "10-himeji.svg",
+          "bytes": 5255,
+          "sha256": "73115a6ccd16d399aa611b84d1f2b743e826cb70c3cfe0126499193cfba7bfcd"
+        },
+        "png": {
+          "filename": "10-himeji.png",
+          "bytes": 43739,
+          "sha256": "cb03791b244d362a79c9787e2d7f1c22a3409061fb9df57e739b0be31b510a1e"
+        }
+      }
+    }
+  ]
+}
