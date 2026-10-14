@@ -21,6 +21,8 @@ class PageContent(HTMLParser):
         self.in_company = False
         self.in_brand = False
         self.brand_text = []
+        self.footer_links = []
+        self.footer_link = None
         self.qualifications = []
         self.feed(source)
 
@@ -32,6 +34,8 @@ class PageContent(HTMLParser):
             self.in_company = True
         if tag == "a" and "brand" in attrs.get("class", "").split():
             self.in_brand = True
+        if tag == "a" and self.in_footer:
+            self.footer_link = [attrs.get("href"), ""]
         binding = attrs.get("data-bind")
         if binding in ("license-1", "license-2"):
             self.qualifications.append((binding, self.in_footer, self.in_company))
@@ -43,8 +47,13 @@ class PageContent(HTMLParser):
             self.in_company = False
         if tag == "a":
             self.in_brand = False
+            if self.footer_link is not None:
+                self.footer_links.append(tuple(self.footer_link))
+                self.footer_link = None
 
     def handle_data(self, data):
+        if self.footer_link is not None:
+            self.footer_link[1] += data
         if self.in_brand:
             self.brand_text.append(data)
 
@@ -54,6 +63,29 @@ def read_page(name):
 
 
 class SiteContentTests(unittest.TestCase):
+    def test_chinese_home_footer_uses_agreed_labels_and_preserves_destinations(self):
+        # Reverting either short label or changing/adding a destination must fail.
+        self.assertEqual(read_page("zh.html").footer_links, [
+            ("/blog/", "旅行指南"),
+            ("#services", "用车服务"),
+            ("#company", "公司介绍"),
+        ])
+
+    def test_authorized_article_corrections_remove_unsupported_promises(self):
+        for name, claims in {
+            "first-trip-japan-2026": ["最优解", "轻松游览 4～5 个", "全程不用搬", "往往与反复打车", "包车更稳妥", "随停随走", "都可以放进后备箱"],
+            "osaka-kyoto-nara-3days": ["性价比最高", "17:00 前送您回", "约 ¥160K", "约 ¥80K", "60%", "✅ 随时", "也完全可以"],
+        }.items():
+            source = (ROOT / "content/posts" / f"{name}.md").read_text(encoding="utf-8")
+            with self.subTest(article=name):
+                for claim in claims:
+                    self.assertNotIn(claim, source)
+                self.assertIn("确认", source)
+                self.assertIn("报价", source)
+        etiquette = (ROOT / "content/posts/japan-travel-etiquette.md").read_text(encoding="utf-8")
+        self.assertIn("万源的司机都会中文", etiquette)
+        self.assertIn("2026 年 11 月 1 日起购买", etiquette)
+
     def test_footers_do_not_repeat_company_qualifications(self):
         # Restoring a footer's license bindings must fail this test.
         for name in SITE_PAGES:
