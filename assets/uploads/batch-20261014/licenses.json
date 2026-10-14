@@ -1,0 +1,279 @@
+{
+  "batch_date": "2026-10-14",
+  "created_date_jst": "2026-10-14",
+  "creator": "万源文章原创图示（AI辅助）",
+  "status": "original_ai_assisted_project_artwork",
+  "license_statement": "项目原创图示，供万源项目配套文章使用、复制、修改、裁切、发布和分发；未另行授予公共 Creative Commons 许可。此记录不保证 AI 辅助作品的著作权资格、排他权或独占所有权。",
+  "third_party_artwork": false,
+  "typography": {
+    "font": "Noto Sans CJK SC Bold / Regular",
+    "use": "Text rendered as SVG paths; font files are not redistributed.",
+    "license": "SIL Open Font License 1.1",
+    "source_url": "https://github.com/notofonts/noto-cjk",
+    "local_license_source": "System package fonts-noto-cjk copyright record",
+    "notice": "Noto is a trademark of Google Inc. Font copyright notices are included in FONT-NOTICE.md; these are typography credits, not a license claim for the original illustration geometry."
+  },
+  "external_dependencies": false,
+  "files": [
+    {
+      "id": "01-hotel-room",
+      "title_zh": "日本酒店房型",
+      "alt_zh": "两张单人床与一张大床并置，背景为抽象客房窗景。 原创示意，非实景。",
+      "caption_zh": "日本酒店房型；原创示意 · 非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "source": "项目原创 SVG 几何图示；PNG 为对应 SVG 的直接栅格导出。非第三方授权图片素材。",
+      "limitations_zh": "房型与床型概念图，不对应任何酒店平面图、床铺尺寸、入住人数、设施或房型承诺。",
+      "crop_guidance": "Designed at 1600×1000; center-cropped 1.8:1 and square retain the central subject. Embedded text is secondary and is not expected to be readable at 96px or 112px; provide nearby article title, alt text and schematic caption. Keep original ratio when possible. Preserve or restate the illustrative-only caption near the image if cropped.",
+      "files": {
+        "svg": {
+          "filename": "01-hotel-room.svg",
+          "bytes": 23885,
+          "sha256": "fe1abc3b65a689bd284c6ef6984bc4970ff7f662a60aa271b8608b72fd5ff0d0",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "01-hotel-room.png",
+          "bytes": 50348,
+          "sha256": "279ffc3ec330f9eec7f3de301de453513abafce1c2596ce33bf9d0ef8a344499",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    },
+    {
+      "id": "02-electricity",
+      "title_zh": "日本用电准备",
+      "alt_zh": "手机、充电线与双扁脚 Type A 插头的原创图示。 原创示意，非实景。",
+      "caption_zh": "日本用电准备；原创示意 · 非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "source": "项目原创 SVG 几何图示；PNG 为对应 SVG 的直接栅格导出。非第三方授权图片素材。",
+      "limitations_zh": "为封闭式充电设备的概念图；不表示电压兼容、适配器认证、布线方法或适用所有设备的安全保证。",
+      "crop_guidance": "Designed at 1600×1000; center-cropped 1.8:1 and square retain the central subject. Embedded text is secondary and is not expected to be readable at 96px or 112px; provide nearby article title, alt text and schematic caption. Keep original ratio when possible. Preserve or restate the illustrative-only caption near the image if cropped.",
+      "files": {
+        "svg": {
+          "filename": "02-electricity.svg",
+          "bytes": 22879,
+          "sha256": "ef16dd03e5c4d232d25965fb5c57b5421fdb3fb3e0e3e13efb57e9b417affaf5",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "02-electricity.png",
+          "bytes": 83451,
+          "sha256": "ad71da4ccd005d5c6e6a2d7a314806baa6b5e11a991e527f2433da3e76367e26",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    },
+    {
+      "id": "03-drinking-water",
+      "title_zh": "旅途饮水补给",
+      "alt_zh": "人工补水设备与可重复使用水瓶的原创图示。 原创示意，非实景。",
+      "caption_zh": "旅途饮水补给；原创示意 · 非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "source": "项目原创 SVG 几何图示；PNG 为对应 SVG 的直接栅格导出。非第三方授权图片素材。",
+      "limitations_zh": "不是实际补水站或供水现状；不表示自然水体可直接饮用，也不保证任何地点的水质、可用性或设备功能。",
+      "crop_guidance": "Designed at 1600×1000; center-cropped 1.8:1 and square retain the central subject. Embedded text is secondary and is not expected to be readable at 96px or 112px; provide nearby article title, alt text and schematic caption. Keep original ratio when possible. Preserve or restate the illustrative-only caption near the image if cropped.",
+      "files": {
+        "svg": {
+          "filename": "03-drinking-water.svg",
+          "bytes": 24663,
+          "sha256": "a4099c62e6c33674a0a56dd999073a5edaf74148cbf70b1f84eb614ec142ed88",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "03-drinking-water.png",
+          "bytes": 64746,
+          "sha256": "2f260723f76e088bb7267f77d4e2c1d4a5e0b99cd7fbedb860b35af6cd535c0f",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    },
+    {
+      "id": "04-toilets",
+      "title_zh": "日本卫生间使用",
+      "alt_zh": "抽象坐便器与带停止、清洗等概念按钮的操作面板。 原创示意，非实景。",
+      "caption_zh": "日本卫生间使用；原创示意 · 非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "source": "项目原创 SVG 几何图示；PNG 为对应 SVG 的直接栅格导出。非第三方授权图片素材。",
+      "limitations_zh": "面板为主题示意，不对应任何品牌、机型或实际按键位置；使用时应以现场标识和说明为准。",
+      "crop_guidance": "Designed at 1600×1000; center-cropped 1.8:1 and square retain the central subject. Embedded text is secondary and is not expected to be readable at 96px or 112px; provide nearby article title, alt text and schematic caption. Keep original ratio when possible. Preserve or restate the illustrative-only caption near the image if cropped.",
+      "files": {
+        "svg": {
+          "filename": "04-toilets.svg",
+          "bytes": 27536,
+          "sha256": "2df5d53b520b3d47bda7321fe076c37bb85e35ba520fe695cfb184a664ba9950",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "04-toilets.png",
+          "bytes": 68562,
+          "sha256": "f6c9561782a82e041b10c89a919c36025c19457a9dd5f85aa82869d635898747",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    },
+    {
+      "id": "05-weather",
+      "title_zh": "出发前看天气",
+      "alt_zh": "雨云、太阳、雨伞与不含日期温度的抽象天气卡。 原创示意，非实景。",
+      "caption_zh": "出发前看天气；原创示意 · 非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "source": "项目原创 SVG 几何图示；PNG 为对应 SVG 的直接栅格导出。非第三方授权图片素材。",
+      "limitations_zh": "不是天气预报、实时天气、灾害警报、天气概率或出行安全保证。",
+      "crop_guidance": "Designed at 1600×1000; center-cropped 1.8:1 and square retain the central subject. Embedded text is secondary and is not expected to be readable at 96px or 112px; provide nearby article title, alt text and schematic caption. Keep original ratio when possible. Preserve or restate the illustrative-only caption near the image if cropped.",
+      "files": {
+        "svg": {
+          "filename": "05-weather.svg",
+          "bytes": 25228,
+          "sha256": "21bc39bfafd0cecf99e0c7e8e00f2c6b05720992354768bd3d65f02aef9767c1",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "05-weather.png",
+          "bytes": 81233,
+          "sha256": "598f1ca9b3b17913a36b8c7461516f07664006b9abdbcbb0a88e5e1be8e1c73a",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    },
+    {
+      "id": "06-gardens",
+      "title_zh": "日本庭园散步",
+      "alt_zh": "池塘、踏石、松树与石灯笼组成的虚构日式庭园。 原创示意，非实景。",
+      "caption_zh": "日本庭园散步；原创示意 · 非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "source": "项目原创 SVG 几何图示；PNG 为对应 SVG 的直接栅格导出。非第三方授权图片素材。",
+      "limitations_zh": "纯属风格化庭园意象，不对应实际景点、现场景观、植物季相、地理布局或可通行路线。",
+      "crop_guidance": "Designed at 1600×1000; center-cropped 1.8:1 and square retain the central subject. Embedded text is secondary and is not expected to be readable at 96px or 112px; provide nearby article title, alt text and schematic caption. Keep original ratio when possible. Preserve or restate the illustrative-only caption near the image if cropped.",
+      "files": {
+        "svg": {
+          "filename": "06-gardens.svg",
+          "bytes": 22986,
+          "sha256": "491ef0cc69c22c3fa4cb83a998d6390200335a05be58cf5c402f95b98d55efd6",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "06-gardens.png",
+          "bytes": 83285,
+          "sha256": "7569f20624f470a81e4d663411a7e431dbf4578fee04db24ce0adc6baeb2ee6c",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    },
+    {
+      "id": "07-shopping-sizes",
+      "title_zh": "购物先核对尺码",
+      "alt_zh": "衣物、鞋履与不带数值的软尺，以及试穿标签。 原创示意，非实景。",
+      "caption_zh": "购物先核对尺码；原创示意 · 非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "source": "项目原创 SVG 几何图示；PNG 为对应 SVG 的直接栅格导出。非第三方授权图片素材。",
+      "limitations_zh": "不含尺码换算、身体测量数值、品牌尺寸、脚长等数据，不表示通用尺码等价关系。",
+      "crop_guidance": "Designed at 1600×1000; center-cropped 1.8:1 and square retain the central subject. Embedded text is secondary and is not expected to be readable at 96px or 112px; provide nearby article title, alt text and schematic caption. Keep original ratio when possible. Preserve or restate the illustrative-only caption near the image if cropped.",
+      "files": {
+        "svg": {
+          "filename": "07-shopping-sizes.svg",
+          "bytes": 27909,
+          "sha256": "bbef05891647bfc87680b8374a9375579256e64752c1b1cb3ec2414d045a513f",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "07-shopping-sizes.png",
+          "bytes": 74099,
+          "sha256": "45274a35f036511787c0704a86365f52a0483a834c9fc5d480754b6ba4c50c7f",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    },
+    {
+      "id": "08-tax-free",
+      "title_zh": "免税购物制度切换",
+      "alt_zh": "标明 2026 年的 10/31 与 11/01 日历，以箭头表示制度切换。 原创示意，非实景。",
+      "caption_zh": "免税购物制度切换；原创示意 · 非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "source": "项目原创 SVG 几何图示；PNG 为对应 SVG 的直接栅格导出。非第三方授权图片素材。",
+      "limitations_zh": "仅示意 2026 年 11 月 1 日制度切换的时间节点；不含税率、退款数额、个人适用资格或完整办理规则。",
+      "crop_guidance": "Designed at 1600×1000; center-cropped 1.8:1 and square retain the central subject. Embedded text is secondary and is not expected to be readable at 96px or 112px; provide nearby article title, alt text and schematic caption. Keep original ratio when possible. Preserve or restate the illustrative-only caption near the image if cropped.",
+      "files": {
+        "svg": {
+          "filename": "08-tax-free.svg",
+          "bytes": 38947,
+          "sha256": "46cdf2a4edd5dac4dd51386ff8b61bdb2d1f00ddf6e611dbd957681ee6df53fe",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "08-tax-free.png",
+          "bytes": 106367,
+          "sha256": "70ba8b5ef13395ff8e681a763093b7de40e76775cf360842d42e4d6103fd87b6",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    },
+    {
+      "id": "09-domestic-flight",
+      "title_zh": "日本国内航班",
+      "alt_zh": "无品牌飞机、抽象航站楼、行李箱与无效的登机卡符号。 原创示意，非实景。",
+      "caption_zh": "日本国内航班；原创示意 · 非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "source": "项目原创 SVG 几何图示；PNG 为对应 SVG 的直接栅格导出。非第三方授权图片素材。",
+      "limitations_zh": "不对应真实航空公司、机场、航线、票据、航班状态、行李额度或值机政策。",
+      "crop_guidance": "Designed at 1600×1000; center-cropped 1.8:1 and square retain the central subject. Embedded text is secondary and is not expected to be readable at 96px or 112px; provide nearby article title, alt text and schematic caption. Keep original ratio when possible. Preserve or restate the illustrative-only caption near the image if cropped.",
+      "files": {
+        "svg": {
+          "filename": "09-domestic-flight.svg",
+          "bytes": 26182,
+          "sha256": "042cb20a229abd799d0704e554250fd565015e3df46729d12a681f4484e94c97",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "09-domestic-flight.png",
+          "bytes": 76949,
+          "sha256": "4d8440667b2b0df34e369a7076a1fdde4ce82d7895f0c11d0dd2abf7a724e5d7",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    },
+    {
+      "id": "10-ferry",
+      "title_zh": "日本渡轮出行",
+      "alt_zh": "无品牌客船、水面与带床铺符号的抽象船票卡。 原创示意，非实景。",
+      "caption_zh": "日本渡轮出行；原创示意 · 非实景。",
+      "creator": "万源文章原创图示（AI辅助）",
+      "source": "项目原创 SVG 几何图示；PNG 为对应 SVG 的直接栅格导出。非第三方授权图片素材。",
+      "limitations_zh": "不描绘实际船舶、港口、航线、船票或舱房，不代表运行状态、海况、设施或舱位保证。",
+      "crop_guidance": "Designed at 1600×1000; center-cropped 1.8:1 and square retain the central subject. Embedded text is secondary and is not expected to be readable at 96px or 112px; provide nearby article title, alt text and schematic caption. Keep original ratio when possible. Preserve or restate the illustrative-only caption near the image if cropped.",
+      "files": {
+        "svg": {
+          "filename": "10-ferry.svg",
+          "bytes": 24467,
+          "sha256": "0ba723ed7b708224c7a7fb42e6f8f59ad0adfddf6dd46bf9425599304ae229e1",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "10-ferry.png",
+          "bytes": 76084,
+          "sha256": "a3027784f0168cdbd8d8f34f59885f18b74b3bec88e5f494584e17fa49b6381d",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    }
+  ]
+}
