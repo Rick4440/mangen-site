@@ -1,0 +1,247 @@
+{
+  "batch_date": "2026-10-15",
+  "creator": "万源文章原创图示（AI辅助）",
+  "status": "original_ai_assisted_project_artwork",
+  "license_statement": "原创图示供万源项目配套文章使用、复制、修改、裁切、发布和分发；未另行授予公共 Creative Commons 许可。此记录不保证 AI 辅助作品的著作权资格、排他权或独占所有权。",
+  "third_party_artwork": false,
+  "external_dependencies": false,
+  "typography": {
+    "font": "Noto Sans CJK SC Bold / Regular",
+    "license": "SIL Open Font License 1.1",
+    "source_url": "https://github.com/notofonts/noto-cjk",
+    "use": "Text converted to SVG paths; font files are not redistributed.",
+    "notice": "See FONT-NOTICE.md for original copyright and license notices. Font license does not license the original illustration geometry."
+  },
+  "files": [
+    {
+      "id": "01",
+      "title_zh": "日本租车证件核对",
+      "alt_zh": "无品牌汽车、抽象证件册与空白核对清单。 原创示意，非实景。",
+      "caption_zh": "日本租车证件核对；原创示意 · 非实景。",
+      "limitations_zh": "非官方证件样本，不表示任何证件组合、驾驶资格或租车条件获认可。",
+      "files": {
+        "svg": {
+          "filename": "01.svg",
+          "bytes": 29953,
+          "sha256": "53031a8ea3de3509668b44bd0139c7b2c2417b81d6ce25f1b5900b4515009721",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "01.png",
+          "bytes": 100722,
+          "sha256": "2efd4372cc586f1ff25237737b5c23aa9c619239811b16ec2ac02dbb4f72cefe",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    },
+    {
+      "id": "02",
+      "title_zh": "食物过敏，先沟通",
+      "alt_zh": "关于食物过敏的对话气泡、信息卡与一碗抽象食物。 原创示意，非实景。",
+      "caption_zh": "食物过敏，先沟通；原创示意 · 非实景。",
+      "limitations_zh": "非医学建议、官方过敏卡或安全餐食示范；不表示餐厅可排除过敏原或交叉接触风险。",
+      "files": {
+        "svg": {
+          "filename": "02.svg",
+          "bytes": 36533,
+          "sha256": "717a1b3aa3e19259c9925ee38dafa6813790821254b30c3955ca4de0b510b4c4",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "02.png",
+          "bytes": 100269,
+          "sha256": "0bae671d263a7f5b4629ba7ff8c601d7d2fb01069562b31472be3fff37e5847d",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    },
+    {
+      "id": "03",
+      "title_zh": "轮椅出行与酒店确认",
+      "alt_zh": "轮椅旅客与带平整入口的虚构酒店，提示提前核对通路和房间。 原创示意，非实景。",
+      "caption_zh": "轮椅出行与酒店确认；原创示意 · 非实景。",
+      "limitations_zh": "非真实酒店、无障碍认证、建筑平面图或通行保证；不提供坡度、净宽或房间尺寸。",
+      "files": {
+        "svg": {
+          "filename": "03.svg",
+          "bytes": 31705,
+          "sha256": "97a8ab4cd1f736d546ef38c813f4fb3d57050c35a5d9047f242dc8f94cc0e7eb",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "03.png",
+          "bytes": 74485,
+          "sha256": "e83fdf17fbdd6564b09ef608a994e97fd29d0096b221567b4cfcbd3d2bbcdad6",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    },
+    {
+      "id": "04",
+      "title_zh": "机场行李配送",
+      "alt_zh": "行李箱、无具体日期的日历与抽象机场取件柜台。 原创示意，非实景。",
+      "caption_zh": "机场行李配送；原创示意 · 非实景。",
+      "limitations_zh": "非实际机场或运营商服务图；不表示配送时效、当天可寄取、柜台位置或服务可用性。",
+      "files": {
+        "svg": {
+          "filename": "04.svg",
+          "bytes": 33662,
+          "sha256": "906cf82d26f2e47054067c479a42bcfa4f810d5bab78eddff7a24909d4e35ad3",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "04.png",
+          "bytes": 64052,
+          "sha256": "5f95e3fd4108882d259b268d5fd31b38e7af3bd7615a958544a91a3ac5ba617d",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    },
+    {
+      "id": "05",
+      "title_zh": "仙台与松岛慢游",
+      "alt_zh": "自由组合的松树岛屿、海湾水面与仙台至松岛的行程意象。 原创示意，非实景。",
+      "caption_zh": "仙台与松岛慢游；原创示意 · 非实景。",
+      "limitations_zh": "非实景、真实岛屿排列、地理地图或交通路线图；不表示天气、交通班次或运行状态。",
+      "files": {
+        "svg": {
+          "filename": "05.svg",
+          "bytes": 33387,
+          "sha256": "b853aab3f31d9d98faeb717c7942648004e6ea03de6901dba97af14206893daa",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "05.png",
+          "bytes": 83769,
+          "sha256": "55a83971d718a2e72ce43a03dcc40192e0b41687200c2bfb90256a11426c3518",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    },
+    {
+      "id": "06",
+      "title_zh": "长崎电车与夜景",
+      "alt_zh": "无品牌路面电车、抽象山坡灯火与海港水面。 原创示意，非实景。",
+      "caption_zh": "长崎电车与夜景；原创示意 · 非实景。",
+      "limitations_zh": "非实际电车型号、地形图、站点路线或特定展望点实景；不表示无障碍条件或运营状态。",
+      "files": {
+        "svg": {
+          "filename": "06.svg",
+          "bytes": 29939,
+          "sha256": "4a20681484fc32f82a37ef0dea10033b90840e02ba05e99238f918724e73ef86",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "06.png",
+          "bytes": 64780,
+          "sha256": "f6b622a5407b58f82f8f70473ad4ea118405d6676a9d304cdcc96ff470fcf289",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    },
+    {
+      "id": "07",
+      "title_zh": "广岛和平公园与学习",
+      "alt_zh": "抽象公园、河畔树木、非特定博物馆建筑与摊开的学习手册。 原创示意，非实景。",
+      "caption_zh": "广岛和平公园与学习；原创示意 · 非实景。",
+      "limitations_zh": "非和平公园或资料馆实景，不复刻纪念设施；不表示实际建筑、展览内容、导览路线或开放状态。",
+      "files": {
+        "svg": {
+          "filename": "07.svg",
+          "bytes": 29984,
+          "sha256": "a5a34ce1ac72cedb9b1f7a829118c26d6ac13dd47f11154304c79b2b8ece9302",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "07.png",
+          "bytes": 73174,
+          "sha256": "921b444a601dc54598feb1c6e0793a03dd4dd843adb8f3c165eaf500b977a199",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    },
+    {
+      "id": "08",
+      "title_zh": "歌舞伎初体验",
+      "alt_zh": "三色幕布意象、虚构舞台与原创折扇。 原创示意，非实景。",
+      "caption_zh": "歌舞伎初体验；原创示意 · 非实景。",
+      "limitations_zh": "非具体剧院、剧目、舞台座位图或角色造型；不表示当日演出、票种或服务承诺。",
+      "files": {
+        "svg": {
+          "filename": "08.svg",
+          "bytes": 28124,
+          "sha256": "50d0f1a7483a88ae2a222815b644c1e38d1d61950ecae38b824bf52b9f5d7f35",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "08.png",
+          "bytes": 83450,
+          "sha256": "d6b79f93ab90de120eb3b9ee9a30fb79e5bad2375972e95c4effb1f5c267e378",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    },
+    {
+      "id": "09",
+      "title_zh": "日本棒球现场观赛",
+      "alt_zh": "抽象棒球场、看台、球棒与无品牌棒球。 原创示意，非实景。",
+      "caption_zh": "日本棒球现场观赛；原创示意 · 非实景。",
+      "limitations_zh": "非任何真实球场平面图、座位区、球队标志或比赛实况；不表示售票、赛程或携物规则。",
+      "files": {
+        "svg": {
+          "filename": "09.svg",
+          "bytes": 29350,
+          "sha256": "1d66a86aa2c3bc922695c2f93c4591495948478ee595d225f429fa8d366e4522",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "09.png",
+          "bytes": 111041,
+          "sha256": "34178561fa5888557685d7fb6fc71d5fbf4bad642fa8d743562ac794725ef5a8",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    },
+    {
+      "id": "10",
+      "title_zh": "展望台夜景入门",
+      "alt_zh": "室内窗框、望远镜与完全虚构的城市夜景。 原创示意，非实景。",
+      "caption_zh": "展望台夜景入门；原创示意 · 非实景。",
+      "limitations_zh": "非特定展望台实景、楼层图或真实天际线；不表示能见度、夜景效果、服务设施或开放状态。",
+      "files": {
+        "svg": {
+          "filename": "10.svg",
+          "bytes": 39308,
+          "sha256": "df48163fc098b98f1bb90ea5722198b02ff1c9687982644c93e7c8fff2d2f22a",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "10.png",
+          "bytes": 62377,
+          "sha256": "b0a0cd576b9a396aa3662c1f29cbd69dabc127ef9b291e39bb84f0fd44c9f77e",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    }
+  ]
+}

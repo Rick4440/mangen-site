@@ -1,0 +1,247 @@
+{
+  "batch_date": "2026-10-16",
+  "creator": "万源文章原创图示（AI辅助）",
+  "status": "original_ai_assisted_project_artwork",
+  "license_statement": "原创图示供万源项目配套文章使用、复制、修改、裁切、发布和分发；未另行授予公共 Creative Commons 许可。此记录不保证 AI 辅助作品的著作权资格、排他权或独占所有权。",
+  "third_party_artwork": false,
+  "external_dependencies": false,
+  "typography": {
+    "font": "Noto Sans CJK SC Bold / Regular",
+    "license": "SIL Open Font License 1.1",
+    "source_url": "https://github.com/notofonts/noto-cjk",
+    "use": "Text converted to SVG paths; font files are not redistributed.",
+    "notice": "See FONT-NOTICE.md for original copyright and license notices. Font license does not license the original illustration geometry."
+  },
+  "files": [
+    {
+      "id": "01-drugstore",
+      "title_zh": "日本药妆店购物",
+      "alt_zh": "无品牌商品、标签与核对卡。 原创示意，非实景。",
+      "caption_zh": "日本药妆店购物；原创示意 · 非实景。",
+      "limitations_zh": "非药品推荐、医学建议或有效产品标签；不表示功效、适用性或用药许可。",
+      "files": {
+        "svg": {
+          "filename": "01-drugstore.svg",
+          "bytes": 34613,
+          "sha256": "a77a637129af53139ac4b21e91bb7bf694d19173cb73b35e811db86872bb5524",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "01-drugstore.png",
+          "bytes": 81701,
+          "sha256": "8b111f107ac3fb10f4249e4fb148b2f30cdbb6004bce29acae672a659b25e7e0",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    },
+    {
+      "id": "02-izakaya",
+      "title_zh": "居酒屋点单与结账",
+      "alt_zh": "抽象菜单、账单与餐碟。 原创示意，非实景。",
+      "caption_zh": "居酒屋点单与结账；原创示意 · 非实景。",
+      "limitations_zh": "非真实店铺菜单或账单；不表示价格、附加费或餐厅政策。",
+      "files": {
+        "svg": {
+          "filename": "02-izakaya.svg",
+          "bytes": 30033,
+          "sha256": "1d3ae1794173036130f7bc3413c1acc4e98d37f5b8b3003a0df1c3dee154335c",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "02-izakaya.png",
+          "bytes": 93226,
+          "sha256": "e1530fb4533cc1d52dc96200968f368b1ab5457bedac485d81cb1b509b0b2b59",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    },
+    {
+      "id": "03-karaoke",
+      "title_zh": "日本卡拉 OK 入门",
+      "alt_zh": "通用麦克风、音响与预约确认屏幕。 原创示意，非实景。",
+      "caption_zh": "日本卡拉 OK 入门；原创示意 · 非实景。",
+      "limitations_zh": "非真实门店、品牌设备、预订界面或费用承诺。",
+      "files": {
+        "svg": {
+          "filename": "03-karaoke.svg",
+          "bytes": 26926,
+          "sha256": "f2a3cd50239c6c59bb58de2813bf6926b62e83c5110d469c5c48f59ff747c6ff",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "03-karaoke.png",
+          "bytes": 70141,
+          "sha256": "c9267541570552f821cf90de0d25d41ebb14358d51b0ddc61a12306fd7ea6922",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    },
+    {
+      "id": "04-postcard",
+      "title_zh": "从日本寄明信片",
+      "alt_zh": "原创风景明信片与明确标注非邮票的占位图案。 原创示意，非实景。",
+      "caption_zh": "从日本寄明信片；原创示意 · 非实景。",
+      "limitations_zh": "非有效邮票、邮资凭证、邮寄格式范本或邮政服务承诺。",
+      "files": {
+        "svg": {
+          "filename": "04-postcard.svg",
+          "bytes": 30558,
+          "sha256": "4c45dabdd50ff4998c983958b3fe7275e33f36a5592aebbeae2e204de0eab2ae",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "04-postcard.png",
+          "bytes": 82983,
+          "sha256": "46107cd00add92fe097bd7f9449c5259aa1bc1e8285c2e6fc0726d7fbcebb797",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    },
+    {
+      "id": "05-vegan",
+      "title_zh": "在日本寻找纯素餐",
+      "alt_zh": "蔬菜餐盘与汤底、调味料、配料核对卡。 原创示意，非实景。",
+      "caption_zh": "在日本寻找纯素餐；原创示意 · 非实景。",
+      "limitations_zh": "非纯素认证或安全餐食保证；图示不判断真实餐点成分或交叉接触风险。",
+      "files": {
+        "svg": {
+          "filename": "05-vegan.svg",
+          "bytes": 33668,
+          "sha256": "726496f8d928b164e9ad52005e4f94aad011bd02e50b05a386f2b71b553a4b94",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "05-vegan.png",
+          "bytes": 81752,
+          "sha256": "13f0d250bbebfbd8a98fd50d46ae9693d7d4e916f693d3ec3722e76921dcdea7",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    },
+    {
+      "id": "06-shizuoka",
+      "title_zh": "静冈城市慢游",
+      "alt_zh": "抽象城市、山坡与步行意象。 原创示意，非实景。",
+      "caption_zh": "静冈城市慢游；原创示意 · 非实景。",
+      "limitations_zh": "非静冈实景、地理位置图、富士山轮廓或观景保证。",
+      "files": {
+        "svg": {
+          "filename": "06-shizuoka.svg",
+          "bytes": 24582,
+          "sha256": "f65b2f0dbfd9a6e1f4028d471c6d321cb7baa0d35e643a9e5763d56480cd8e16",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "06-shizuoka.png",
+          "bytes": 57045,
+          "sha256": "70254d3aac971c0d75ae43dbfbefb02a3e18f534ae989a2a008754a95810cfd1",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    },
+    {
+      "id": "07-kumamoto",
+      "title_zh": "熊本城迹与庭园",
+      "alt_zh": "通用城楼符号、树木与庭园意象。 原创示意，非实景。",
+      "caption_zh": "熊本城迹与庭园；原创示意 · 非实景。",
+      "limitations_zh": "非熊本城建筑复原、现场布局、路线或开放状态说明。",
+      "files": {
+        "svg": {
+          "filename": "07-kumamoto.svg",
+          "bytes": 28043,
+          "sha256": "895d2ba3aa8cf980aa11b7e68d8d97d84f3f05c8752f96ca91120de7888b0971",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "07-kumamoto.png",
+          "bytes": 64165,
+          "sha256": "7886aa3fc820b30d064cecb83a6a732d1b1fe5bfda29b9384b8e17c73eb701b4",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    },
+    {
+      "id": "08-nagano",
+      "title_zh": "长野寺院与城市散步",
+      "alt_zh": "非特定寺院建筑符号、树木与慢行指示。 原创示意，非实景。",
+      "caption_zh": "长野寺院与城市散步；原创示意 · 非实景。",
+      "limitations_zh": "非善光寺或其他寺院实景、建筑复原、参道地图或参访许可。",
+      "files": {
+        "svg": {
+          "filename": "08-nagano.svg",
+          "bytes": 25888,
+          "sha256": "8fbf0d3d5fe96e9b247acee36962a214b47f7b9b1e9303bc855970cbddc23bbb",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "08-nagano.png",
+          "bytes": 59541,
+          "sha256": "b904012d36c4d8471321b24a41d8759e62d4d695c0ba7d270a82e2ba36fe262c",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    },
+    {
+      "id": "09-otsu",
+      "title_zh": "大津湖畔慢游",
+      "alt_zh": "自由组合的湖面、城市与步道。 原创示意，非实景。",
+      "caption_zh": "大津湖畔慢游；原创示意 · 非实景。",
+      "limitations_zh": "非琵琶湖地理图、大津岸线、交通路线或特定视角实景。",
+      "files": {
+        "svg": {
+          "filename": "09-otsu.svg",
+          "bytes": 25553,
+          "sha256": "d4f314330dce2db90731878a08cd48fdba4fcf415b0de92d6de54a1874fde49d",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "09-otsu.png",
+          "bytes": 61067,
+          "sha256": "049637c2bf50f39c2b9703254c126dfa7be4e00cfb749682dd11c2140d328e0d",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    },
+    {
+      "id": "10-wakayama",
+      "title_zh": "和歌山城迹与海岸",
+      "alt_zh": "通用城楼符号、绿地与海岸意象。 原创示意，非实景。",
+      "caption_zh": "和歌山城迹与海岸；原创示意 · 非实景。",
+      "limitations_zh": "非和歌山城复原、实际岸线或城与海相邻的地理陈述；不表示路线或开放状态。",
+      "files": {
+        "svg": {
+          "filename": "10-wakayama.svg",
+          "bytes": 26796,
+          "sha256": "5ea65b7785616c13f50268584a762223de8a7bf45d307b2447c369226515ad5c",
+          "width": 1600,
+          "height": 1000
+        },
+        "png": {
+          "filename": "10-wakayama.png",
+          "bytes": 62632,
+          "sha256": "0f108e4654dd03e750788906c55dc296bfd935427883a0e68cd2a43b3be310b1",
+          "width": 1600,
+          "height": 1000
+        }
+      }
+    }
+  ]
+}
