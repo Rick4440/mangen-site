@@ -11,7 +11,7 @@
 (function () {
   'use strict';
 
-  const LANG = (document.documentElement.lang || 'ja').toLowerCase();
+  const LANG = (document.documentElement.lang || 'ja').toLowerCase().split('-')[0];
   const BASE = window.location.origin;
   const $ = (sel, root) => (root || document).querySelector(sel);
   const $$ = (sel, root) => Array.from((root || document).querySelectorAll(sel));
