@@ -65,11 +65,13 @@ def read_page(name):
 class SiteContentTests(unittest.TestCase):
     def test_chinese_home_footer_uses_agreed_labels_and_preserves_destinations(self):
         # Reverting either short label or changing/adding a destination must fail.
-        self.assertEqual(read_page("zh.html").footer_links, [
+        links = read_page("zh.html").footer_links
+        self.assertEqual([item for item in links if not item[0].startswith("mailto:")], [
             ("/blog/", "旅行指南"),
             ("#services", "用车服务"),
             ("#company", "公司介绍"),
         ])
+        self.assertIn(("mailto:info@mangen.jp", "info@mangen.jp"), links)
 
     def test_authorized_article_corrections_remove_unsupported_promises(self):
         for name, claims in {
@@ -111,7 +113,10 @@ class SiteContentTests(unittest.TestCase):
                 brand_text = "".join(read_page(name).brand_text)
                 self.assertNotIn(r"\n", brand_text)
                 self.assertIn("株式会社万源", brand_text)
-                self.assertIn("MANGEN CO., LTD.", brand_text)
+                if name == "en.html":
+                    self.assertIn("Mangen Co., Ltd.", brand_text)
+                else:
+                    self.assertIn("MANGEN CO., LTD.", brand_text)
 
 
 if __name__ == "__main__":

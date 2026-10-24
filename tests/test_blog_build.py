@@ -104,9 +104,13 @@ class BuildTests(unittest.TestCase):
         for path in (self.root / 'blog').rglob('*.html'):
             with self.subTest(page=path.relative_to(self.root)):
                 header = path.read_text().split('</header>', 1)[0]
-                for href, label in [('/zh#services', '用车服务'), ('/zh#fleet', '车型介绍'),
-                                    ('/blog/', '旅行指南'), ('/zh#contact', '联系我们')]:
+                for href, label in [('/zh#services', '服务'), ('/zh#fleet', '车型'),
+                                    ('/blog/', '旅行指南'), ('/zh#contact', '联系我们'),
+                                    ('/zh#company', '关于我们')]:
                     self.assertIn(f'href="{href}">{label}</a>', header)
+                self.assertIn('日本語首页', header)
+                self.assertIn('English 首页', header)
+                self.assertNotIn('>JA</a>', header)
     def test_generated_footer_labels_are_consistent_and_keep_destinations(self):
         self.build()
         # Reverting a footer template must fail for all articles or list pages.
@@ -117,10 +121,14 @@ class BuildTests(unittest.TestCase):
                 if path.name == 'index.html':
                     self.assertEqual([a['href'] for a in links], ['/zh', '/zh#company'])
                     self.assertIn('<a href="/zh#company">公司介绍</a>', footer)
+                    self.assertIn('072-275-4665', footer)
+                    self.assertIn('info@mangen.jp', footer)
                 else:
-                    self.assertEqual([a['href'] for a in links], ['/zh', '/blog/'])
+                    self.assertEqual([a['href'] for a in links], ['mailto:info@mangen.jp', '/zh', '/blog/'])
                     self.assertIn('<a href="/zh">返回首页</a>', footer)
                     self.assertIn('<a href="/blog/">旅行指南</a>', footer)
+                    self.assertIn('042-649-9057', footer)
+                    self.assertNotIn('日本全国', footer)
 
     def test_explicit_optional_metadata_is_used_and_escaped(self):
         self.extra_posts(1); path=self.root/'content/posts/b-20261001-000000.md'

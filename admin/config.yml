@@ -80,13 +80,17 @@ collections:
                 widget: "object"
                 fields:
                   - { label: "文字", name: "value", widget: "string" }
+                  - { label: "日文说明", name: "ja", widget: "string" }
                   - { label: "中文说明", name: "zh", widget: "string" }
+                  - { label: "英文说明", name: "en", widget: "string" }
               - label: "资质 2"
                 name: "2"
                 widget: "object"
                 fields:
                   - { label: "文字", name: "value", widget: "string" }
+                  - { label: "日文说明", name: "ja", widget: "string" }
                   - { label: "中文说明", name: "zh", widget: "string" }
+                  - { label: "英文说明", name: "en", widget: "string" }
           - label: "联系方式徽章（LINE/微信/WhatsApp/Mail）"
             name: "channels"
             widget: "list"
@@ -99,7 +103,16 @@ collections:
                   - { label: "日文", name: "ja", widget: "string" }
                   - { label: "中文", name: "zh", widget: "string" }
                   - { label: "英文", name: "en", widget: "string" }
-              - { label: "实际值（ID/邮箱等，未配置填「準備中」）", name: "value", widget: "string" }
+              - { label: "实际值（ID/邮箱等，未开通填「準備中」）", name: "value", widget: "string" }
+              - { label: "未开通则隐藏", name: "pending", widget: "boolean", required: false, default: false }
+              - label: "未开通时的多语言提示（页面在开通前不显示）"
+                name: "value_i18n"
+                widget: "object"
+                required: false
+                fields:
+                  - { label: "日文", name: "ja", widget: "string" }
+                  - { label: "中文", name: "zh", widget: "string" }
+                  - { label: "英文", name: "en", widget: "string" }
           - label: "公司信息展示（多语言）"
             name: "info_rows_i18n"
             widget: "object"
@@ -133,10 +146,18 @@ collections:
                   - { label: "国家", name: "addressCountry", widget: "string" }
               - label: "服务地区"
                 name: "areaServed"
-                widget: "object"
+                widget: "list"
                 fields:
-                  - { label: "类型", name: "@type", widget: "hidden", default: "Country" }
-                  - { label: "国家", name: "name", widget: "string" }
+                  - { label: "类型", name: "@type", widget: "string", default: "AdministrativeArea" }
+                  - { label: "名称", name: "name", widget: "string" }
+              - label: "东京据点"
+                name: "department"
+                widget: "object"
+                required: false
+                fields:
+                  - { label: "类型", name: "@type", widget: "string" }
+                  - { label: "名称", name: "name", widget: "string" }
+                  - { label: "电话", name: "telephone", widget: "string" }
               - { label: "服务语言", name: "availableLanguage", widget: "list", field: { label: "语言代码", name: "language", widget: "string" } }
               - { label: "营业时间", name: "openingHours", widget: "string" }
 

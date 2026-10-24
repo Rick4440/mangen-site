@@ -25,4 +25,12 @@ class PreviewTests(unittest.TestCase):
                 from urllib.error import HTTPError
                 with self.assertRaises(HTTPError) as caught: urlopen(base+'/.git/config')
                 self.assertEqual(caught.exception.code,404)
+                (root/'en.html').write_text('english-home')
+                (root/'index.html').write_text('japanese-home')
+                (root/'404.html').write_text('missing-page')
+                with self.assertRaises(HTTPError) as missing: urlopen(base+'/en/blog/')
+                self.assertEqual(missing.exception.code,404)
+                body = missing.exception.read()
+                self.assertEqual(body, b'missing-page')
+                self.assertNotIn(b'japanese-home', body)
             finally: server.shutdown();server.server_close();thread.join()

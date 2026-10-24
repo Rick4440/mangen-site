@@ -1,0 +1,4 @@
+# /en/blog has no English articles. Serve a real 404 instead of the Japanese homepage.
+/en/blog /404.html 404
+/en/blog/ /404.html 404
+/en/blog/* /404.html 404

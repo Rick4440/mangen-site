@@ -77,9 +77,40 @@ def load_post(path):
 
 
 PER_PAGE = 12
-TOPICS = ["行程路线", "交通与接送", "目的地攻略", "住宿美食", "季节活动", "旅行实用", "万源动态"]
-DESTINATIONS = ["全日本", "东京", "京都", "大阪", "奈良", "富士山", "箱根", "北海道", "冲绳", "名古屋", "福冈"]
-TOPIC_FALLBACK = {"a": "交通与接送", "b": "旅行实用", "c": "旅行实用", "d": "行程路线", "e": "万源动态"}
+TOPICS = ["行程路线", "景点行程", "交通与接送", "交通出行", "机场与出入境", "购物退税", "目的地攻略", "住宿美食", "季节活动", "礼仪与生活", "万源动态"]
+DESTINATIONS = ["东京", "京都", "大阪", "奈良", "富士山", "箱根", "北海道", "札幌", "小樽", "函馆", "二世古", "名古屋", "福冈", "冲绳", "那霸", "神户", "广岛", "宫岛", "镰仓", "江之岛", "横滨", "宇治", "川越", "金泽", "高山", "日光", "松本", "姬路", "仙台", "长崎", "静冈", "熊本", "长野", "滋贺", "和歌山", "高松", "松山", "热海", "尾道", "鸟取", "青森", "鹿儿岛", "别府", "新潟", "富山", "福井", "盛冈", "德岛", "松江", "高知", "弘前", "秋田", "山形", "上高地", "长瀞", "足利", "箕面", "高尾山", "冈山", "仓敷", "羽田", "成田", "三重", "三重・伊势"]
+TOPIC_FALLBACK = {"a": "交通与接送", "b": "礼仪与生活", "c": "交通出行", "d": "行程路线", "e": "万源动态"}
+# Longer aliases first. A mention used only as a return/transfer point is not the article's region.
+PLACE_RULES = [("伊势神宫", "三重・伊势"), ("名花之里", "三重"), ("河口湖", "富士山"), ("山中湖", "富士山"), ("高尾山", "高尾山"), ("二世古", "二世古"), ("函馆", "函馆"), ("小樽", "小樽"), ("札幌", "札幌"), ("镰仓", "镰仓"), ("江之岛", "江之岛"), ("宫岛", "宫岛"), ("广岛", "广岛"), ("神户", "神户"), ("横滨", "横滨"), ("宇治", "宇治"), ("川越", "川越"), ("金泽", "金泽"), ("高山", "高山"), ("日光", "日光"), ("松本", "松本"), ("姬路", "姬路"), ("仙台", "仙台"), ("长崎", "长崎"), ("静冈", "静冈"), ("熊本", "熊本"), ("长野", "长野"), ("滋贺", "滋贺"), ("和歌山", "和歌山"), ("高松", "高松"), ("松山", "松山"), ("热海", "热海"), ("尾道", "尾道"), ("鸟取", "鸟取"), ("青森", "青森"), ("鹿儿岛", "鹿儿岛"), ("别府", "别府"), ("新潟", "新潟"), ("富山", "富山"), ("福井", "福井"), ("盛冈", "盛冈"), ("德岛", "德岛"), ("松江", "松江"), ("高知", "高知"), ("弘前", "弘前"), ("秋田", "秋田"), ("山形", "山形"), ("上高地", "上高地"), ("长瀞", "长瀞"), ("足利", "足利"), ("箕面", "箕面"), ("那霸", "那霸"), ("USJ", "大阪"), ("迪士尼", "东京"), ("冈山", "冈山"), ("仓敷", "仓敷"), ("羽田", "羽田"), ("成田", "成田"), ("富士山", "富士山"), ("箱根", "箱根"), ("名古屋", "名古屋"), ("冲绳", "冲绳"), ("福冈", "福冈"), ("奈良", "奈良"), ("京都", "京都"), ("大阪", "大阪"), ("东京", "东京"), ("北海道", "北海道")]
+
+
+def place_mentioned(title, alias):
+    if alias not in title:
+        return False
+    cleaned = title
+    for phrase in (f"{alias}往返", f"往返{alias}", f"回{alias}", f"从{alias}", f"{alias}出发"):
+        cleaned = cleaned.replace(phrase, "")
+    return alias in cleaned
+
+
+def infer_places(title):
+    found = []
+    for alias, label in PLACE_RULES:
+        if place_mentioned(title, alias):
+            found.append((title.find(alias), label))
+    places = []
+    for _, label in sorted(found):
+        if label not in places:
+            places.append(label)
+    return places
+
+
+def resolve_destinations(raw, title):
+    """Drop the retired 全日本 label. Empty metadata falls back to places named in the title."""
+    places = [place for place in (raw or []) if place != "全日本"]
+    if raw and places:
+        return places
+    return infer_places(title)
 
 
 def plain(source):
@@ -91,16 +122,13 @@ def post_record(post):
     data, slug, published, body = post
     title = data.get("title_i18n", {}).get("zh") or data.get("title") or slug
     excerpt = plain(data.get("excerpt_i18n", {}).get("zh") or data.get("excerpt") or "")
-    topic = data.get("topic") or TOPIC_FALLBACK.get(data.get("category"), "旅行实用")
+    topic = data.get("topic") or TOPIC_FALLBACK.get(data.get("category"), "礼仪与生活")
     if topic not in TOPICS:
         raise ValueError(f"Unsupported topic in {slug}: {topic}")
-    destinations = data.get("destinations")
-    if destinations is None or destinations == []:
-        # Broad articles mention many places; a title is the conservative fallback.
-        destinations = [place for place in DESTINATIONS[1:] if place in title] or ["全日本"]
+    destinations = resolve_destinations(data.get("destinations"), title)
     if not isinstance(destinations, list) or any(place not in DESTINATIONS for place in destinations):
-        raise ValueError(f"Unsupported destinations in {slug}")
-    destinations = list(dict.fromkeys(destinations)) or ["全日本"]
+        raise ValueError(f"Unsupported destinations in {slug}: {destinations}")
+    destinations = list(dict.fromkeys(destinations))
     cover = data.get("cover_image") or ""
     if cover and (not cover.startswith("/assets/uploads/") or ".." in cover.split("/") or any(c in cover for c in '?#\\')):
         raise ValueError(f"Invalid cover image path: {slug}")
@@ -140,6 +168,10 @@ def render_template(template, values):
 def render_credit(post):
     if not post["cover"]:
         return ""
+    blob = " ".join(part for part in (post["coverCredit"], post["coverLicense"], post["coverCaption"], post["coverChanges"]) if part)
+    third_party = bool(post["coverSource"] or post["coverLicenseUrl"] or post["coverCreatorUrl"])
+    if not third_party and ("AI" in blob or "原创图示" in blob or "原创示意" in blob):
+        return "示意图（AI 辅助制作），非实景，仅供参考。"
     parts = []
     if post["coverCaption"]: parts.append(text(post["coverCaption"]))
     for label, url in [(post["coverCredit"], post["coverCreatorUrl"]), ("来源" if post["coverSource"] else "", post["coverSource"]), (post["coverLicense"], post["coverLicenseUrl"])]:
@@ -149,10 +181,17 @@ def render_credit(post):
     return ' · '.join(parts)
 
 
+def taxonomy_html(post):
+    topic = text(post["topic"])
+    if not post["destinations"]:
+        return topic
+    return f'{text(" / ".join(post["destinations"]))}<span> · </span>{topic}'
+
+
 def render_card(post):
     cover = (f'<div class="guide-image"><img src="{text(post["cover"])}" alt="{text(post["coverAlt"])}" loading="lazy" decoding="async" width="900" height="600"></div>' if post["cover"] else "")
     return (f'<article class="guide-entry"><a class="guide-card{ " guide-card--text" if not cover else ""}" href="{text(post["url"])}">{cover}'
-            f'<div class="guide-copy"><div class="guide-taxonomy">{text(" / ".join(post["destinations"]))}<span> · </span>{text(post["topic"])}</div>'
+            f'<div class="guide-copy"><div class="guide-taxonomy">{taxonomy_html(post)}</div>'
             f'<h3>{text(post["title"])}</h3><p>{text(post["excerpt"])}</p>'
             f'<time datetime="{text(post["date"])}">{text(post["date"].replace("-", "."))}</time></div></a>' +
             (f'<p class="image-credit">{render_credit(post)}</p>' if cover else '') + '</article>')
@@ -162,7 +201,7 @@ def render_featured(post):
     cover = (f'<a class="featured-image" href="{text(post["url"])}" tabindex="-1" aria-hidden="true"><img src="{text(post["cover"])}" alt="" loading="eager" fetchpriority="high" width="1200" height="800"></a>' if post["cover"] else "")
     return (f'<section class="featured-section" aria-labelledby="featured-title" id="featured-section"><h2 id="featured-title">编辑精选</h2>'
             f'<div class="featured{ " featured--text" if not cover else ""}">{cover}<div class="featured-copy">'
-            f'<div class="guide-taxonomy">{text(" / ".join(post["destinations"]))} · {text(post["topic"])}</div>'
+            f'<div class="guide-taxonomy">{taxonomy_html(post).replace("<span> · </span>", " · ")}</div>'
             f'<h3><a href="{text(post["url"])}">{text(post["title"])}</a></h3><p>{text(post["excerpt"])}</p>'
             f'<a class="text-link" href="{text(post["url"])}">阅读指南</a></div></div>' +
             (f'<p class="image-credit">{render_credit(post)}</p>' if cover else '') + '</section>')
@@ -223,7 +262,7 @@ def main():
         updated = f' · 更新于 <time datetime="{text(post["updated"])}">{text(post["updated"])}</time>' if post["updated"] != published else ""
         page = render_template(template, {"HEADER": header, "TITLE": text(post["title"]), "DESCRIPTION": text(post["excerpt"]),
             "DATE": text(published), "UPDATED": updated, "BODY": body, "URL": BASE + post["url"], "RELATED": related_links,
-            "CATEGORY": text(post["topic"]), "DESTINATIONS": text(" / ".join(post["destinations"])), "COVER": cover, "TOC": toc,
+            "CATEGORY": text(post["topic"]), "DESTINATIONS": (" · " + text(" / ".join(post["destinations"]))) if post["destinations"] else "", "COVER": cover, "TOC": toc,
             "OG_IMAGE": text(BASE + (post["cover"] or "/assets/img/logo.png")), "SCHEMA": json.dumps(schema, ensure_ascii=False).replace("<", "\\u003c")})
         (BLOG / f"{slug}.html").write_text(page, encoding="utf-8")
     active = {f"{post['slug']}.html" for post in records}
