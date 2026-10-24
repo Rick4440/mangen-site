@@ -83,7 +83,13 @@ FEATURED_MAX = 5
 FEATURED_WINDOW_DAYS = 14
 # First row of the desktop guide grid. Auto picks avoid these newest posts when other candidates exist.
 LATEST_ABOVE_FOLD = 3
-TOPICS = ["行程路线", "景点行程", "交通与接送", "交通出行", "机场与出入境", "购物退税", "目的地攻略", "住宿美食", "季节活动", "礼仪与生活", "万源动态"]
+TOPICS = ["行程路线", "交通接送", "住宿美食", "购物退税", "季节活动", "礼仪与生活"]
+# Older labels still publish into the six topics, so a batch written with the previous names does not break the build.
+TOPIC_ALIASES = {
+    "景点行程": "行程路线", "目的地攻略": "行程路线",
+    "交通与接送": "交通接送", "交通出行": "交通接送", "机场与出入境": "交通接送",
+    "旅行实用": "礼仪与生活", "万源动态": "礼仪与生活",
+}
 DESTINATIONS = ["东京", "京都", "大阪", "奈良", "富士山", "箱根", "北海道", "札幌", "小樽", "函馆", "二世古", "名古屋", "福冈", "冲绳", "那霸", "神户", "广岛", "宫岛", "镰仓", "江之岛", "横滨", "宇治", "川越", "金泽", "高山", "日光", "松本", "姬路", "仙台", "长崎", "静冈", "熊本", "长野", "滋贺", "和歌山", "高松", "松山", "热海", "尾道", "鸟取", "青森", "鹿儿岛", "别府", "新潟", "富山", "福井", "盛冈", "德岛", "松江", "高知", "弘前", "秋田", "山形", "上高地", "长瀞", "足利", "箕面", "高尾山", "冈山", "仓敷", "羽田", "成田", "三重", "三重・伊势"]
 # Visible guide filters. Membership follows where the articles actually are; empty groups are omitted.
 REGION_GROUPS = [
@@ -98,9 +104,15 @@ REGION_CHIP_LIMIT = 6
 _GROUPED_PLACES = {place for _, places in REGION_GROUPS for place in places}
 if _GROUPED_PLACES - set(DESTINATIONS):
     raise ValueError(f"Region places missing from DESTINATIONS: {sorted(_GROUPED_PLACES - set(DESTINATIONS))}")
-TOPIC_FALLBACK = {"a": "交通与接送", "b": "礼仪与生活", "c": "交通出行", "d": "行程路线", "e": "万源动态"}
+TOPIC_FALLBACK = {"a": "交通接送", "b": "礼仪与生活", "c": "交通接送", "d": "行程路线", "e": "礼仪与生活"}
 # Longer aliases first. A mention used only as a return/transfer point is not the article's region.
 PLACE_RULES = [("伊势神宫", "三重・伊势"), ("名花之里", "三重"), ("河口湖", "富士山"), ("山中湖", "富士山"), ("高尾山", "高尾山"), ("二世古", "二世古"), ("函馆", "函馆"), ("小樽", "小樽"), ("札幌", "札幌"), ("镰仓", "镰仓"), ("江之岛", "江之岛"), ("宫岛", "宫岛"), ("广岛", "广岛"), ("神户", "神户"), ("横滨", "横滨"), ("宇治", "宇治"), ("川越", "川越"), ("金泽", "金泽"), ("高山", "高山"), ("日光", "日光"), ("松本", "松本"), ("姬路", "姬路"), ("仙台", "仙台"), ("长崎", "长崎"), ("静冈", "静冈"), ("熊本", "熊本"), ("长野", "长野"), ("滋贺", "滋贺"), ("和歌山", "和歌山"), ("高松", "高松"), ("松山", "松山"), ("热海", "热海"), ("尾道", "尾道"), ("鸟取", "鸟取"), ("青森", "青森"), ("鹿儿岛", "鹿儿岛"), ("别府", "别府"), ("新潟", "新潟"), ("富山", "富山"), ("福井", "福井"), ("盛冈", "盛冈"), ("德岛", "德岛"), ("松江", "松江"), ("高知", "高知"), ("弘前", "弘前"), ("秋田", "秋田"), ("山形", "山形"), ("上高地", "上高地"), ("长瀞", "长瀞"), ("足利", "足利"), ("箕面", "箕面"), ("那霸", "那霸"), ("USJ", "大阪"), ("迪士尼", "东京"), ("冈山", "冈山"), ("仓敷", "仓敷"), ("羽田", "羽田"), ("成田", "成田"), ("富士山", "富士山"), ("箱根", "箱根"), ("名古屋", "名古屋"), ("冲绳", "冲绳"), ("福冈", "福冈"), ("奈良", "奈良"), ("京都", "京都"), ("大阪", "大阪"), ("东京", "东京"), ("北海道", "北海道")]
+
+
+def canonical_topic(raw, category):
+    topic = raw or TOPIC_FALLBACK.get(category, "礼仪与生活")
+    topic = TOPIC_ALIASES.get(topic, topic)
+    return topic
 
 
 def place_mentioned(title, alias):
@@ -141,7 +153,7 @@ def post_record(post):
     data, slug, published, body = post
     title = data.get("title_i18n", {}).get("zh") or data.get("title") or slug
     excerpt = plain(data.get("excerpt_i18n", {}).get("zh") or data.get("excerpt") or "")
-    topic = data.get("topic") or TOPIC_FALLBACK.get(data.get("category"), "礼仪与生活")
+    topic = canonical_topic(data.get("topic"), data.get("category"))
     if topic not in TOPICS:
         raise ValueError(f"Unsupported topic in {slug}: {topic}")
     destinations = resolve_destinations(data.get("destinations"), title)
@@ -422,7 +434,7 @@ def render_destination_filters(records):
     mobile_options += options
     mobile = (f'<label class="mobile-filter"><span class="sr-only">目的地</span>'
               f'<select data-select="destination" aria-label="目的地"><option value="">目的地 · 全部</option>{mobile_options}</select></label>')
-    return (f'<div class="filter-row filter-row--regions"><span class="filter-label">目的地</span>'
+    return (f'<div class="filter-row filter-row--regions filter-row--line"><span class="filter-label">目的地</span>'
             f'<div class="filter-options" role="group" aria-label="目的地">{buttons}</div>{more}</div>{mobile}')
 
 
@@ -434,7 +446,7 @@ def render_filters(records, key, label, order):
     buttons += ''.join(f'<button type="button" data-filter="{filter_name}" value="{text(option)}" aria-pressed="false">{text(option)}</button>' for option in options)
     select = f'<label class="mobile-filter"><span class="sr-only">{label}</span><select data-select="{filter_name}" aria-label="{label}"><option value="">{label} · 全部</option>'
     select += ''.join(f'<option value="{text(option)}">{text(option)}</option>' for option in options) + '</select></label>'
-    return f'<div class="filter-row"><span class="filter-label">{label}</span><div class="filter-options" role="group" aria-label="{label}">{buttons}</div></div>{select}'
+    return f'<div class="filter-row filter-row--line"><span class="filter-label">{label}</span><div class="filter-options" role="group" aria-label="{label}">{buttons}</div></div>{select}'
 
 
 def render_pagination(current, total):

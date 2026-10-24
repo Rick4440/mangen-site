@@ -266,8 +266,8 @@ collections:
         name: "topic"
         widget: "select"
         required: false
-        options: ["行程路线", "交通与接送", "目的地攻略", "住宿美食", "季节活动", "旅行实用", "万源动态"]
-        hint: "不改变文章原有分类或永久网址。留空时使用分类对应主题。"
+        options: ["行程路线", "交通接送", "住宿美食", "购物退税", "季节活动", "礼仪与生活"]
+        hint: "只选这六个之一。路线、景点与城市攻略用「行程路线」；交通、包车和机场出入境用「交通接送」。留空时 a/c 为交通接送，d 为行程路线，b/e 为礼仪与生活。不改变永久网址。"
       - { label: "编辑精选（可选）", name: "featured", widget: "boolean", default: false, required: false, hint: "勾选后优先出现在旅行指南首页的编辑精选。最多展示 5 篇置顶。" }
       - { label: "精选排序（可选）", name: "featured_order", widget: "number", required: false, value_type: "int", min: 1, hint: "数字越小越靠前。1 是大卡片。留空则按发布日期，新的在前。" }
       - { label: "精选截止日期（可选）", name: "featured_until", widget: "datetime", required: false, date_format: "YYYY-MM-DD", time_format: false, picker_utc: true, hint: "留空则一直置顶。到期当天仍显示，次日起不再优先，可被自动精选选中。" }

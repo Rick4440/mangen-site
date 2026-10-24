@@ -12,7 +12,7 @@ slug: first-trip-japan-2026
 date: 2026-09-24
 updated: 2026-10-14
 category: a
-topic: 交通与接送
+topic: 交通接送
 title_i18n:
   zh: 第一次来日本：如何判断是否需要包车
 excerpt_i18n:

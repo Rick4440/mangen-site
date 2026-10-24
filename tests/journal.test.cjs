@@ -75,7 +75,7 @@ test('DOM search, combined filters, empty state, reset, history and metadata wor
   assert.equal(doc.querySelectorAll('.guide-card').length,12);
   assert.equal(doc.querySelector('#journal-robots').content,'noindex,follow');
   assert.ok(win.location.search.includes('q='));
-  doc.querySelector('[data-filter="topic"][value="交通与接送"]').click();await tick();
+  doc.querySelector('[data-filter="topic"][value="交通接送"]').click();await tick();
   assert.equal(doc.querySelector('#empty-state').hidden,false);
   assert.equal(doc.querySelectorAll('.guide-card').length,0);
   doc.querySelector('[data-clear]').click();await tick();

@@ -97,6 +97,11 @@ class BuildTests(unittest.TestCase):
             self.assertNotIn(' / ', tag)
         self.assertIn('class="guide-taxonomy">大阪 · 行程路线</div>', source)
         self.assertNotIn('大阪 / 京都 / 奈良', source)
+        topic_buttons = [item['value'] for item in Elements(source).attrs('button', **{'data-filter': 'topic'}) if item['value']]
+        self.assertEqual(topic_buttons, ['行程路线', '交通接送', '住宿美食', '购物退税', '季节活动', '礼仪与生活'])
+        self.assertIn('filter-row--line', source)
+        for retired in ('景点行程', '目的地攻略', '交通与接送', '交通出行', '机场与出入境'):
+            self.assertNotIn(f'value="{retired}"', source)
         featured = next(post for post in catalog if post['slug'] == 'osaka-kyoto-nara-3days')
         self.assertEqual(featured['regions'], ['大阪・关西', '京都'])
     def test_drafts_never_enter_catalog_and_related_links(self):
@@ -241,6 +246,16 @@ class EditorPickTests(unittest.TestCase):
         self.assertEqual(len(slugs), 5)
         self.assertTrue(set(slugs).isdisjoint({post['slug'] for post in newest}))
         self.assertEqual(sum(post['topic'] == '行程路线' for post in picks), 1)
+
+    def test_retired_topic_names_publish_as_the_six_current_topics(self):
+        build = _builder()
+        self.assertEqual(build.canonical_topic('目的地攻略', 'd'), '行程路线')
+        self.assertEqual(build.canonical_topic('景点行程', 'b'), '行程路线')
+        self.assertEqual(build.canonical_topic('机场与出入境', 'b'), '交通接送')
+        self.assertEqual(build.canonical_topic('交通出行', 'c'), '交通接送')
+        self.assertEqual(build.canonical_topic('', 'a'), '交通接送')
+        self.assertEqual(build.canonical_topic('', 'd'), '行程路线')
+        self.assertEqual(build.canonical_topic(None, 'b'), '礼仪与生活')
 
     def test_region_chips_follow_article_counts_and_keep_geographic_order(self):
         build = _builder()
