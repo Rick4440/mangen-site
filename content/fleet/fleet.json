@@ -6,8 +6,12 @@
       "image": "/assets/img/alphard.png",
       "name": "トヨタ アルファード",
       "seats": "最大6名",
+      "luggage": "大型スーツケース 4個",
+      "use": "空港送迎・ご家族でのご移動",
       "name_i18n": { "ja": "トヨタ アルファード", "zh": "丰田埃尔法", "en": "Toyota Alphard" },
-      "seats_i18n": { "ja": "最大6名", "zh": "最多6人", "en": "Up to 6 passengers" }
+      "seats_i18n": { "ja": "最大6名", "zh": "最多6人", "en": "Up to 6 passengers" },
+      "luggage_i18n": { "ja": "大型スーツケース 4個", "zh": "大行李箱 4 件", "en": "4 large suitcases" },
+      "use_i18n": { "ja": "空港送迎・ご家族でのご移動", "zh": "机场接送、家庭出行", "en": "Airport transfers and family travel" }
     },
     {
       "id": "hiace",
@@ -15,8 +19,12 @@
       "image": "/assets/img/hiace.png",
       "name": "トヨタ ハイエース",
       "seats": "9〜14名",
+      "luggage": "大型スーツケース 10個",
+      "use": "少人数グループ・荷物の多いご移動",
       "name_i18n": { "ja": "トヨタ ハイエース", "zh": "丰田海狮", "en": "Toyota Hiace" },
-      "seats_i18n": { "ja": "9〜14名", "zh": "9-14人", "en": "9-14 passengers" }
+      "seats_i18n": { "ja": "9〜14名", "zh": "9-14人", "en": "9-14 passengers" },
+      "luggage_i18n": { "ja": "大型スーツケース 10個", "zh": "大行李箱 10 件", "en": "10 large suitcases" },
+      "use_i18n": { "ja": "少人数グループ・荷物の多いご移動", "zh": "小团体、多行李出行", "en": "Small groups and trips with extra luggage" }
     },
     {
       "id": "coaster",
@@ -24,8 +32,12 @@
       "image": "/assets/img/coaster.png",
       "name": "トヨタ コースター",
       "seats": "15〜18名",
+      "luggage": "大型スーツケース 15個",
+      "use": "団体旅行・企業視察",
       "name_i18n": { "ja": "トヨタ コースター", "zh": "丰田考斯特", "en": "Toyota Coaster" },
-      "seats_i18n": { "ja": "15〜18名", "zh": "15-18人", "en": "15-18 passengers" }
+      "seats_i18n": { "ja": "15〜18名", "zh": "15-18人", "en": "15-18 passengers" },
+      "luggage_i18n": { "ja": "大型スーツケース 15個", "zh": "大行李箱 15 件", "en": "15 large suitcases" },
+      "use_i18n": { "ja": "団体旅行・企業視察", "zh": "团队旅游、企业考察", "en": "Group tours and corporate visits" }
     },
     {
       "id": "vclass",
@@ -33,8 +45,12 @@
       "image": "/assets/img/vclass.png",
       "name": "メルセデス Vクラス",
       "seats": "最大6名",
+      "luggage": "大型スーツケース 5個",
+      "use": "ビジネス接遇・貸切ハイヤー",
       "name_i18n": { "ja": "メルセデス Vクラス", "zh": "奔驰V级", "en": "Mercedes V-Class" },
-      "seats_i18n": { "ja": "最大6名", "zh": "最多6人", "en": "Up to 6 passengers" }
+      "seats_i18n": { "ja": "最大6名", "zh": "最多6人", "en": "Up to 6 passengers" },
+      "luggage_i18n": { "ja": "大型スーツケース 5個", "zh": "大行李箱 5 件", "en": "5 large suitcases" },
+      "use_i18n": { "ja": "ビジネス接遇・貸切ハイヤー", "zh": "商务接待、高端包车", "en": "Business reception and private chauffeur" }
     },
     {
       "id": "sclass",
@@ -42,8 +58,12 @@
       "image": "/assets/img/sclass.png",
       "name": "メルセデス Sクラス",
       "seats": "最大3名",
+      "luggage": "大型スーツケース 2個",
+      "use": "貴賓接遇・ビジネス移動",
       "name_i18n": { "ja": "メルセデス Sクラス", "zh": "奔驰S级", "en": "Mercedes S-Class" },
-      "seats_i18n": { "ja": "最大3名", "zh": "最多3人", "en": "Up to 3 passengers" }
+      "seats_i18n": { "ja": "最大3名", "zh": "最多3人", "en": "Up to 3 passengers" },
+      "luggage_i18n": { "ja": "大型スーツケース 2個", "zh": "大行李箱 2 件", "en": "2 large suitcases" },
+      "use_i18n": { "ja": "貴賓接遇・ビジネス移動", "zh": "贵宾接待、商务出行", "en": "VIP reception and business travel" }
     }
   ]
 }

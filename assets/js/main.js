@@ -139,6 +139,8 @@
     box.innerHTML = items.map(it => {
       const name = it.name_i18n?.[LANG] || it.name || '';
       const seats = it.seats_i18n?.[LANG] || it.seats || '';
+      const luggage = it.luggage_i18n?.[LANG] || it.luggage || '';
+      const use = it.use_i18n?.[LANG] || it.use || '';
       const img = it.image || '';
       return `
         <div class="card">
@@ -146,6 +148,8 @@
           <div class="info">
             <p class="name">${escapeHTML(name)}</p>
             <p class="seats">${escapeHTML(seats)}</p>
+            <p class="luggage">${escapeHTML(luggage)}</p>
+            <p class="use">${escapeHTML(use)}</p>
           </div>
         </div>
       `;

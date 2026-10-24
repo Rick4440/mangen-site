@@ -149,6 +149,33 @@ class SiteContentTests(unittest.TestCase):
                 self.assertEqual(schema["areaServed"], company["schema"]["areaServed"])
                 self.assertLess(source.index("072-275-4665"), source.index("042-649-9057"))
 
+    def test_fleet_cards_show_luggage_and_use_in_the_existing_order(self):
+        # Dropping a luggage line, a use line, or reordering the vehicles must fail.
+        fleet = json.loads((ROOT / "content/fleet/fleet.json").read_text(encoding="utf-8"))
+        self.assertEqual([item["id"] for item in fleet["items"]], ["alphard", "hiace", "coaster", "vclass", "sclass"])
+        notes = {
+            "index.html": "荷物は28インチのスーツケースで数えています。乗車人数が多い場合、積める荷物は少なくなります。",
+            "zh.html": "行李以 28 寸箱计，乘客较多时可放行李会相应减少。",
+            "en.html": "Luggage is counted as 28-inch suitcases. Capacity decreases when more passengers are traveling.",
+        }
+        lang = {"index.html": "ja", "zh.html": "zh", "en.html": "en"}
+        renderer = (ROOT / "assets/js/main.js").read_text(encoding="utf-8")
+        self.assertIn('class="luggage"', renderer)
+        self.assertIn('class="use"', renderer)
+        self.assertIn("luggage_i18n", renderer)
+        self.assertIn("use_i18n", renderer)
+        for name in HOME_PAGES:
+            source = (ROOT / name).read_text(encoding="utf-8")
+            section = source.split('id="fleet"', 1)[1].split("</section>", 1)[0]
+            code = lang[name]
+            cards = section.split('class="card"')[1:]
+            with self.subTest(page=name):
+                self.assertIn(notes[name], section)
+                self.assertEqual(len(cards), len(fleet["items"]))
+                for card, item in zip(cards, fleet["items"]):
+                    for field in ("name_i18n", "seats_i18n", "luggage_i18n", "use_i18n"):
+                        self.assertIn(item[field][code], card)
+
     def test_brand_has_company_names_without_literal_newline_escape(self):
         # Reintroducing a literal backslash-n between brand spans must fail.
         for name in SITE_PAGES:

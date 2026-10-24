@@ -180,6 +180,8 @@ collections:
               - { label: "车型图片", name: "image", widget: "image", hint: "可选已有图片或上传新图" }
               - { label: "车名（日文默认）", name: "name", widget: "string" }
               - { label: "座位说明（日文默认）", name: "seats", widget: "string" }
+              - { label: "行李说明（日文默认）", name: "luggage", widget: "string" }
+              - { label: "适合用途（日文默认）", name: "use", widget: "string" }
               - label: "车名多语言"
                 name: "name_i18n"
                 widget: "object"
@@ -189,6 +191,20 @@ collections:
                   - { label: "英文", name: "en", widget: "string" }
               - label: "座位多语言"
                 name: "seats_i18n"
+                widget: "object"
+                fields:
+                  - { label: "日文", name: "ja", widget: "string" }
+                  - { label: "中文", name: "zh", widget: "string" }
+                  - { label: "英文", name: "en", widget: "string" }
+              - label: "行李多语言"
+                name: "luggage_i18n"
+                widget: "object"
+                fields:
+                  - { label: "日文", name: "ja", widget: "string" }
+                  - { label: "中文", name: "zh", widget: "string" }
+                  - { label: "英文", name: "en", widget: "string" }
+              - label: "适合用途多语言"
+                name: "use_i18n"
                 widget: "object"
                 fields:
                   - { label: "日文", name: "ja", widget: "string" }

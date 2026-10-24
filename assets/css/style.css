@@ -65,15 +65,17 @@ img{max-width:100%;height:auto;display:block}
 
 /* Fleet */
 .fleet{display:grid;grid-template-columns:repeat(5,1fr);gap:var(--gap)}
-.fleet .card{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);overflow:hidden;transition:.2s}
+.fleet .card{min-width:0;border:1px solid var(--line);border-radius:var(--radius);background:var(--card);overflow:hidden;transition:.2s}
 .fleet .card:hover{border-color:var(--accent);transform:translateY(-2px)}
 .fleet .body{height:128px;background:#f7f6f2;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:center}
 .fleet .body img{object-fit:contain;max-height:120px;width:auto}
-.fleet .info{padding:10px 12px;text-align:center}
+.fleet .info{padding:10px 12px 12px;text-align:center}
 .fleet .info .name{font-size:13px;font-weight:500;margin:0 0 2px}
-.fleet .info .seats{font-size:11px;color:var(--sub);margin:0}
+.fleet .info .seats,.fleet .info .luggage,.fleet .info .use{font-size:11px;line-height:1.45;color:var(--sub);margin:0;overflow-wrap:break-word}
+.fleet .info .use{margin-top:2px}
+.fleet-note{margin:16px auto 0;max-width:46rem;font-size:12px;line-height:1.7;color:var(--sub);text-align:center}
 @media (max-width:900px){.fleet{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:520px){.fleet .body{height:100px}}
+@media (max-width:520px){.fleet .body{height:100px}.fleet .info{padding:8px 8px 10px}.fleet-note{margin-top:12px;text-align:left}}
 
 /* Services / Values */
 .service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
