@@ -56,11 +56,12 @@
     const lic = data.license || {};
     const lic1 = lic[1] || {};
     const lic2 = lic[2] || {};
+    const licenseLabel = (lic, fallback) => lic[LANG] || lic.zh || fallback;
     $$('[data-bind="license-1"]').forEach(el => {
-      el.innerHTML = `<small>${escapeHTML(lic1.zh || '運輸局免許')}</small><b>${escapeHTML(lic1.value || '—')}</b>`;
+      el.innerHTML = `<small>${escapeHTML(licenseLabel(lic1, '近畿運輸局許可'))}</small><b>${escapeHTML(lic1.value || '—')}</b>`;
     });
     $$('[data-bind="license-2"]').forEach(el => {
-      el.innerHTML = `<small>${escapeHTML(lic2.zh || '大阪府登録')}</small><b>${escapeHTML(lic2.value || '—')}</b>`;
+      el.innerHTML = `<small>${escapeHTML(licenseLabel(lic2, '大阪府知事登録'))}</small><b>${escapeHTML(lic2.value || '—')}</b>`;
     });
 
     // 联系信息（telbig）
@@ -81,8 +82,9 @@
     if (chbox) {
       chbox.innerHTML = channels.map(c => {
         const label = c.label_i18n?.[LANG] || c.label || '';
-        const value = c.value || '';
-        if (!value || value.includes('準備中')) return '';
+        const value = c.value_i18n?.[LANG] || c.value || '';
+        // LINE / WeChat / WhatsApp stay hidden until a real ID replaces 準備中.
+        if (c.pending || !c.value || String(c.value).includes('準備中')) return '';
         if (label === 'Mail' || label === 'メール' || label === '邮箱' || label === 'Email') {
           return `<a class="ch" href="mailto:${escapeAttr(value)}">${escapeHTML(label)}: ${escapeHTML(value)}</a>`;
         }
@@ -115,9 +117,10 @@
       fphones.innerHTML = phones.map(p => `<li>${escapeHTML(p.city_i18n?.[LANG] || p.city || '')}: ${escapeHTML(p.display || p.number)}</li>`).join('');
     }
 
-    // LocalBusiness Schema
-    if (data.schema) {
+    // LocalBusiness Schema. Homepages already print this block for non-JS clients.
+    if (data.schema && !document.getElementById('business-schema')) {
       const ld = document.createElement('script');
+      ld.id = 'business-schema';
       ld.type = 'application/ld+json';
       ld.textContent = JSON.stringify(data.schema);
       document.head.appendChild(ld);
@@ -136,6 +139,8 @@
     box.innerHTML = items.map(it => {
       const name = it.name_i18n?.[LANG] || it.name || '';
       const seats = it.seats_i18n?.[LANG] || it.seats || '';
+      const luggage = it.luggage_i18n?.[LANG] || it.luggage || '';
+      const use = it.use_i18n?.[LANG] || it.use || '';
       const img = it.image || '';
       return `
         <div class="card">
@@ -143,6 +148,8 @@
           <div class="info">
             <p class="name">${escapeHTML(name)}</p>
             <p class="seats">${escapeHTML(seats)}</p>
+            <p class="luggage">${escapeHTML(luggage)}</p>
+            <p class="use">${escapeHTML(use)}</p>
           </div>
         </div>
       `;

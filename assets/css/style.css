@@ -39,6 +39,7 @@ img{max-width:100%;height:auto;display:block}
 .site-header .brand{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;min-width:9.5rem;line-height:1;text-decoration:none}
 .site-header .brand-ja{font-family:"Shippori Mincho","Noto Serif SC",serif;font-size:1.2rem;font-weight:600;letter-spacing:.09em;white-space:nowrap;color:var(--ink)}
 .site-header .brand-en{margin-top:.34rem;font-family:"Noto Sans JP","Helvetica Neue",sans-serif;font-size:.56rem;font-weight:500;letter-spacing:.2em;white-space:nowrap;color:var(--accent-ink)}
+.site-header .brand-legal{letter-spacing:.04em;font-size:.72rem;text-transform:none}
 .site-header .brand:hover .brand-ja{color:var(--accent-ink)}
 .site-header nav ul{display:flex;gap:18px;list-style:none;margin:0;padding:0;font-size:13px}
 .site-header nav a{color:var(--sub)}
@@ -56,22 +57,25 @@ img{max-width:100%;height:auto;display:block}
 
 /* Hero */
 .hero{padding:78px 0 54px;text-align:center;background:linear-gradient(180deg,#faf8f3 0%,#ffffff 100%)}
-.hero h1{font-size:34px;margin:0 0 14px;line-height:1.35}
+.hero h1{font-size:34px;margin:0 0 10px;line-height:1.35}
+.hero .kicker{font-size:13px;color:var(--accent-ink);margin:0 0 14px}
 .hero .lead{font-size:15px;color:var(--sub);max-width:780px;margin:0 auto 28px}
 .hero .cta{display:inline-block;padding:12px 28px;border:1px solid var(--accent);color:var(--accent);border-radius:var(--radius);font-weight:500}
 .hero .cta:hover{background:var(--accent);color:#fff}
 
 /* Fleet */
 .fleet{display:grid;grid-template-columns:repeat(5,1fr);gap:var(--gap)}
-.fleet .card{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);overflow:hidden;transition:.2s}
+.fleet .card{min-width:0;border:1px solid var(--line);border-radius:var(--radius);background:var(--card);overflow:hidden;transition:.2s}
 .fleet .card:hover{border-color:var(--accent);transform:translateY(-2px)}
 .fleet .body{height:128px;background:#f7f6f2;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:center}
 .fleet .body img{object-fit:contain;max-height:120px;width:auto}
-.fleet .info{padding:10px 12px;text-align:center}
+.fleet .info{padding:10px 12px 12px;text-align:center}
 .fleet .info .name{font-size:13px;font-weight:500;margin:0 0 2px}
-.fleet .info .seats{font-size:11px;color:var(--sub);margin:0}
+.fleet .info .seats,.fleet .info .luggage,.fleet .info .use{font-size:11px;line-height:1.45;color:var(--sub);margin:0;overflow-wrap:break-word}
+.fleet .info .use{margin-top:2px}
+.fleet-note{margin:16px auto 0;max-width:46rem;font-size:12px;line-height:1.7;color:var(--sub);text-align:center}
 @media (max-width:900px){.fleet{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:520px){.fleet .body{height:100px}}
+@media (max-width:520px){.fleet .body{height:100px}.fleet .info{padding:8px 8px 10px}.fleet-note{margin-top:12px;text-align:left}}
 
 /* Services / Values */
 .service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
@@ -79,6 +83,11 @@ img{max-width:100%;height:auto;display:block}
 .service h3{font-size:16px;margin:0 0 6px;color:var(--accent)}
 .service p{font-size:13px;color:var(--sub);margin:0}
 @media (max-width:780px){.service-grid{grid-template-columns:1fr}}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;list-style:none;margin:0;padding:0}
+.steps .step{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px 16px;text-align:center}
+.steps .step b{display:block;color:var(--accent);font-size:12px;letter-spacing:.08em;margin-bottom:6px}
+.steps .step span{font-size:16px}
+@media (max-width:780px){.steps{grid-template-columns:1fr}}
 
 .values{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
 .values .v{padding:10px 14px;border:1px solid var(--line);border-radius:var(--radius);background:#fff;text-align:center}
@@ -92,6 +101,8 @@ img{max-width:100%;height:auto;display:block}
 .telbig{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:var(--radius);padding:14px 18px;margin-bottom:10px;background:#fff}
 .telbig small{color:var(--sub);font-size:11px;display:block}
 .telbig b{font-size:18px;color:var(--ink);letter-spacing:.02em}
+.contact-facts{list-style:none;margin:14px 0 0;padding:0;color:var(--sub);font-size:13px}
+.contact-facts li{margin:4px 0}
 .channels{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
 .channels .ch{padding:6px 12px;border:1px dashed var(--gold);border-radius:999px;color:var(--accent);font-size:12px}
 
@@ -105,7 +116,7 @@ img{max-width:100%;height:auto;display:block}
 .form button:hover{background:var(--accent-ink);border-color:var(--accent-ink)}
 .form button:disabled{opacity:.5;cursor:not-allowed}
 .form .status{font-size:13px;padding:10px;border-radius:8px;display:none}
-.form-honeypot{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.form-honeypot{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
 .form .status.success{display:block;background:#e8f5e9;color:#2e7d32}
 .form .status.error{display:block;background:#fce4ec;color:#c62828}
 
@@ -168,4 +179,4 @@ img{max-width:100%;height:auto;display:block}
 /* Loading state */
 [data-loading]{opacity:.6;pointer-events:none}
 @media(max-width:640px){.article .body{font-size:1rem;line-height:1.85}.article .body h2{margin-top:2.25rem}.article .body table{display:block;overflow-x:auto;white-space:nowrap}}
-@media(max-width:520px){.site-header .brand{min-width:7.9rem}.site-header .brand-ja{font-size:1.02rem;letter-spacing:.07em}.site-header .brand-en{font-size:.48rem;letter-spacing:.16em;margin-top:.28rem}.site-header .inner{gap:9px;padding:10px 14px}.lang-switch{gap:1px}.lang-switch a{padding:3px 5px}}
+@media(max-width:520px){.site-header .brand{min-width:7.9rem}.site-header .brand-ja{font-size:1.02rem;letter-spacing:.07em}.site-header .brand-en{font-size:.48rem;letter-spacing:.16em;margin-top:.28rem}.site-header .brand-legal{font-size:.62rem;letter-spacing:.02em}.site-header .inner{gap:9px;padding:10px 14px}.lang-switch{gap:1px}.lang-switch a{padding:3px 5px}}

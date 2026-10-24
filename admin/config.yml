@@ -80,13 +80,17 @@ collections:
                 widget: "object"
                 fields:
                   - { label: "文字", name: "value", widget: "string" }
+                  - { label: "日文说明", name: "ja", widget: "string" }
                   - { label: "中文说明", name: "zh", widget: "string" }
+                  - { label: "英文说明", name: "en", widget: "string" }
               - label: "资质 2"
                 name: "2"
                 widget: "object"
                 fields:
                   - { label: "文字", name: "value", widget: "string" }
+                  - { label: "日文说明", name: "ja", widget: "string" }
                   - { label: "中文说明", name: "zh", widget: "string" }
+                  - { label: "英文说明", name: "en", widget: "string" }
           - label: "联系方式徽章（LINE/微信/WhatsApp/Mail）"
             name: "channels"
             widget: "list"
@@ -99,7 +103,16 @@ collections:
                   - { label: "日文", name: "ja", widget: "string" }
                   - { label: "中文", name: "zh", widget: "string" }
                   - { label: "英文", name: "en", widget: "string" }
-              - { label: "实际值（ID/邮箱等，未配置填「準備中」）", name: "value", widget: "string" }
+              - { label: "实际值（ID/邮箱等，未开通填「準備中」）", name: "value", widget: "string" }
+              - { label: "未开通则隐藏", name: "pending", widget: "boolean", required: false, default: false }
+              - label: "未开通时的多语言提示（页面在开通前不显示）"
+                name: "value_i18n"
+                widget: "object"
+                required: false
+                fields:
+                  - { label: "日文", name: "ja", widget: "string" }
+                  - { label: "中文", name: "zh", widget: "string" }
+                  - { label: "英文", name: "en", widget: "string" }
           - label: "公司信息展示（多语言）"
             name: "info_rows_i18n"
             widget: "object"
@@ -133,10 +146,18 @@ collections:
                   - { label: "国家", name: "addressCountry", widget: "string" }
               - label: "服务地区"
                 name: "areaServed"
-                widget: "object"
+                widget: "list"
                 fields:
-                  - { label: "类型", name: "@type", widget: "hidden", default: "Country" }
-                  - { label: "国家", name: "name", widget: "string" }
+                  - { label: "类型", name: "@type", widget: "string", default: "AdministrativeArea" }
+                  - { label: "名称", name: "name", widget: "string" }
+              - label: "东京据点"
+                name: "department"
+                widget: "object"
+                required: false
+                fields:
+                  - { label: "类型", name: "@type", widget: "string" }
+                  - { label: "名称", name: "name", widget: "string" }
+                  - { label: "电话", name: "telephone", widget: "string" }
               - { label: "服务语言", name: "availableLanguage", widget: "list", field: { label: "语言代码", name: "language", widget: "string" } }
               - { label: "营业时间", name: "openingHours", widget: "string" }
 
@@ -159,6 +180,8 @@ collections:
               - { label: "车型图片", name: "image", widget: "image", hint: "可选已有图片或上传新图" }
               - { label: "车名（日文默认）", name: "name", widget: "string" }
               - { label: "座位说明（日文默认）", name: "seats", widget: "string" }
+              - { label: "行李说明（日文默认）", name: "luggage", widget: "string" }
+              - { label: "适合用途（日文默认）", name: "use", widget: "string" }
               - label: "车名多语言"
                 name: "name_i18n"
                 widget: "object"
@@ -168,6 +191,20 @@ collections:
                   - { label: "英文", name: "en", widget: "string" }
               - label: "座位多语言"
                 name: "seats_i18n"
+                widget: "object"
+                fields:
+                  - { label: "日文", name: "ja", widget: "string" }
+                  - { label: "中文", name: "zh", widget: "string" }
+                  - { label: "英文", name: "en", widget: "string" }
+              - label: "行李多语言"
+                name: "luggage_i18n"
+                widget: "object"
+                fields:
+                  - { label: "日文", name: "ja", widget: "string" }
+                  - { label: "中文", name: "zh", widget: "string" }
+                  - { label: "英文", name: "en", widget: "string" }
+              - label: "适合用途多语言"
+                name: "use_i18n"
                 widget: "object"
                 fields:
                   - { label: "日文", name: "ja", widget: "string" }
@@ -229,9 +266,11 @@ collections:
         name: "topic"
         widget: "select"
         required: false
-        options: ["行程路线", "交通与接送", "目的地攻略", "住宿美食", "季节活动", "旅行实用", "万源动态"]
-        hint: "不改变文章原有分类或永久网址。留空时使用分类对应主题。"
-      - { label: "编辑精选（可选）", name: "featured", widget: "boolean", default: false, required: false }
+        options: ["行程路线", "交通接送", "住宿美食", "购物退税", "季节活动", "礼仪与生活"]
+        hint: "只选这六个之一。路线、景点与城市攻略用「行程路线」；交通、包车和机场出入境用「交通接送」。留空时 a/c 为交通接送，d 为行程路线，b/e 为礼仪与生活。不改变永久网址。"
+      - { label: "编辑精选（可选）", name: "featured", widget: "boolean", default: false, required: false, hint: "勾选后优先出现在旅行指南首页的编辑精选。最多展示 5 篇置顶。" }
+      - { label: "精选排序（可选）", name: "featured_order", widget: "number", required: false, value_type: "int", min: 1, hint: "数字越小越靠前。1 是大卡片。留空则按发布日期，新的在前。" }
+      - { label: "精选截止日期（可选）", name: "featured_until", widget: "datetime", required: false, date_format: "YYYY-MM-DD", time_format: false, picker_utc: true, hint: "留空则一直置顶。到期当天仍显示，次日起不再优先，可被自动精选选中。" }
       - { label: "实际更新日期（可选）", name: "updated", widget: "datetime", required: false, date_format: "YYYY-MM-DD", time_format: false, picker_utc: true, hint: "仅在实际更新文章内容时填写，不能早于发布日期。" }
       - { label: "封面替代文字", name: "cover_alt", widget: "string", required: false }
       - { label: "封面图注（地点、拍摄年份等）", name: "cover_caption", widget: "text", required: false }

@@ -4,6 +4,8 @@ Run with: python -m unittest discover -s tests -v
 """
 from html.parser import HTMLParser
 from pathlib import Path
+import json
+import re
 import unittest
 
 
@@ -65,11 +67,13 @@ def read_page(name):
 class SiteContentTests(unittest.TestCase):
     def test_chinese_home_footer_uses_agreed_labels_and_preserves_destinations(self):
         # Reverting either short label or changing/adding a destination must fail.
-        self.assertEqual(read_page("zh.html").footer_links, [
+        links = read_page("zh.html").footer_links
+        self.assertEqual([item for item in links if not item[0].startswith("mailto:")], [
             ("/blog/", "旅行指南"),
             ("#services", "用车服务"),
             ("#company", "公司介绍"),
         ])
+        self.assertIn(("mailto:info@mangen.jp", "info@mangen.jp"), links)
 
     def test_authorized_article_corrections_remove_unsupported_promises(self):
         for name, claims in {
@@ -104,6 +108,74 @@ class SiteContentTests(unittest.TestCase):
                     [("license-1", False, True), ("license-2", False, True)],
                 )
 
+    def test_service_area_names_tokyo_and_kanto_before_osaka_and_kansai(self):
+        # Reverting the owner order (Tokyo / Kanto first) must fail.
+        company = json.loads((ROOT / "content/settings/company.json").read_text(encoding="utf-8"))
+        areas = {lang: next(row["value"] for row in rows if row["label"] in ("対応エリア", "服务区域", "Area"))
+                 for lang, rows in company["info_rows_i18n"].items()}
+        self.assertEqual(areas["ja"], "関東・関西中心（その他地域はご相談ください）")
+        self.assertEqual(areas["zh"], "以关东、关西为主（其他地区可咨询）")
+        self.assertEqual(areas["en"], "Mainly Kanto & Kansai (other areas on request)")
+        self.assertEqual(company["schema"]["description"], "東京・大阪の空港送迎・貸切ハイヤー。日中英対応ドライバー。")
+        self.assertEqual(
+            [area["name"] for area in company["schema"]["areaServed"]],
+            ["Tokyo Metropolis", "Osaka Prefecture", "Kanto", "Kansai"],
+        )
+        # Headquarters stays Osaka, so the phone list stays Osaka then Tokyo.
+        self.assertEqual([phone["city"] for phone in company["phones"]], ["大阪", "東京"])
+
+        stale = (
+            "大阪・東京", "関西・関東", "大阪・东京", "关西、关东",
+            "Osaka and Tokyo", "Kansai and Kanto", "Kansai &amp; Kanto", "Kansai & Kanto",
+            "in Osaka, Tokyo",
+        )
+        expected = {
+            "index.html": ("東京・大阪の空港送迎・貸切ハイヤー", "関東・関西を中心に"),
+            "zh.html": ("东京・大阪机场接送与包车服务", "以关东、关西为主", "东京（关东）、大阪（关西）"),
+            "en.html": ("in Tokyo and Osaka", "Kanto and Kansai", "Kanto &amp; Kansai", "in Tokyo, Osaka"),
+        }
+        for name, phrases in expected.items():
+            source = (ROOT / name).read_text(encoding="utf-8")
+            with self.subTest(page=name):
+                for phrase in phrases:
+                    self.assertIn(phrase, source)
+                for phrase in stale:
+                    self.assertNotIn(phrase, source)
+                schema = json.loads(re.search(
+                    r'<script id="business-schema" type="application/ld\+json">(.*?)</script>',
+                    source,
+                ).group(1))
+                self.assertEqual(schema["description"], company["schema"]["description"])
+                self.assertEqual(schema["areaServed"], company["schema"]["areaServed"])
+                self.assertLess(source.index("072-275-4665"), source.index("042-649-9057"))
+
+    def test_fleet_cards_show_luggage_and_use_in_the_existing_order(self):
+        # Dropping a luggage line, a use line, or reordering the vehicles must fail.
+        fleet = json.loads((ROOT / "content/fleet/fleet.json").read_text(encoding="utf-8"))
+        self.assertEqual([item["id"] for item in fleet["items"]], ["alphard", "hiace", "coaster", "vclass", "sclass"])
+        notes = {
+            "index.html": "荷物は28インチのスーツケースで数えています。乗車人数が多い場合、積める荷物は少なくなります。",
+            "zh.html": "行李以 28 寸箱计，乘客较多时可放行李会相应减少。",
+            "en.html": "Luggage is counted as 28-inch suitcases. Capacity decreases when more passengers are traveling.",
+        }
+        lang = {"index.html": "ja", "zh.html": "zh", "en.html": "en"}
+        renderer = (ROOT / "assets/js/main.js").read_text(encoding="utf-8")
+        self.assertIn('class="luggage"', renderer)
+        self.assertIn('class="use"', renderer)
+        self.assertIn("luggage_i18n", renderer)
+        self.assertIn("use_i18n", renderer)
+        for name in HOME_PAGES:
+            source = (ROOT / name).read_text(encoding="utf-8")
+            section = source.split('id="fleet"', 1)[1].split("</section>", 1)[0]
+            code = lang[name]
+            cards = section.split('class="card"')[1:]
+            with self.subTest(page=name):
+                self.assertIn(notes[name], section)
+                self.assertEqual(len(cards), len(fleet["items"]))
+                for card, item in zip(cards, fleet["items"]):
+                    for field in ("name_i18n", "seats_i18n", "luggage_i18n", "use_i18n"):
+                        self.assertIn(item[field][code], card)
+
     def test_brand_has_company_names_without_literal_newline_escape(self):
         # Reintroducing a literal backslash-n between brand spans must fail.
         for name in SITE_PAGES:
@@ -111,7 +183,10 @@ class SiteContentTests(unittest.TestCase):
                 brand_text = "".join(read_page(name).brand_text)
                 self.assertNotIn(r"\n", brand_text)
                 self.assertIn("株式会社万源", brand_text)
-                self.assertIn("MANGEN CO., LTD.", brand_text)
+                if name == "en.html":
+                    self.assertIn("Mangen Co., Ltd.", brand_text)
+                else:
+                    self.assertIn("MANGEN CO., LTD.", brand_text)
 
 
 if __name__ == "__main__":

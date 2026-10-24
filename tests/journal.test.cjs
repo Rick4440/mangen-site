@@ -36,6 +36,16 @@ test('URL state and links preserve search while static pages have real routes',(
   const state={q:'清水寺',destination:'京都',topic:'行程路线',page:2};
   assert.deepEqual(journal.readState('https://mangen.jp'+journal.stateURL(state)),state);
 });
+test('region filter matches member cities and a card shows one place',()=>{
+  const sample=[{slug:'route',url:'/blog/route',title:'海岸一日',excerpt:'行程',search:'海岸',destinations:['镰仓','江之岛'],regions:['东京・关东'],topic:'行程路线',date:'2026-10-10',cover:'',coverAlt:''}];
+  assert.equal(journal.filterPosts(sample,{q:'',destination:'region:东京・关东',topic:''}).length,1);
+  assert.equal(journal.filterPosts(sample,{q:'',destination:'江之岛',topic:''}).length,1);
+  assert.equal(journal.filterPosts(sample,{q:'',destination:'region:冲绳',topic:''}).length,0);
+  const html=journal.cardHTML(sample[0]);
+  assert.ok(html.includes('镰仓'));
+  assert.ok(!html.includes('江之岛'));
+  assert.ok(!html.includes(' / '));
+});
 test('cards escape arbitrary metadata rather than execute markup',()=>{
   assert.equal(typeof journal.cardHTML,'function');
   const html=journal.cardHTML({...posts[0],title:'<img src=x onerror=alert(1)>',excerpt:'"<&'});
@@ -65,7 +75,7 @@ test('DOM search, combined filters, empty state, reset, history and metadata wor
   assert.equal(doc.querySelectorAll('.guide-card').length,12);
   assert.equal(doc.querySelector('#journal-robots').content,'noindex,follow');
   assert.ok(win.location.search.includes('q='));
-  doc.querySelector('[data-filter="topic"][value="交通与接送"]').click();await tick();
+  doc.querySelector('[data-filter="topic"][value="交通接送"]').click();await tick();
   assert.equal(doc.querySelector('#empty-state').hidden,false);
   assert.equal(doc.querySelectorAll('.guide-card').length,0);
   doc.querySelector('[data-clear]').click();await tick();

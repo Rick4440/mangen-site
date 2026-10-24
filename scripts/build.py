@@ -1,7 +1,8 @@
 """Build crawlable article pages and index from the Decap Markdown sources."""
-from datetime import date, datetime
+from datetime import date, datetime, timedelta, timezone
 from html import escape
 from pathlib import Path
+import hashlib
 import json
 import re
 import math
@@ -77,9 +78,70 @@ def load_post(path):
 
 
 PER_PAGE = 12
-TOPICS = ["行程路线", "交通与接送", "目的地攻略", "住宿美食", "季节活动", "旅行实用", "万源动态"]
-DESTINATIONS = ["全日本", "东京", "京都", "大阪", "奈良", "富士山", "箱根", "北海道", "冲绳", "名古屋", "福冈"]
-TOPIC_FALLBACK = {"a": "交通与接送", "b": "旅行实用", "c": "旅行实用", "d": "行程路线", "e": "万源动态"}
+FEATURED_MIN = 3
+FEATURED_MAX = 5
+FEATURED_WINDOW_DAYS = 14
+# First row of the desktop guide grid. Auto picks avoid these newest posts when other candidates exist.
+LATEST_ABOVE_FOLD = 3
+TOPICS = ["行程路线", "交通接送", "住宿美食", "购物退税", "季节活动", "礼仪与生活"]
+# Older labels still publish into the six topics, so a batch written with the previous names does not break the build.
+TOPIC_ALIASES = {
+    "景点行程": "行程路线", "目的地攻略": "行程路线",
+    "交通与接送": "交通接送", "交通出行": "交通接送", "机场与出入境": "交通接送",
+    "旅行实用": "礼仪与生活", "万源动态": "礼仪与生活",
+}
+DESTINATIONS = ["东京", "京都", "大阪", "奈良", "富士山", "箱根", "北海道", "札幌", "小樽", "函馆", "二世古", "名古屋", "福冈", "冲绳", "那霸", "神户", "广岛", "宫岛", "镰仓", "江之岛", "横滨", "宇治", "川越", "金泽", "高山", "日光", "松本", "姬路", "仙台", "长崎", "静冈", "熊本", "长野", "滋贺", "和歌山", "高松", "松山", "热海", "尾道", "鸟取", "青森", "鹿儿岛", "别府", "新潟", "富山", "福井", "盛冈", "德岛", "松江", "高知", "弘前", "秋田", "山形", "上高地", "长瀞", "足利", "箕面", "高尾山", "冈山", "仓敷", "羽田", "成田", "三重", "三重・伊势"]
+# Visible guide filters. Membership follows where the articles actually are; empty groups are omitted.
+REGION_GROUPS = [
+    ("东京・关东", ("东京", "横滨", "镰仓", "江之岛", "川越", "箱根", "富士山", "日光", "高尾山", "长瀞", "足利", "热海", "羽田", "成田")),
+    ("大阪・关西", ("大阪", "神户", "奈良", "姬路", "和歌山", "滋贺", "箕面")),
+    ("京都", ("京都", "宇治")),
+    ("北海道", ("北海道", "札幌", "小樽", "函馆", "二世古")),
+    ("冲绳", ("冲绳", "那霸")),
+]
+OTHER_REGION = "其他"
+REGION_CHIP_LIMIT = 6
+_GROUPED_PLACES = {place for _, places in REGION_GROUPS for place in places}
+if _GROUPED_PLACES - set(DESTINATIONS):
+    raise ValueError(f"Region places missing from DESTINATIONS: {sorted(_GROUPED_PLACES - set(DESTINATIONS))}")
+TOPIC_FALLBACK = {"a": "交通接送", "b": "礼仪与生活", "c": "交通接送", "d": "行程路线", "e": "礼仪与生活"}
+# Longer aliases first. A mention used only as a return/transfer point is not the article's region.
+PLACE_RULES = [("伊势神宫", "三重・伊势"), ("名花之里", "三重"), ("河口湖", "富士山"), ("山中湖", "富士山"), ("高尾山", "高尾山"), ("二世古", "二世古"), ("函馆", "函馆"), ("小樽", "小樽"), ("札幌", "札幌"), ("镰仓", "镰仓"), ("江之岛", "江之岛"), ("宫岛", "宫岛"), ("广岛", "广岛"), ("神户", "神户"), ("横滨", "横滨"), ("宇治", "宇治"), ("川越", "川越"), ("金泽", "金泽"), ("高山", "高山"), ("日光", "日光"), ("松本", "松本"), ("姬路", "姬路"), ("仙台", "仙台"), ("长崎", "长崎"), ("静冈", "静冈"), ("熊本", "熊本"), ("长野", "长野"), ("滋贺", "滋贺"), ("和歌山", "和歌山"), ("高松", "高松"), ("松山", "松山"), ("热海", "热海"), ("尾道", "尾道"), ("鸟取", "鸟取"), ("青森", "青森"), ("鹿儿岛", "鹿儿岛"), ("别府", "别府"), ("新潟", "新潟"), ("富山", "富山"), ("福井", "福井"), ("盛冈", "盛冈"), ("德岛", "德岛"), ("松江", "松江"), ("高知", "高知"), ("弘前", "弘前"), ("秋田", "秋田"), ("山形", "山形"), ("上高地", "上高地"), ("长瀞", "长瀞"), ("足利", "足利"), ("箕面", "箕面"), ("那霸", "那霸"), ("USJ", "大阪"), ("迪士尼", "东京"), ("冈山", "冈山"), ("仓敷", "仓敷"), ("羽田", "羽田"), ("成田", "成田"), ("富士山", "富士山"), ("箱根", "箱根"), ("名古屋", "名古屋"), ("冲绳", "冲绳"), ("福冈", "福冈"), ("奈良", "奈良"), ("京都", "京都"), ("大阪", "大阪"), ("东京", "东京"), ("北海道", "北海道")]
+
+
+def canonical_topic(raw, category):
+    topic = raw or TOPIC_FALLBACK.get(category, "礼仪与生活")
+    topic = TOPIC_ALIASES.get(topic, topic)
+    return topic
+
+
+def place_mentioned(title, alias):
+    if alias not in title:
+        return False
+    cleaned = title
+    for phrase in (f"{alias}往返", f"往返{alias}", f"回{alias}", f"从{alias}", f"{alias}出发"):
+        cleaned = cleaned.replace(phrase, "")
+    return alias in cleaned
+
+
+def infer_places(title):
+    found = []
+    for alias, label in PLACE_RULES:
+        if place_mentioned(title, alias):
+            found.append((title.find(alias), label))
+    places = []
+    for _, label in sorted(found):
+        if label not in places:
+            places.append(label)
+    return places
+
+
+def resolve_destinations(raw, title):
+    """Drop the retired 全日本 label. Empty metadata falls back to places named in the title."""
+    places = [place for place in (raw or []) if place != "全日本"]
+    if raw and places:
+        return places
+    return infer_places(title)
 
 
 def plain(source):
@@ -91,16 +153,13 @@ def post_record(post):
     data, slug, published, body = post
     title = data.get("title_i18n", {}).get("zh") or data.get("title") or slug
     excerpt = plain(data.get("excerpt_i18n", {}).get("zh") or data.get("excerpt") or "")
-    topic = data.get("topic") or TOPIC_FALLBACK.get(data.get("category"), "旅行实用")
+    topic = canonical_topic(data.get("topic"), data.get("category"))
     if topic not in TOPICS:
         raise ValueError(f"Unsupported topic in {slug}: {topic}")
-    destinations = data.get("destinations")
-    if destinations is None or destinations == []:
-        # Broad articles mention many places; a title is the conservative fallback.
-        destinations = [place for place in DESTINATIONS[1:] if place in title] or ["全日本"]
+    destinations = resolve_destinations(data.get("destinations"), title)
     if not isinstance(destinations, list) or any(place not in DESTINATIONS for place in destinations):
-        raise ValueError(f"Unsupported destinations in {slug}")
-    destinations = list(dict.fromkeys(destinations)) or ["全日本"]
+        raise ValueError(f"Unsupported destinations in {slug}: {destinations}")
+    destinations = list(dict.fromkeys(destinations))
     cover = data.get("cover_image") or ""
     if cover and (not cover.startswith("/assets/uploads/") or ".." in cover.split("/") or any(c in cover for c in '?#\\')):
         raise ValueError(f"Invalid cover image path: {slug}")
@@ -117,9 +176,21 @@ def post_record(post):
     date.fromisoformat(modified)
     if modified < published:
         raise ValueError(f"Update date precedes publication: {slug}")
+    featured_until = str(data.get("featured_until") or "")[:10]
+    if featured_until:
+        date.fromisoformat(featured_until)
+    featured_order = data.get("featured_order")
+    if featured_order in (None, ""):
+        featured_order = None
+    elif isinstance(featured_order, bool) or not isinstance(featured_order, (int, float)) or int(featured_order) != featured_order:
+        raise ValueError(f"Invalid featured_order in {slug}: {featured_order}")
+    else:
+        featured_order = int(featured_order)
     return {"slug": slug, "url": f"/blog/{slug}", "title": title, "excerpt": excerpt,
             "date": published, "updated": modified, "category": CATEGORY_LABELS.get(data.get("category"), "旅行指南"),
-            "topic": topic, "destinations": destinations, "featured": bool(data.get("featured")),
+            "topic": topic, "destinations": destinations, "regions": regions_for(destinations),
+            "featured": bool(data.get("featured")),
+            "featured_order": featured_order, "featured_until": featured_until,
             "cover": cover, "coverAlt": data.get("cover_alt") or title,
             "coverCredit": data.get("cover_credit") or "", "coverSource": source,
             "coverLicense": data.get("cover_license") or "", "coverLicenseUrl": data.get("cover_license_url") or "",
@@ -140,6 +211,10 @@ def render_template(template, values):
 def render_credit(post):
     if not post["cover"]:
         return ""
+    blob = " ".join(part for part in (post["coverCredit"], post["coverLicense"], post["coverCaption"], post["coverChanges"]) if part)
+    third_party = bool(post["coverSource"] or post["coverLicenseUrl"] or post["coverCreatorUrl"])
+    if not third_party and ("AI" in blob or "原创图示" in blob or "原创示意" in blob):
+        return "示意图（AI 辅助制作），非实景，仅供参考。"
     parts = []
     if post["coverCaption"]: parts.append(text(post["coverCaption"]))
     for label, url in [(post["coverCredit"], post["coverCreatorUrl"]), ("来源" if post["coverSource"] else "", post["coverSource"]), (post["coverLicense"], post["coverLicenseUrl"])]:
@@ -149,23 +224,218 @@ def render_credit(post):
     return ' · '.join(parts)
 
 
+def place_region(place):
+    for label, places in REGION_GROUPS:
+        if place in places:
+            return label
+    return OTHER_REGION
+
+
+def regions_for(destinations):
+    labels = []
+    for label, places in REGION_GROUPS:
+        if any(place in places for place in destinations):
+            labels.append(label)
+    if any(place not in _GROUPED_PLACES for place in destinations):
+        labels.append(OTHER_REGION)
+    return labels
+
+
+def visible_region_chips(records):
+    """At most six regions that have articles. Ties keep the geographic order above."""
+    counts = {label: 0 for label, _ in REGION_GROUPS}
+    counts[OTHER_REGION] = 0
+    for post in records:
+        for label in regions_for(post["destinations"]):
+            counts[label] += 1
+    ranked = [(counts[label], index, label) for index, (label, _) in enumerate(REGION_GROUPS) if counts[label]]
+    if counts[OTHER_REGION]:
+        ranked.append((counts[OTHER_REGION], len(REGION_GROUPS), OTHER_REGION))
+    ranked.sort(key=lambda item: (-item[0], item[1]))
+    chosen = {label for _, _, label in ranked[:REGION_CHIP_LIMIT]}
+    ordered = [label for label, _ in REGION_GROUPS if label in chosen]
+    if OTHER_REGION in chosen:
+        ordered.append(OTHER_REGION)
+    return ordered
+
+
+def taxonomy_html(post):
+    topic = text(post["topic"])
+    place = post["destinations"][0] if post["destinations"] else ""
+    if not place:
+        return topic
+    return f'{text(place)}<span> · </span>{topic}'
+
+
 def render_card(post):
     cover = (f'<div class="guide-image"><img src="{text(post["cover"])}" alt="{text(post["coverAlt"])}" loading="lazy" decoding="async" width="900" height="600"></div>' if post["cover"] else "")
     return (f'<article class="guide-entry"><a class="guide-card{ " guide-card--text" if not cover else ""}" href="{text(post["url"])}">{cover}'
-            f'<div class="guide-copy"><div class="guide-taxonomy">{text(" / ".join(post["destinations"]))}<span> · </span>{text(post["topic"])}</div>'
+            f'<div class="guide-copy"><div class="guide-taxonomy">{taxonomy_html(post)}</div>'
             f'<h3>{text(post["title"])}</h3><p>{text(post["excerpt"])}</p>'
             f'<time datetime="{text(post["date"])}">{text(post["date"].replace("-", "."))}</time></div></a>' +
             (f'<p class="image-credit">{render_credit(post)}</p>' if cover else '') + '</article>')
 
 
-def render_featured(post):
-    cover = (f'<a class="featured-image" href="{text(post["url"])}" tabindex="-1" aria-hidden="true"><img src="{text(post["cover"])}" alt="" loading="eager" fetchpriority="high" width="1200" height="800"></a>' if post["cover"] else "")
-    return (f'<section class="featured-section" aria-labelledby="featured-title" id="featured-section"><h2 id="featured-title">编辑精选</h2>'
-            f'<div class="featured{ " featured--text" if not cover else ""}">{cover}<div class="featured-copy">'
-            f'<div class="guide-taxonomy">{text(" / ".join(post["destinations"]))} · {text(post["topic"])}</div>'
-            f'<h3><a href="{text(post["url"])}">{text(post["title"])}</a></h3><p>{text(post["excerpt"])}</p>'
-            f'<a class="text-link" href="{text(post["url"])}">阅读指南</a></div></div>' +
-            (f'<p class="image-credit">{render_credit(post)}</p>' if cover else '') + '</section>')
+def journal_today():
+    """Calendar day in Japan, so a rebuild on the same date keeps the same picks."""
+    try:
+        from zoneinfo import ZoneInfo
+        return datetime.now(ZoneInfo("Asia/Tokyo")).date()
+    except Exception:
+        return datetime.now(timezone(timedelta(hours=9))).date()
+
+
+def rotation_rank(slug, day):
+    return hashlib.sha256(f"{day.isoformat()}:{slug}".encode()).hexdigest()
+
+
+def _active_pin(post, today):
+    if not post.get("featured"):
+        return False
+    until = post.get("featured_until") or ""
+    return not until or until >= today.isoformat()
+
+
+def _region(post):
+    places = post.get("destinations") or []
+    return places[0] if places else ""
+
+
+def _take_diverse(pool, need, chosen, day, newest_first=False):
+    """Fill slots from pool. Prefer a new topic and a new region; relax only when that cannot fill the slots."""
+    if need <= 0:
+        return []
+    used = {post["slug"] for post in chosen}
+    topics = {post["topic"] for post in chosen}
+    regions = {_region(post) for post in chosen if _region(post)}
+    ordered = list(pool)
+    if newest_first:
+        ordered.sort(key=lambda post: (post["date"], post["slug"]), reverse=True)
+    else:
+        ordered.sort(key=lambda post: rotation_rank(post["slug"], day))
+    selected = []
+
+    def acceptable(post, mode):
+        if post["slug"] in used:
+            return False
+        topic_free = post["topic"] not in topics
+        region = _region(post)
+        region_free = not region or region not in regions
+        if mode == "strict":
+            return topic_free and region_free
+        if mode == "topic":
+            return topic_free
+        if mode == "region":
+            return region_free
+        return True
+
+    for mode in ("strict", "topic", "region", "any"):
+        for post in ordered:
+            if len(selected) >= need:
+                return selected
+            if acceptable(post, mode):
+                selected.append(post)
+                used.add(post["slug"])
+                topics.add(post["topic"])
+                if _region(post):
+                    regions.add(_region(post))
+    return selected
+
+
+def select_editor_picks(records, today):
+    """Choose 3–5 editor's picks. Manual pins come first; the rest rotate by date.
+
+    records may be in any order. The result is the lead card followed by smaller cards.
+    Fewer than three published articles returns every article.
+    """
+    ordered = sorted(records, key=lambda post: (post["date"], post["slug"]), reverse=True)
+    target = min(FEATURED_MAX, len(ordered))
+    if not ordered:
+        return []
+    pins = [post for post in ordered if _active_pin(post, today)]
+    pins.sort(key=lambda post: (post.get("featured_order") is None, post.get("featured_order") or 0))
+    chosen = pins[:FEATURED_MAX]
+    chosen_slugs = {post["slug"] for post in chosen}
+    if len(chosen) >= target:
+        return chosen[:target]
+    start = (today - timedelta(days=FEATURED_WINDOW_DAYS)).isoformat()
+    above_fold = {post["slug"] for post in ordered[:LATEST_ABOVE_FOLD]}
+    recent = [post for post in ordered if post["date"] >= start and post["slug"] not in chosen_slugs]
+    preferred = [post for post in recent if post["slug"] not in above_fold]
+    overlap = [post for post in recent if post["slug"] in above_fold]
+    need = target - len(chosen)
+    chosen.extend(_take_diverse(preferred, need, chosen, today))
+    if len(chosen) < target:
+        chosen.extend(_take_diverse(overlap, target - len(chosen), chosen, today))
+    if len(chosen) < target:
+        fallback = [post for post in ordered if post["slug"] not in {item["slug"] for item in chosen}]
+        chosen.extend(_take_diverse(fallback, target - len(chosen), chosen, today, newest_first=True))
+    return chosen[:target]
+
+
+def render_featured(posts):
+    if not posts:
+        return ""
+
+    def cover_link(post, lead):
+        if not post["cover"]:
+            return ""
+        loading = 'loading="eager" fetchpriority="high"' if lead else 'loading="lazy" decoding="async"'
+        image = (f'<img src="{text(post["cover"])}" alt="" {loading} width="1200" height="800">')
+        if lead:
+            return f'<a class="featured-image" href="{text(post["url"])}" tabindex="-1" aria-hidden="true">{image}</a>'
+        return f'<span class="featured-mini-image">{image}</span>'
+
+    def taxonomy(post):
+        return taxonomy_html(post).replace("<span> · </span>", " · ")
+
+    lead = posts[0]
+    lead_cover = cover_link(lead, True)
+    lead_html = (f'<article class="featured-lead{" featured-lead--text" if not lead_cover else ""}">{lead_cover}'
+                 f'<div class="featured-copy"><div class="guide-taxonomy">{taxonomy(lead)}</div>'
+                 f'<h3><a href="{text(lead["url"])}">{text(lead["title"])}</a></h3><p>{text(lead["excerpt"])}</p>'
+                 f'<a class="text-link" href="{text(lead["url"])}">阅读指南</a></div>'
+                 + (f'<p class="image-credit">{render_credit(lead)}</p>' if lead_cover else "") + "</article>")
+    minis = []
+    for post in posts[1:]:
+        thumb = cover_link(post, False)
+        minis.append(f'<article class="featured-mini"><a href="{text(post["url"])}">{thumb}'
+                     f'<span class="featured-mini-copy"><span class="guide-taxonomy">{taxonomy(post)}</span>'
+                     f'<h3>{text(post["title"])}</h3></span></a></article>')
+    side = f'<div class="featured-side">{"".join(minis)}</div>' if minis else ""
+    count = len(posts)
+    return (f'<section class="featured-section" aria-labelledby="featured-title" id="featured-section">'
+            f'<h2 id="featured-title">编辑精选</h2>'
+            f'<div class="featured-layout featured-layout--{count}">{lead_html}{side}</div></section>')
+
+
+def render_destination_filters(records):
+    """One row of main regions, plus a single 更多 menu for every specific place."""
+    chips = visible_region_chips(records)
+    buttons = '<button type="button" data-filter="destination" value="" aria-pressed="true">全部</button>'
+    buttons += ''.join(
+        f'<button type="button" data-filter="destination" value="region:{text(label)}" aria-pressed="false">{text(label)}</button>'
+        for label in chips)
+    used = [place for place in DESTINATIONS if any(place in post["destinations"] for post in records)]
+    groups = []
+    for label, _ in REGION_GROUPS:
+        places = [place for place in used if place_region(place) == label]
+        if places:
+            groups.append((label, places))
+    other = [place for place in used if place_region(place) == OTHER_REGION]
+    if other:
+        groups.append((OTHER_REGION, other))
+    options = ''.join(
+        f'<optgroup label="{text(label)}">' + ''.join(f'<option value="{text(place)}">{text(place)}</option>' for place in places) + '</optgroup>'
+        for label, places in groups)
+    more = (f'<label class="filter-more"><span class="sr-only">更多目的地</span>'
+            f'<select data-select="destination" aria-label="更多目的地"><option value="">更多</option>{options}</select></label>')
+    mobile_options = ''.join(f'<option value="region:{text(label)}">{text(label)}</option>' for label in chips)
+    mobile_options += options
+    mobile = (f'<label class="mobile-filter"><span class="sr-only">目的地</span>'
+              f'<select data-select="destination" aria-label="目的地"><option value="">目的地 · 全部</option>{mobile_options}</select></label>')
+    return (f'<div class="filter-row filter-row--regions filter-row--line"><span class="filter-label">目的地</span>'
+            f'<div class="filter-options" role="group" aria-label="目的地">{buttons}</div>{more}</div>{mobile}')
 
 
 def render_filters(records, key, label, order):
@@ -176,7 +446,7 @@ def render_filters(records, key, label, order):
     buttons += ''.join(f'<button type="button" data-filter="{filter_name}" value="{text(option)}" aria-pressed="false">{text(option)}</button>' for option in options)
     select = f'<label class="mobile-filter"><span class="sr-only">{label}</span><select data-select="{filter_name}" aria-label="{label}"><option value="">{label} · 全部</option>'
     select += ''.join(f'<option value="{text(option)}">{text(option)}</option>' for option in options) + '</select></label>'
-    return f'<div class="filter-row"><span class="filter-label">{label}</span><div class="filter-options" role="group" aria-label="{label}">{buttons}</div></div>{select}'
+    return f'<div class="filter-row filter-row--line"><span class="filter-label">{label}</span><div class="filter-options" role="group" aria-label="{label}">{buttons}</div></div>{select}'
 
 
 def render_pagination(current, total):
@@ -223,7 +493,7 @@ def main():
         updated = f' · 更新于 <time datetime="{text(post["updated"])}">{text(post["updated"])}</time>' if post["updated"] != published else ""
         page = render_template(template, {"HEADER": header, "TITLE": text(post["title"]), "DESCRIPTION": text(post["excerpt"]),
             "DATE": text(published), "UPDATED": updated, "BODY": body, "URL": BASE + post["url"], "RELATED": related_links,
-            "CATEGORY": text(post["topic"]), "DESTINATIONS": text(" / ".join(post["destinations"])), "COVER": cover, "TOC": toc,
+            "CATEGORY": text(post["topic"]), "DESTINATIONS": (" · " + text(" / ".join(post["destinations"]))) if post["destinations"] else "", "COVER": cover, "TOC": toc,
             "OG_IMAGE": text(BASE + (post["cover"] or "/assets/img/logo.png")), "SCHEMA": json.dumps(schema, ensure_ascii=False).replace("<", "\\u003c")})
         (BLOG / f"{slug}.html").write_text(page, encoding="utf-8")
     active = {f"{post['slug']}.html" for post in records}
@@ -233,16 +503,15 @@ def main():
 
     index_template = (ROOT / "scripts/blog-index-template.html").read_text(encoding="utf-8")
     page_count = math.ceil(len(records) / PER_PAGE)
-    # Existing editorial route guide is the fallback, not a fabricated popularity claim.
-    featured = next((p for p in records if p["featured"]), next((p for p in records if p["topic"] == "行程路线"), records[0]))
+    featured_html = render_featured(select_editor_picks(records, journal_today()))
     for number in range(1, page_count + 1):
         output = BLOG / "index.html" if number == 1 else BLOG / "page" / str(number) / "index.html"
         output.parent.mkdir(parents=True, exist_ok=True)
         values = {"HEADER": header, "PAGE_TITLE": "日本旅行指南" + (f" · 第 {number} 页" if number > 1 else ""),
             "CANONICAL": BASE + page_url(number), "PAGE": number, "TOTAL": len(records), "PAGE_COUNT": page_count,
-            "DESTINATION_FILTER": render_filters(records, "destinations", "目的地", DESTINATIONS),
+            "DESTINATION_FILTER": render_destination_filters(records),
             "TOPIC_FILTER": render_filters(records, "topic", "旅行主题", TOPICS),
-            "FEATURED": render_featured(featured) if number == 1 else render_featured(featured).replace('<section ', '<section hidden ', 1),
+            "FEATURED": featured_html if number == 1 else "",
             "CARDS": '\n'.join(render_card(p) for p in records[(number-1)*PER_PAGE:number*PER_PAGE]),
             "PAGINATION": render_pagination(number, page_count)}
         output.write_text(render_template(index_template, values), encoding="utf-8")
