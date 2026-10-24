@@ -1,7 +1,8 @@
 """Build crawlable article pages and index from the Decap Markdown sources."""
-from datetime import date, datetime
+from datetime import date, datetime, timedelta, timezone
 from html import escape
 from pathlib import Path
+import hashlib
 import json
 import re
 import math
@@ -77,6 +78,11 @@ def load_post(path):
 
 
 PER_PAGE = 12
+FEATURED_MIN = 3
+FEATURED_MAX = 5
+FEATURED_WINDOW_DAYS = 14
+# First row of the desktop guide grid. Auto picks avoid these newest posts when other candidates exist.
+LATEST_ABOVE_FOLD = 3
 TOPICS = ["行程路线", "景点行程", "交通与接送", "交通出行", "机场与出入境", "购物退税", "目的地攻略", "住宿美食", "季节活动", "礼仪与生活", "万源动态"]
 DESTINATIONS = ["东京", "京都", "大阪", "奈良", "富士山", "箱根", "北海道", "札幌", "小樽", "函馆", "二世古", "名古屋", "福冈", "冲绳", "那霸", "神户", "广岛", "宫岛", "镰仓", "江之岛", "横滨", "宇治", "川越", "金泽", "高山", "日光", "松本", "姬路", "仙台", "长崎", "静冈", "熊本", "长野", "滋贺", "和歌山", "高松", "松山", "热海", "尾道", "鸟取", "青森", "鹿儿岛", "别府", "新潟", "富山", "福井", "盛冈", "德岛", "松江", "高知", "弘前", "秋田", "山形", "上高地", "长瀞", "足利", "箕面", "高尾山", "冈山", "仓敷", "羽田", "成田", "三重", "三重・伊势"]
 TOPIC_FALLBACK = {"a": "交通与接送", "b": "礼仪与生活", "c": "交通出行", "d": "行程路线", "e": "万源动态"}
@@ -145,9 +151,20 @@ def post_record(post):
     date.fromisoformat(modified)
     if modified < published:
         raise ValueError(f"Update date precedes publication: {slug}")
+    featured_until = str(data.get("featured_until") or "")[:10]
+    if featured_until:
+        date.fromisoformat(featured_until)
+    featured_order = data.get("featured_order")
+    if featured_order in (None, ""):
+        featured_order = None
+    elif isinstance(featured_order, bool) or not isinstance(featured_order, (int, float)) or int(featured_order) != featured_order:
+        raise ValueError(f"Invalid featured_order in {slug}: {featured_order}")
+    else:
+        featured_order = int(featured_order)
     return {"slug": slug, "url": f"/blog/{slug}", "title": title, "excerpt": excerpt,
             "date": published, "updated": modified, "category": CATEGORY_LABELS.get(data.get("category"), "旅行指南"),
             "topic": topic, "destinations": destinations, "featured": bool(data.get("featured")),
+            "featured_order": featured_order, "featured_until": featured_until,
             "cover": cover, "coverAlt": data.get("cover_alt") or title,
             "coverCredit": data.get("cover_credit") or "", "coverSource": source,
             "coverLicense": data.get("cover_license") or "", "coverLicenseUrl": data.get("cover_license_url") or "",
@@ -197,14 +214,137 @@ def render_card(post):
             (f'<p class="image-credit">{render_credit(post)}</p>' if cover else '') + '</article>')
 
 
-def render_featured(post):
-    cover = (f'<a class="featured-image" href="{text(post["url"])}" tabindex="-1" aria-hidden="true"><img src="{text(post["cover"])}" alt="" loading="eager" fetchpriority="high" width="1200" height="800"></a>' if post["cover"] else "")
-    return (f'<section class="featured-section" aria-labelledby="featured-title" id="featured-section"><h2 id="featured-title">编辑精选</h2>'
-            f'<div class="featured{ " featured--text" if not cover else ""}">{cover}<div class="featured-copy">'
-            f'<div class="guide-taxonomy">{taxonomy_html(post).replace("<span> · </span>", " · ")}</div>'
-            f'<h3><a href="{text(post["url"])}">{text(post["title"])}</a></h3><p>{text(post["excerpt"])}</p>'
-            f'<a class="text-link" href="{text(post["url"])}">阅读指南</a></div></div>' +
-            (f'<p class="image-credit">{render_credit(post)}</p>' if cover else '') + '</section>')
+def journal_today():
+    """Calendar day in Japan, so a rebuild on the same date keeps the same picks."""
+    try:
+        from zoneinfo import ZoneInfo
+        return datetime.now(ZoneInfo("Asia/Tokyo")).date()
+    except Exception:
+        return datetime.now(timezone(timedelta(hours=9))).date()
+
+
+def rotation_rank(slug, day):
+    return hashlib.sha256(f"{day.isoformat()}:{slug}".encode()).hexdigest()
+
+
+def _active_pin(post, today):
+    if not post.get("featured"):
+        return False
+    until = post.get("featured_until") or ""
+    return not until or until >= today.isoformat()
+
+
+def _region(post):
+    places = post.get("destinations") or []
+    return places[0] if places else ""
+
+
+def _take_diverse(pool, need, chosen, day, newest_first=False):
+    """Fill slots from pool. Prefer a new topic and a new region; relax only when that cannot fill the slots."""
+    if need <= 0:
+        return []
+    used = {post["slug"] for post in chosen}
+    topics = {post["topic"] for post in chosen}
+    regions = {_region(post) for post in chosen if _region(post)}
+    ordered = list(pool)
+    if newest_first:
+        ordered.sort(key=lambda post: (post["date"], post["slug"]), reverse=True)
+    else:
+        ordered.sort(key=lambda post: rotation_rank(post["slug"], day))
+    selected = []
+
+    def acceptable(post, mode):
+        if post["slug"] in used:
+            return False
+        topic_free = post["topic"] not in topics
+        region = _region(post)
+        region_free = not region or region not in regions
+        if mode == "strict":
+            return topic_free and region_free
+        if mode == "topic":
+            return topic_free
+        if mode == "region":
+            return region_free
+        return True
+
+    for mode in ("strict", "topic", "region", "any"):
+        for post in ordered:
+            if len(selected) >= need:
+                return selected
+            if acceptable(post, mode):
+                selected.append(post)
+                used.add(post["slug"])
+                topics.add(post["topic"])
+                if _region(post):
+                    regions.add(_region(post))
+    return selected
+
+
+def select_editor_picks(records, today):
+    """Choose 3–5 editor's picks. Manual pins come first; the rest rotate by date.
+
+    records may be in any order. The result is the lead card followed by smaller cards.
+    Fewer than three published articles returns every article.
+    """
+    ordered = sorted(records, key=lambda post: (post["date"], post["slug"]), reverse=True)
+    target = min(FEATURED_MAX, len(ordered))
+    if not ordered:
+        return []
+    pins = [post for post in ordered if _active_pin(post, today)]
+    pins.sort(key=lambda post: (post.get("featured_order") is None, post.get("featured_order") or 0))
+    chosen = pins[:FEATURED_MAX]
+    chosen_slugs = {post["slug"] for post in chosen}
+    if len(chosen) >= target:
+        return chosen[:target]
+    start = (today - timedelta(days=FEATURED_WINDOW_DAYS)).isoformat()
+    above_fold = {post["slug"] for post in ordered[:LATEST_ABOVE_FOLD]}
+    recent = [post for post in ordered if post["date"] >= start and post["slug"] not in chosen_slugs]
+    preferred = [post for post in recent if post["slug"] not in above_fold]
+    overlap = [post for post in recent if post["slug"] in above_fold]
+    need = target - len(chosen)
+    chosen.extend(_take_diverse(preferred, need, chosen, today))
+    if len(chosen) < target:
+        chosen.extend(_take_diverse(overlap, target - len(chosen), chosen, today))
+    if len(chosen) < target:
+        fallback = [post for post in ordered if post["slug"] not in {item["slug"] for item in chosen}]
+        chosen.extend(_take_diverse(fallback, target - len(chosen), chosen, today, newest_first=True))
+    return chosen[:target]
+
+
+def render_featured(posts):
+    if not posts:
+        return ""
+
+    def cover_link(post, lead):
+        if not post["cover"]:
+            return ""
+        loading = 'loading="eager" fetchpriority="high"' if lead else 'loading="lazy" decoding="async"'
+        image = (f'<img src="{text(post["cover"])}" alt="" {loading} width="1200" height="800">')
+        if lead:
+            return f'<a class="featured-image" href="{text(post["url"])}" tabindex="-1" aria-hidden="true">{image}</a>'
+        return f'<span class="featured-mini-image">{image}</span>'
+
+    def taxonomy(post):
+        return taxonomy_html(post).replace("<span> · </span>", " · ")
+
+    lead = posts[0]
+    lead_cover = cover_link(lead, True)
+    lead_html = (f'<article class="featured-lead{" featured-lead--text" if not lead_cover else ""}">{lead_cover}'
+                 f'<div class="featured-copy"><div class="guide-taxonomy">{taxonomy(lead)}</div>'
+                 f'<h3><a href="{text(lead["url"])}">{text(lead["title"])}</a></h3><p>{text(lead["excerpt"])}</p>'
+                 f'<a class="text-link" href="{text(lead["url"])}">阅读指南</a></div>'
+                 + (f'<p class="image-credit">{render_credit(lead)}</p>' if lead_cover else "") + "</article>")
+    minis = []
+    for post in posts[1:]:
+        thumb = cover_link(post, False)
+        minis.append(f'<article class="featured-mini"><a href="{text(post["url"])}">{thumb}'
+                     f'<span class="featured-mini-copy"><span class="guide-taxonomy">{taxonomy(post)}</span>'
+                     f'<h3>{text(post["title"])}</h3></span></a></article>')
+    side = f'<div class="featured-side">{"".join(minis)}</div>' if minis else ""
+    count = len(posts)
+    return (f'<section class="featured-section" aria-labelledby="featured-title" id="featured-section">'
+            f'<h2 id="featured-title">编辑精选</h2>'
+            f'<div class="featured-layout featured-layout--{count}">{lead_html}{side}</div></section>')
 
 
 def render_filters(records, key, label, order):
@@ -272,8 +412,7 @@ def main():
 
     index_template = (ROOT / "scripts/blog-index-template.html").read_text(encoding="utf-8")
     page_count = math.ceil(len(records) / PER_PAGE)
-    # Existing editorial route guide is the fallback, not a fabricated popularity claim.
-    featured = next((p for p in records if p["featured"]), next((p for p in records if p["topic"] == "行程路线"), records[0]))
+    featured_html = render_featured(select_editor_picks(records, journal_today()))
     for number in range(1, page_count + 1):
         output = BLOG / "index.html" if number == 1 else BLOG / "page" / str(number) / "index.html"
         output.parent.mkdir(parents=True, exist_ok=True)
@@ -281,7 +420,7 @@ def main():
             "CANONICAL": BASE + page_url(number), "PAGE": number, "TOTAL": len(records), "PAGE_COUNT": page_count,
             "DESTINATION_FILTER": render_filters(records, "destinations", "目的地", DESTINATIONS),
             "TOPIC_FILTER": render_filters(records, "topic", "旅行主题", TOPICS),
-            "FEATURED": render_featured(featured) if number == 1 else render_featured(featured).replace('<section ', '<section hidden ', 1),
+            "FEATURED": featured_html if number == 1 else "",
             "CARDS": '\n'.join(render_card(p) for p in records[(number-1)*PER_PAGE:number*PER_PAGE]),
             "PAGINATION": render_pagination(number, page_count)}
         output.write_text(render_template(index_template, values), encoding="utf-8")

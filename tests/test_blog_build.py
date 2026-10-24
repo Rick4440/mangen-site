@@ -1,6 +1,8 @@
 """Build output contracts; each test runs the actual static generator in isolation."""
+from datetime import date
 from pathlib import Path
 from html.parser import HTMLParser
+import importlib.util
 import json
 import math
 import os
@@ -159,5 +161,81 @@ class BuildTests(unittest.TestCase):
         self.build()
         post = next(p for p in json.loads(self.read('blog/articles.json'))['posts'] if p['slug'] == path.stem)
         self.assertEqual(post['destinations'], ['京都'])
+
+    def test_editor_picks_show_a_lead_and_smaller_cards_with_the_pinned_guide(self):
+        self.build()
+        page = self.read('blog/index.html')
+        section = page.split('id="featured-section"', 1)[1].split('</section>', 1)[0]
+        self.assertEqual(section.count('class="featured-lead'), 1)
+        minis = section.count('class="featured-mini"')
+        self.assertGreaterEqual(minis, 2)
+        self.assertLessEqual(1 + minis, 5)
+        # The only manual pin stays the lead card, ahead of the automatic cards.
+        self.assertLess(section.index('/blog/osaka-kyoto-nara-3days'), section.index('featured-mini'))
+        self.assertNotIn('id="featured-section"', self.read('blog/page/2/index.html'))
+
+
+def _builder():
+    spec = importlib.util.spec_from_file_location('mangen_build', ROOT / 'scripts' / 'build.py')
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _post(slug, published, topic, places, featured=False, order=None, until=''):
+    return {'slug': slug, 'date': published, 'topic': topic, 'destinations': places,
+            'featured': featured, 'featured_order': order, 'featured_until': until}
+
+
+class EditorPickTests(unittest.TestCase):
+    def setUp(self):
+        self.build = _builder()
+        self.today = date(2026, 10, 24)
+
+    def test_manual_pins_keep_order_and_stop_at_five(self):
+        posts = [_post(f'pin-{i}', '2026-09-01', f'topic-{i}', [f'place-{i}'], True, order=6 - i) for i in range(6)]
+        posts.append(_post('newer', '2026-10-23', 'extra', ['tokyo'], True))
+        picks = self.build.select_editor_picks(posts, self.today)
+        self.assertEqual([post['slug'] for post in picks], ['pin-5', 'pin-4', 'pin-3', 'pin-2', 'pin-1'])
+
+    def test_expired_pin_loses_priority_and_same_day_selection_is_stable(self):
+        posts = [
+            _post('old-pin', '2026-10-01', '路线', ['大阪'], True, until='2026-10-23'),
+            _post('kept', '2026-09-22', '行程', ['京都'], True, order=1),
+        ]
+        posts += [_post(f'auto-{i}', '2026-10-20', f'主题{i}', [f'地区{i}']) for i in range(6)]
+        first = [post['slug'] for post in self.build.select_editor_picks(posts, self.today)]
+        second = [post['slug'] for post in self.build.select_editor_picks(posts, self.today)]
+        self.assertEqual(first[0], 'kept')
+        self.assertNotIn('old-pin', first)
+        self.assertEqual(len(first), 5)
+        self.assertEqual(first, second)
+        self.assertNotEqual(
+            self.build.rotation_rank('auto-0', self.today),
+            self.build.rotation_rank('auto-0', date(2026, 10, 25)),
+        )
+
+    def test_auto_fill_skips_the_latest_row_and_repeats_a_topic_only_when_needed(self):
+        newest = [_post(f'new-{i}', f'2026-10-{24 - i:02d}', '交通出行', ['东京']) for i in range(3)]
+        mixed = [
+            _post('a1', '2026-10-18', '行程路线', ['京都']),
+            _post('a2', '2026-10-18', '行程路线', ['奈良']),
+            _post('b', '2026-10-17', '季节活动', ['大阪']),
+            _post('c', '2026-10-17', '礼仪与生活', ['北海道']),
+            _post('d', '2026-10-16', '购物退税', ['福冈']),
+            _post('e', '2026-10-16', '景点行程', ['箱根']),
+        ]
+        picks = self.build.select_editor_picks(newest + mixed, self.today)
+        slugs = [post['slug'] for post in picks]
+        self.assertEqual(len(slugs), 5)
+        self.assertTrue(set(slugs).isdisjoint({post['slug'] for post in newest}))
+        self.assertEqual(sum(post['topic'] == '行程路线' for post in picks), 1)
+
+    def test_old_catalog_falls_back_to_recent_posts_and_short_catalogs_stay_short(self):
+        old = [_post(f'old-{i}', '2026-01-01', f'topic-{i}', [f'place-{i}']) for i in range(6)]
+        picks = self.build.select_editor_picks(old, self.today)
+        self.assertEqual([post['slug'] for post in picks], [f'old-{i}' for i in range(5, 0, -1)])
+        short = old[:2]
+        self.assertEqual(len(self.build.select_editor_picks(short, self.today)), 2)
 
 if __name__ == '__main__': unittest.main()
