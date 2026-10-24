@@ -104,9 +104,9 @@ class BuildTests(unittest.TestCase):
         for path in (self.root / 'blog').rglob('*.html'):
             with self.subTest(page=path.relative_to(self.root)):
                 header = path.read_text().split('</header>', 1)[0]
-                for href, label in [('/zh#services', '服务'), ('/zh#fleet', '车型'),
+                for href, label in [('/zh#services', '用车服务'), ('/zh#fleet', '车型介绍'),
                                     ('/blog/', '旅行指南'), ('/zh#contact', '联系我们'),
-                                    ('/zh#company', '关于我们')]:
+                                    ('/zh#company', '公司介绍')]:
                     self.assertIn(f'href="{href}">{label}</a>', header)
                 self.assertIn('日本語首页', header)
                 self.assertIn('English 首页', header)
@@ -128,7 +128,11 @@ class BuildTests(unittest.TestCase):
                     self.assertIn('<a href="/zh">返回首页</a>', footer)
                     self.assertIn('<a href="/blog/">旅行指南</a>', footer)
                     self.assertIn('042-649-9057', footer)
+                    self.assertIn('东京・大阪机场接送与包车服务｜以关东、关西为主，其他地区欢迎咨询', footer)
+                    self.assertNotIn('大阪・东京', footer)
+                    self.assertNotIn('关西、关东', footer)
                     self.assertNotIn('日本全国', footer)
+                    self.assertLess(footer.index('072-275-4665'), footer.index('042-649-9057'))
 
     def test_explicit_optional_metadata_is_used_and_escaped(self):
         self.extra_posts(1); path=self.root/'content/posts/b-20261001-000000.md'

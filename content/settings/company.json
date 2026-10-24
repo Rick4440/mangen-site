@@ -45,21 +45,21 @@
     "ja": [
       { "label": "会社名", "value": "株式会社万源" },
       { "label": "所在地", "value": "大阪府堺市北区金岡町1147-33" },
-      { "label": "対応エリア", "value": "関西・関東中心（その他地域はご相談ください）" },
+      { "label": "対応エリア", "value": "関東・関西中心（その他地域はご相談ください）" },
       { "label": "対応言語", "value": "日本語 / 中文 / English" },
       { "label": "営業時間", "value": "24時間" }
     ],
     "zh": [
       { "label": "公司名称", "value": "株式会社万源" },
       { "label": "地址", "value": "大阪府堺市北区金岡町1147-33" },
-      { "label": "服务区域", "value": "以关西、关东为主（其他地区可咨询）" },
+      { "label": "服务区域", "value": "以关东、关西为主（其他地区可咨询）" },
       { "label": "服务语言", "value": "日语 / 中文 / 英语" },
       { "label": "营业时间", "value": "24 小时" }
     ],
     "en": [
       { "label": "Company", "value": "Mangen Co., Ltd." },
       { "label": "Address", "value": "1147-33 Kanaoka-cho, Kita-ku, Sakai, Osaka" },
-      { "label": "Area", "value": "Mainly Kansai & Kanto (other areas on request)" },
+      { "label": "Area", "value": "Mainly Kanto & Kansai (other areas on request)" },
       { "label": "Languages", "value": "Japanese / Chinese / English" },
       { "label": "Hours", "value": "24h" }
     ]
@@ -75,7 +75,7 @@
     "@id": "https://mangen.jp/#business",
     "name": "株式会社万源",
     "alternateName": "Mangen Co., Ltd.",
-    "description": "大阪・東京の空港送迎・貸切ハイヤー。日中英対応ドライバー。",
+    "description": "東京・大阪の空港送迎・貸切ハイヤー。日中英対応ドライバー。",
     "url": "https://mangen.jp/",
     "telephone": "+81-72-275-4665, +81-42-649-9057",
     "priceRange": "¥¥",
@@ -88,10 +88,10 @@
       "addressCountry": "JP"
     },
     "areaServed": [
-      { "@type": "AdministrativeArea", "name": "Osaka Prefecture" },
       { "@type": "AdministrativeArea", "name": "Tokyo Metropolis" },
-      { "@type": "AdministrativeArea", "name": "Kansai" },
-      { "@type": "AdministrativeArea", "name": "Kanto" }
+      { "@type": "AdministrativeArea", "name": "Osaka Prefecture" },
+      { "@type": "AdministrativeArea", "name": "Kanto" },
+      { "@type": "AdministrativeArea", "name": "Kansai" }
     ],
     "department": {
       "@type": "LocalBusiness",

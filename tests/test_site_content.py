@@ -4,6 +4,8 @@ Run with: python -m unittest discover -s tests -v
 """
 from html.parser import HTMLParser
 from pathlib import Path
+import json
+import re
 import unittest
 
 
@@ -105,6 +107,47 @@ class SiteContentTests(unittest.TestCase):
                     read_page(name).qualifications,
                     [("license-1", False, True), ("license-2", False, True)],
                 )
+
+    def test_service_area_names_tokyo_and_kanto_before_osaka_and_kansai(self):
+        # Reverting the owner order (Tokyo / Kanto first) must fail.
+        company = json.loads((ROOT / "content/settings/company.json").read_text(encoding="utf-8"))
+        areas = {lang: next(row["value"] for row in rows if row["label"] in ("対応エリア", "服务区域", "Area"))
+                 for lang, rows in company["info_rows_i18n"].items()}
+        self.assertEqual(areas["ja"], "関東・関西中心（その他地域はご相談ください）")
+        self.assertEqual(areas["zh"], "以关东、关西为主（其他地区可咨询）")
+        self.assertEqual(areas["en"], "Mainly Kanto & Kansai (other areas on request)")
+        self.assertEqual(company["schema"]["description"], "東京・大阪の空港送迎・貸切ハイヤー。日中英対応ドライバー。")
+        self.assertEqual(
+            [area["name"] for area in company["schema"]["areaServed"]],
+            ["Tokyo Metropolis", "Osaka Prefecture", "Kanto", "Kansai"],
+        )
+        # Headquarters stays Osaka, so the phone list stays Osaka then Tokyo.
+        self.assertEqual([phone["city"] for phone in company["phones"]], ["大阪", "東京"])
+
+        stale = (
+            "大阪・東京", "関西・関東", "大阪・东京", "关西、关东",
+            "Osaka and Tokyo", "Kansai and Kanto", "Kansai &amp; Kanto", "Kansai & Kanto",
+            "in Osaka, Tokyo",
+        )
+        expected = {
+            "index.html": ("東京・大阪の空港送迎・貸切ハイヤー", "関東・関西を中心に"),
+            "zh.html": ("东京・大阪机场接送与包车服务", "以关东、关西为主", "东京（关东）、大阪（关西）"),
+            "en.html": ("in Tokyo and Osaka", "Kanto and Kansai", "Kanto &amp; Kansai", "in Tokyo, Osaka"),
+        }
+        for name, phrases in expected.items():
+            source = (ROOT / name).read_text(encoding="utf-8")
+            with self.subTest(page=name):
+                for phrase in phrases:
+                    self.assertIn(phrase, source)
+                for phrase in stale:
+                    self.assertNotIn(phrase, source)
+                schema = json.loads(re.search(
+                    r'<script id="business-schema" type="application/ld\+json">(.*?)</script>',
+                    source,
+                ).group(1))
+                self.assertEqual(schema["description"], company["schema"]["description"])
+                self.assertEqual(schema["areaServed"], company["schema"]["areaServed"])
+                self.assertLess(source.index("072-275-4665"), source.index("042-649-9057"))
 
     def test_brand_has_company_names_without_literal_newline_escape(self):
         # Reintroducing a literal backslash-n between brand spans must fail.
