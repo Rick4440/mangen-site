@@ -85,6 +85,19 @@ FEATURED_WINDOW_DAYS = 14
 LATEST_ABOVE_FOLD = 3
 TOPICS = ["行程路线", "景点行程", "交通与接送", "交通出行", "机场与出入境", "购物退税", "目的地攻略", "住宿美食", "季节活动", "礼仪与生活", "万源动态"]
 DESTINATIONS = ["东京", "京都", "大阪", "奈良", "富士山", "箱根", "北海道", "札幌", "小樽", "函馆", "二世古", "名古屋", "福冈", "冲绳", "那霸", "神户", "广岛", "宫岛", "镰仓", "江之岛", "横滨", "宇治", "川越", "金泽", "高山", "日光", "松本", "姬路", "仙台", "长崎", "静冈", "熊本", "长野", "滋贺", "和歌山", "高松", "松山", "热海", "尾道", "鸟取", "青森", "鹿儿岛", "别府", "新潟", "富山", "福井", "盛冈", "德岛", "松江", "高知", "弘前", "秋田", "山形", "上高地", "长瀞", "足利", "箕面", "高尾山", "冈山", "仓敷", "羽田", "成田", "三重", "三重・伊势"]
+# Visible guide filters. Membership follows where the articles actually are; empty groups are omitted.
+REGION_GROUPS = [
+    ("东京・关东", ("东京", "横滨", "镰仓", "江之岛", "川越", "箱根", "富士山", "日光", "高尾山", "长瀞", "足利", "热海", "羽田", "成田")),
+    ("大阪・关西", ("大阪", "神户", "奈良", "姬路", "和歌山", "滋贺", "箕面")),
+    ("京都", ("京都", "宇治")),
+    ("北海道", ("北海道", "札幌", "小樽", "函馆", "二世古")),
+    ("冲绳", ("冲绳", "那霸")),
+]
+OTHER_REGION = "其他"
+REGION_CHIP_LIMIT = 6
+_GROUPED_PLACES = {place for _, places in REGION_GROUPS for place in places}
+if _GROUPED_PLACES - set(DESTINATIONS):
+    raise ValueError(f"Region places missing from DESTINATIONS: {sorted(_GROUPED_PLACES - set(DESTINATIONS))}")
 TOPIC_FALLBACK = {"a": "交通与接送", "b": "礼仪与生活", "c": "交通出行", "d": "行程路线", "e": "万源动态"}
 # Longer aliases first. A mention used only as a return/transfer point is not the article's region.
 PLACE_RULES = [("伊势神宫", "三重・伊势"), ("名花之里", "三重"), ("河口湖", "富士山"), ("山中湖", "富士山"), ("高尾山", "高尾山"), ("二世古", "二世古"), ("函馆", "函馆"), ("小樽", "小樽"), ("札幌", "札幌"), ("镰仓", "镰仓"), ("江之岛", "江之岛"), ("宫岛", "宫岛"), ("广岛", "广岛"), ("神户", "神户"), ("横滨", "横滨"), ("宇治", "宇治"), ("川越", "川越"), ("金泽", "金泽"), ("高山", "高山"), ("日光", "日光"), ("松本", "松本"), ("姬路", "姬路"), ("仙台", "仙台"), ("长崎", "长崎"), ("静冈", "静冈"), ("熊本", "熊本"), ("长野", "长野"), ("滋贺", "滋贺"), ("和歌山", "和歌山"), ("高松", "高松"), ("松山", "松山"), ("热海", "热海"), ("尾道", "尾道"), ("鸟取", "鸟取"), ("青森", "青森"), ("鹿儿岛", "鹿儿岛"), ("别府", "别府"), ("新潟", "新潟"), ("富山", "富山"), ("福井", "福井"), ("盛冈", "盛冈"), ("德岛", "德岛"), ("松江", "松江"), ("高知", "高知"), ("弘前", "弘前"), ("秋田", "秋田"), ("山形", "山形"), ("上高地", "上高地"), ("长瀞", "长瀞"), ("足利", "足利"), ("箕面", "箕面"), ("那霸", "那霸"), ("USJ", "大阪"), ("迪士尼", "东京"), ("冈山", "冈山"), ("仓敷", "仓敷"), ("羽田", "羽田"), ("成田", "成田"), ("富士山", "富士山"), ("箱根", "箱根"), ("名古屋", "名古屋"), ("冲绳", "冲绳"), ("福冈", "福冈"), ("奈良", "奈良"), ("京都", "京都"), ("大阪", "大阪"), ("东京", "东京"), ("北海道", "北海道")]
@@ -163,7 +176,8 @@ def post_record(post):
         featured_order = int(featured_order)
     return {"slug": slug, "url": f"/blog/{slug}", "title": title, "excerpt": excerpt,
             "date": published, "updated": modified, "category": CATEGORY_LABELS.get(data.get("category"), "旅行指南"),
-            "topic": topic, "destinations": destinations, "featured": bool(data.get("featured")),
+            "topic": topic, "destinations": destinations, "regions": regions_for(destinations),
+            "featured": bool(data.get("featured")),
             "featured_order": featured_order, "featured_until": featured_until,
             "cover": cover, "coverAlt": data.get("cover_alt") or title,
             "coverCredit": data.get("cover_credit") or "", "coverSource": source,
@@ -198,11 +212,47 @@ def render_credit(post):
     return ' · '.join(parts)
 
 
+def place_region(place):
+    for label, places in REGION_GROUPS:
+        if place in places:
+            return label
+    return OTHER_REGION
+
+
+def regions_for(destinations):
+    labels = []
+    for label, places in REGION_GROUPS:
+        if any(place in places for place in destinations):
+            labels.append(label)
+    if any(place not in _GROUPED_PLACES for place in destinations):
+        labels.append(OTHER_REGION)
+    return labels
+
+
+def visible_region_chips(records):
+    """At most six regions that have articles. Ties keep the geographic order above."""
+    counts = {label: 0 for label, _ in REGION_GROUPS}
+    counts[OTHER_REGION] = 0
+    for post in records:
+        for label in regions_for(post["destinations"]):
+            counts[label] += 1
+    ranked = [(counts[label], index, label) for index, (label, _) in enumerate(REGION_GROUPS) if counts[label]]
+    if counts[OTHER_REGION]:
+        ranked.append((counts[OTHER_REGION], len(REGION_GROUPS), OTHER_REGION))
+    ranked.sort(key=lambda item: (-item[0], item[1]))
+    chosen = {label for _, _, label in ranked[:REGION_CHIP_LIMIT]}
+    ordered = [label for label, _ in REGION_GROUPS if label in chosen]
+    if OTHER_REGION in chosen:
+        ordered.append(OTHER_REGION)
+    return ordered
+
+
 def taxonomy_html(post):
     topic = text(post["topic"])
-    if not post["destinations"]:
+    place = post["destinations"][0] if post["destinations"] else ""
+    if not place:
         return topic
-    return f'{text(" / ".join(post["destinations"]))}<span> · </span>{topic}'
+    return f'{text(place)}<span> · </span>{topic}'
 
 
 def render_card(post):
@@ -347,6 +397,35 @@ def render_featured(posts):
             f'<div class="featured-layout featured-layout--{count}">{lead_html}{side}</div></section>')
 
 
+def render_destination_filters(records):
+    """One row of main regions, plus a single 更多 menu for every specific place."""
+    chips = visible_region_chips(records)
+    buttons = '<button type="button" data-filter="destination" value="" aria-pressed="true">全部</button>'
+    buttons += ''.join(
+        f'<button type="button" data-filter="destination" value="region:{text(label)}" aria-pressed="false">{text(label)}</button>'
+        for label in chips)
+    used = [place for place in DESTINATIONS if any(place in post["destinations"] for post in records)]
+    groups = []
+    for label, _ in REGION_GROUPS:
+        places = [place for place in used if place_region(place) == label]
+        if places:
+            groups.append((label, places))
+    other = [place for place in used if place_region(place) == OTHER_REGION]
+    if other:
+        groups.append((OTHER_REGION, other))
+    options = ''.join(
+        f'<optgroup label="{text(label)}">' + ''.join(f'<option value="{text(place)}">{text(place)}</option>' for place in places) + '</optgroup>'
+        for label, places in groups)
+    more = (f'<label class="filter-more"><span class="sr-only">更多目的地</span>'
+            f'<select data-select="destination" aria-label="更多目的地"><option value="">更多</option>{options}</select></label>')
+    mobile_options = ''.join(f'<option value="region:{text(label)}">{text(label)}</option>' for label in chips)
+    mobile_options += options
+    mobile = (f'<label class="mobile-filter"><span class="sr-only">目的地</span>'
+              f'<select data-select="destination" aria-label="目的地"><option value="">目的地 · 全部</option>{mobile_options}</select></label>')
+    return (f'<div class="filter-row filter-row--regions"><span class="filter-label">目的地</span>'
+            f'<div class="filter-options" role="group" aria-label="目的地">{buttons}</div>{more}</div>{mobile}')
+
+
 def render_filters(records, key, label, order):
     used = set(value for post in records for value in (post[key] if isinstance(post[key], list) else [post[key]]))
     options = [option for option in order if option in used]
@@ -418,7 +497,7 @@ def main():
         output.parent.mkdir(parents=True, exist_ok=True)
         values = {"HEADER": header, "PAGE_TITLE": "日本旅行指南" + (f" · 第 {number} 页" if number > 1 else ""),
             "CANONICAL": BASE + page_url(number), "PAGE": number, "TOTAL": len(records), "PAGE_COUNT": page_count,
-            "DESTINATION_FILTER": render_filters(records, "destinations", "目的地", DESTINATIONS),
+            "DESTINATION_FILTER": render_destination_filters(records),
             "TOPIC_FILTER": render_filters(records, "topic", "旅行主题", TOPICS),
             "FEATURED": featured_html if number == 1 else "",
             "CARDS": '\n'.join(render_card(p) for p in records[(number-1)*PER_PAGE:number*PER_PAGE]),

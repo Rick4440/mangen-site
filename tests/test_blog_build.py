@@ -6,6 +6,7 @@ import importlib.util
 import json
 import math
 import os
+import re
 import shutil
 import subprocess
 import tempfile
@@ -75,19 +76,29 @@ class BuildTests(unittest.TestCase):
     def test_filters_are_grounded_and_no_mock_articles_exist(self):
         self.build(); source=self.read('blog/index.html')
         self.assertIn('data-filter="destination"', source)
-        # Options follow the real article catalog, including newly covered destinations.
         catalog = json.loads(self.read('blog/articles.json'))['posts']
         expected = {destination for post in catalog for destination in post['destinations']}
         buttons = Elements(source).attrs('button', **{'data-filter': 'destination'})
         desktop = [item['value'] for item in buttons if item['value']]
-        self.assertEqual(set(desktop), expected)
-        self.assertEqual(len(desktop), len(expected), 'No duplicate destination filters')
-        mobile_source = source.split('data-select="destination"', 1)[1].split('</select>', 1)[0]
-        mobile = [item['value'] for item in Elements(mobile_source).attrs('option') if item['value']]
-        self.assertEqual(set(mobile), expected)
-        self.assertEqual(len(mobile), len(expected), 'No duplicate mobile destination filters')
+        self.assertEqual(desktop, ['region:东京・关东', 'region:大阪・关西', 'region:京都', 'region:北海道', 'region:冲绳', 'region:其他'])
+        more = source.split('aria-label="更多目的地"', 1)[1].split('</select>', 1)[0]
+        more_values = [item['value'] for item in Elements(more).attrs('option') if item['value']]
+        self.assertEqual(set(more_values), expected)
+        self.assertEqual(len(more_values), len(expected), 'No duplicate places in 更多')
+        mobile = source.split('>目的地 · 全部</option>', 1)[1].split('</select>', 1)[0]
+        mobile_values = [item['value'] for item in Elements(mobile).attrs('option') if item['value']]
+        self.assertTrue(set(desktop) <= set(mobile_values))
+        self.assertTrue(expected <= set(mobile_values))
         self.assertNotIn('富士山一日游，把风景留给旅途', source)
-        self.assertIn('value="京都"',source)
+        self.assertIn('value="京都"', source)
+        tags = re.findall(r'class="guide-taxonomy">(.*?)</(?:div|span)>', source)
+        self.assertTrue(tags)
+        for tag in tags:
+            self.assertNotIn(' / ', tag)
+        self.assertIn('class="guide-taxonomy">大阪 · 行程路线</div>', source)
+        self.assertNotIn('大阪 / 京都 / 奈良', source)
+        featured = next(post for post in catalog if post['slug'] == 'osaka-kyoto-nara-3days')
+        self.assertEqual(featured['regions'], ['大阪・关西', '京都'])
     def test_drafts_never_enter_catalog_and_related_links(self):
         path=self.root/'content/posts'/f'{self.original[0]}.md'; path.write_text(path.read_text().replace('draft: false','draft: true'))
         self.build()
@@ -230,6 +241,19 @@ class EditorPickTests(unittest.TestCase):
         self.assertEqual(len(slugs), 5)
         self.assertTrue(set(slugs).isdisjoint({post['slug'] for post in newest}))
         self.assertEqual(sum(post['topic'] == '行程路线' for post in picks), 1)
+
+    def test_region_chips_follow_article_counts_and_keep_geographic_order(self):
+        build = _builder()
+        self.assertEqual(build.visible_region_chips([
+            {'destinations': ['广岛']}, {'destinations': ['广岛']}, {'destinations': ['东京']},
+        ]), ['东京・关东', '其他'])
+        self.assertEqual(build.visible_region_chips([
+            {'destinations': ['东京']}, {'destinations': ['大阪']}, {'destinations': ['京都']},
+            {'destinations': ['札幌']}, {'destinations': ['那霸']}, {'destinations': ['名古屋']},
+        ]), ['东京・关东', '大阪・关西', '京都', '北海道', '冲绳', '其他'])
+        self.assertLessEqual(len(build.visible_region_chips([
+            {'destinations': [place]} for place in build.DESTINATIONS
+        ])), 6)
 
     def test_old_catalog_falls_back_to_recent_posts_and_short_catalogs_stay_short(self):
         old = [_post(f'old-{i}', '2026-01-01', f'topic-{i}', [f'place-{i}']) for i in range(6)]

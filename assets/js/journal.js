@@ -26,9 +26,15 @@
     if (state.page > 1) params.set('page',state.page);
     return '/blog/?'+params.toString();
   }
+  function matchesDestination(post, destination) {
+    if (!destination) return true;
+    if (destination.startsWith('region:')) return (post.regions || []).includes(destination.slice(7));
+    return (post.destinations || []).includes(destination);
+  }
+  function destinationLabel(value) { return value.startsWith('region:') ? value.slice(7) : value; }
   function filterPosts(posts, state) {
     const terms = normalize(state.q).split(/\s+/).filter(Boolean);
-    return posts.filter(post => (!state.destination || post.destinations.includes(state.destination)) && (!state.topic || post.topic === state.topic) && terms.every(term => normalize([post.title,post.excerpt,post.search,post.topic,...post.destinations].join(' ')).includes(term)));
+    return posts.filter(post => matchesDestination(post, state.destination) && (!state.topic || post.topic === state.topic) && terms.every(term => normalize([post.title,post.excerpt,post.search,post.topic,...(post.destinations || [])].join(' ')).includes(term)));
   }
   function paginate(posts, page, perPage) {
     const pages = Math.ceil(posts.length / perPage);
@@ -46,7 +52,9 @@
   }
   function cardHTML(post) {
     const image = post.cover ? `<div class="guide-image"><img src="${escape(post.cover)}" alt="${escape(post.coverAlt)}" loading="lazy" decoding="async" width="900" height="600"></div>` : '';
-    return `<article class="guide-entry"><a class="guide-card${image?'':' guide-card--text'}" href="${escape(post.url)}">${image}<div class="guide-copy"><div class="guide-taxonomy">${escape(post.destinations.join(' / '))}<span> · </span>${escape(post.topic)}</div><h3>${escape(post.title)}</h3><p>${escape(post.excerpt)}</p><time datetime="${escape(post.date)}">${escape(post.date.replace(/-/g,'.'))}</time></div></a>${image?`<p class="image-credit">${creditHTML(post)}</p>`:''}</article>`;
+    const place = (post.destinations || [])[0] || '';
+    const taxonomy = place ? `${escape(place)}<span> · </span>${escape(post.topic)}` : escape(post.topic);
+    return `<article class="guide-entry"><a class="guide-card${image?'':' guide-card--text'}" href="${escape(post.url)}">${image}<div class="guide-copy"><div class="guide-taxonomy">${taxonomy}</div><h3>${escape(post.title)}</h3><p>${escape(post.excerpt)}</p><time datetime="${escape(post.date)}">${escape(post.date.replace(/-/g,'.'))}</time></div></a>${image?`<p class="image-credit">${creditHTML(post)}</p>`:''}</article>`;
   }
   function paginationHTML(state, pages) {
     if (pages <= 1) return pages ? '<span class="page-summary">已显示全部指南</span>' : '';
@@ -79,7 +87,10 @@
     function reflectControls() {
       input.value=state.q;
       doc.querySelectorAll('[data-filter]').forEach(button=>button.setAttribute('aria-pressed',String(button.value===state[button.dataset.filter])));
-      doc.querySelectorAll('[data-select]').forEach(select=>{select.value=state[select.dataset.select];});
+      doc.querySelectorAll('[data-select]').forEach(select=>{
+        const value=state[select.dataset.select] || '';
+        select.value=[...select.options].some(option=>option.value===value)?value:'';
+      });
     }
     function render() {
       const result=paginate(filterPosts(catalog.posts,state),state.page,catalog.perPage);
@@ -89,7 +100,7 @@
       pagination.innerHTML=paginationHTML(state,result.pages);
       status.textContent=`${isFiltered(state)?'找到':'共'} ${result.total} 篇指南`+(result.pages>1?` · 第 ${result.page} / ${result.pages} 页`:'');
       active.hidden=!isFiltered(state);
-      active.querySelector('p').textContent=[state.q?`关键词：${state.q}`:'',state.destination,state.topic].filter(Boolean).join(' / ');
+      active.querySelector('p').textContent=[state.q?`关键词：${state.q}`:'',destinationLabel(state.destination),state.topic].filter(Boolean).join(' / ');
       const featured=doc.querySelector('#featured-section');
       if(featured) featured.hidden=isFiltered(state)||state.page!==1;
       reflectControls();updateMetadata();
