@@ -122,7 +122,7 @@ class BuildTests(unittest.TestCase):
         for path in (self.root / 'blog').rglob('*.html'):
             with self.subTest(page=path.relative_to(self.root)):
                 header = path.read_text().split('</header>', 1)[0]
-                for href, label in [('/zh#services', '用车服务'), ('/zh#fleet', '车型介绍'),
+                for href, label in [('/zh#services', '用车服务'), ('/zh#fleet', '车型阵容'),
                                     ('/blog/', '旅行指南'), ('/zh#contact', '联系我们'),
                                     ('/zh#company', '公司介绍')]:
                     self.assertIn(f'href="{href}">{label}</a>', header)

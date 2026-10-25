@@ -65,6 +65,26 @@ def read_page(name):
 
 
 class SiteContentTests(unittest.TestCase):
+    def test_section_headings_match_nav_labels(self):
+        # Nav wording is the source of truth for each in-page anchor.
+        anchors = ("services", "fleet", "contact", "company")
+        stale = ("服务内容", "车型介绍", "关于我们", "サービス内容", "車両ラインナップ")
+        for name in HOME_PAGES:
+            source = (ROOT / name).read_text(encoding="utf-8")
+            nav = source.split("<nav>", 1)[1].split("</nav>", 1)[0]
+            with self.subTest(page=name):
+                for anchor in anchors:
+                    label = re.search(rf'href="#{anchor}">([^<]+)</a>', nav).group(1)
+                    section = source.split(f'id="{anchor}"', 1)[1].split("</section>", 1)[0]
+                    heading = re.search(r"<h2>([^<]+)</h2>", section).group(1)
+                    self.assertEqual(heading, label)
+                for phrase in stale:
+                    self.assertNotIn(phrase, source)
+        for name in ("scripts/journal-header.html", "assets/js/main.js", "assets/js/journal.js"):
+            source = (ROOT / name).read_text(encoding="utf-8")
+            for phrase in stale:
+                self.assertNotIn(phrase, source)
+
     def test_chinese_home_footer_uses_agreed_labels_and_preserves_destinations(self):
         # Reverting either short label or changing/adding a destination must fail.
         links = read_page("zh.html").footer_links
