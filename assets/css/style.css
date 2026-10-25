@@ -236,4 +236,3 @@ img{max-width:100%;height:auto;display:block}
 [data-loading]{opacity:.6;pointer-events:none}
 @media(max-width:640px){.article .body{font-size:1rem;line-height:1.85}.article .body h2{margin-top:2.25rem}.article .body table{display:block;overflow-x:auto;white-space:nowrap}}
 @media(max-width:520px){.site-header .brand{min-width:7.9rem}.site-header .brand-ja{font-size:1.02rem;letter-spacing:.07em}.site-header .brand-en{font-size:.48rem;letter-spacing:.16em;margin-top:.28rem}.site-header .brand-legal{font-size:.62rem;letter-spacing:.02em}.site-header .inner{gap:9px;padding:10px 14px}.lang-switch{gap:1px}.lang-switch a{padding:3px 5px}}
-@media(max-width:360px){.site-header .inner{gap:4px;padding:8px 10px}.lang-switch a{padding:2px 3px}}

@@ -258,24 +258,27 @@ class SiteContentTests(unittest.TestCase):
                     for field in ("name_i18n", "seats_i18n", "luggage_i18n", "use_i18n"):
                         self.assertIn(item[field][code], card)
 
-    def test_language_switchers_use_one_monolingual_name_each(self):
-        # Mixed labels such as 日本語首页 or English 首页 must fail on every language.
+    def test_language_switchers_use_short_codes_with_descriptive_names(self):
+        # Visible labels are JA / ZH / EN. The accessible name stays the language's own name.
         expected = (
-            'hreflang="ja" lang="ja">日本語</a>',
-            'hreflang="zh-CN" lang="zh-CN">中文</a>',
-            'hreflang="en" lang="en">English</a>',
+            'hreflang="ja" lang="ja" aria-label="日本語">JA</a>',
+            'hreflang="zh-CN" lang="zh-CN" aria-label="中文">ZH</a>',
+            'hreflang="en" lang="en" aria-label="English">EN</a>',
         )
         for name in ("index.html", "zh.html", "en.html", "scripts/journal-header.html"):
             source = (ROOT / name).read_text(encoding="utf-8")
             with self.subTest(page=name):
                 for snippet in expected:
                     self.assertIn(snippet, source)
+                self.assertIn('href="/"', source)
+                self.assertIn('href="/zh"', source)
+                self.assertIn('href="/en"', source)
                 self.assertNotIn("日本語首页", source)
                 self.assertNotIn("英语首页", source)
                 self.assertNotIn("English 首页", source)
-                self.assertNotIn(">JA</a>", source)
-                self.assertNotIn(">ZH</a>", source)
-                self.assertNotIn(">EN</a>", source)
+                self.assertNotIn(">日本語</a>", source)
+                self.assertNotIn(">中文</a>", source)
+                self.assertNotIn(">English</a>", source)
 
     def test_not_found_page_names_each_home_in_its_own_language(self):
         source = (ROOT / "404.html").read_text(encoding="utf-8")

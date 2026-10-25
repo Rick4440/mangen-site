@@ -126,12 +126,17 @@ class BuildTests(unittest.TestCase):
                                     ('/blog/', '旅行指南'), ('/zh#contact', '联系我们'),
                                     ('/zh#company', '公司介绍')]:
                     self.assertIn(f'href="{href}">{label}</a>', header)
-                self.assertIn('lang="ja">日本語</a>', header)
-                self.assertIn('lang="zh-CN">中文</a>', header)
-                self.assertIn('lang="en">English</a>', header)
+                self.assertIn('lang="ja" aria-label="日本語">JA</a>', header)
+                self.assertIn('lang="zh-CN" aria-label="中文">ZH</a>', header)
+                self.assertIn('lang="en" aria-label="English">EN</a>', header)
+                self.assertIn('href="/"', header)
+                self.assertIn('href="/zh"', header)
+                self.assertIn('href="/en"', header)
                 self.assertNotIn('日本語首页', header)
                 self.assertNotIn('English 首页', header)
-                self.assertNotIn('>JA</a>', header)
+                self.assertNotIn('>日本語</a>', header)
+                self.assertNotIn('>中文</a>', header)
+                self.assertNotIn('>English</a>', header)
     def test_generated_footer_labels_are_consistent_and_keep_destinations(self):
         self.build()
         # Reverting a footer template must fail for all articles or list pages.
