@@ -159,6 +159,16 @@ img{max-width:100%;height:auto;display:block}
 /* Company */
 .company-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:38px;align-items:start}
 @media (max-width:900px){.company-grid{grid-template-columns:1fr}}
+#company .wrap>p{max-width:46rem;margin:8px 0 0}
+.company-reasons{margin:22px 0 26px}
+.company-reasons h3{font-size:18px;line-height:1.45;margin:0 0 6px}
+.company-reasons .sub{margin:0 0 12px}
+.company-reasons .values{margin-top:0}
+#quality{scroll-margin-top:76px}
+@media (max-width:414px){
+  .company-reasons{margin:16px 0 20px}
+  .company-reasons .values .v{padding:8px 6px}
+}
 .company-table{width:100%;font-size:13px;border-collapse:collapse}
 .company-table td{padding:8px 0;border-bottom:1px solid var(--line)}
 .company-table td:first-child{color:var(--sub);width:32%}

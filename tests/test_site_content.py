@@ -100,6 +100,29 @@ class SiteContentTests(unittest.TestCase):
             for phrase in stale:
                 self.assertNotIn(phrase, source)
 
+    def test_reasons_sit_inside_the_company_section(self):
+        # The old standalone why-choose section must not return.
+        expected = {
+            "index.html": ("万源が選ばれる理由", ("真心", "熱意", "忍耐", "責任感")),
+            "zh.html": ("选择万源的理由", ("真心", "热心", "耐心", "责任心")),
+            "en.html": ("Why Mangen", ("Sincerity", "Passion", "Patience", "Responsibility")),
+        }
+        for name, (heading, words) in expected.items():
+            source = (ROOT / name).read_text(encoding="utf-8")
+            company = source.split('id="company"', 1)[1].split("</section>", 1)[0]
+            with self.subTest(page=name):
+                self.assertNotIn('<section class="sec" id="quality">', source)
+                self.assertNotIn("<h2>選ばれる理由</h2>", source)
+                self.assertNotIn("<h2>选择万源的理由</h2>", source)
+                self.assertNotIn("<h2>Why Choose Us</h2>", source)
+                self.assertIn(f'id="quality"', company)
+                self.assertIn(f"<h3>{heading}</h3>", company)
+                self.assertLess(company.index('data-bind="company-desc"'), company.index("<h3>"))
+                self.assertLess(company.index("<h3>"), company.index('data-bind="company-info"'))
+                self.assertLess(company.index('data-bind="company-info"'), company.index('data-bind="license-1"'))
+                for word in words:
+                    self.assertIn(f"<span class=\"zh\">{word}</span>", company)
+
     def test_chinese_home_footer_uses_agreed_labels_and_preserves_destinations(self):
         # Reverting either short label or changing/adding a destination must fail.
         links = read_page("zh.html").footer_links
