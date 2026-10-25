@@ -176,6 +176,52 @@ class SiteContentTests(unittest.TestCase):
                     for field in ("name_i18n", "seats_i18n", "luggage_i18n", "use_i18n"):
                         self.assertIn(item[field][code], card)
 
+    def test_language_switchers_use_one_monolingual_name_each(self):
+        # Mixed labels such as 日本語首页 or English 首页 must fail on every language.
+        expected = (
+            'hreflang="ja" lang="ja">日本語</a>',
+            'hreflang="zh-CN" lang="zh-CN">中文</a>',
+            'hreflang="en" lang="en">English</a>',
+        )
+        for name in ("index.html", "zh.html", "en.html", "scripts/journal-header.html"):
+            source = (ROOT / name).read_text(encoding="utf-8")
+            with self.subTest(page=name):
+                for snippet in expected:
+                    self.assertIn(snippet, source)
+                self.assertNotIn("日本語首页", source)
+                self.assertNotIn("英语首页", source)
+                self.assertNotIn("English 首页", source)
+                self.assertNotIn(">JA</a>", source)
+                self.assertNotIn(">ZH</a>", source)
+                self.assertNotIn(">EN</a>", source)
+
+    def test_not_found_page_names_each_home_in_its_own_language(self):
+        source = (ROOT / "404.html").read_text(encoding="utf-8")
+        self.assertIn('href="/" hreflang="ja" lang="ja">日本語トップ</a>', source)
+        self.assertIn('href="/zh" hreflang="zh-CN" lang="zh-CN">中文首页</a>', source)
+        self.assertIn('href="/en" hreflang="en" lang="en">English Home</a>', source)
+        self.assertNotIn("日本語首页", source)
+        self.assertNotIn("English home", source)
+        self.assertIn('path.indexOf("/zh/")', source)
+        self.assertIn('path.indexOf("/en/")', source)
+
+    def test_company_hours_are_not_published(self):
+        company = json.loads((ROOT / "content/settings/company.json").read_text(encoding="utf-8"))
+        self.assertNotIn("openingHours", company["schema"])
+        for rows in company["info_rows_i18n"].values():
+            labels = [row["label"] for row in rows]
+            self.assertNotIn("営業時間", labels)
+            self.assertNotIn("营业时间", labels)
+            self.assertNotIn("Hours", labels)
+        for name in HOME_PAGES:
+            source = (ROOT / name).read_text(encoding="utf-8")
+            with self.subTest(page=name):
+                self.assertNotIn("openingHours", source)
+                self.assertNotIn("24時間", source)
+                self.assertNotIn("24 小时", source)
+                self.assertNotIn(">24h<", source)
+                self.assertNotIn("Hours:", source)
+
     def test_brand_has_company_names_without_literal_newline_escape(self):
         # Reintroducing a literal backslash-n between brand spans must fail.
         for name in SITE_PAGES:

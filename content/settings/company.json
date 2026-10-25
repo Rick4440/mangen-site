@@ -46,22 +46,19 @@
       { "label": "会社名", "value": "株式会社万源" },
       { "label": "所在地", "value": "大阪府堺市北区金岡町1147-33" },
       { "label": "対応エリア", "value": "関東・関西中心（その他地域はご相談ください）" },
-      { "label": "対応言語", "value": "日本語 / 中文 / English" },
-      { "label": "営業時間", "value": "24時間" }
+      { "label": "対応言語", "value": "日本語 / 中文 / English" }
     ],
     "zh": [
       { "label": "公司名称", "value": "株式会社万源" },
       { "label": "地址", "value": "大阪府堺市北区金岡町1147-33" },
       { "label": "服务区域", "value": "以关东、关西为主（其他地区可咨询）" },
-      { "label": "服务语言", "value": "日语 / 中文 / 英语" },
-      { "label": "营业时间", "value": "24 小时" }
+      { "label": "服务语言", "value": "日语 / 中文 / 英语" }
     ],
     "en": [
       { "label": "Company", "value": "Mangen Co., Ltd." },
       { "label": "Address", "value": "1147-33 Kanaoka-cho, Kita-ku, Sakai, Osaka" },
       { "label": "Area", "value": "Mainly Kanto & Kansai (other areas on request)" },
-      { "label": "Languages", "value": "Japanese / Chinese / English" },
-      { "label": "Hours", "value": "24h" }
+      { "label": "Languages", "value": "Japanese / Chinese / English" }
     ]
   },
   "desc_i18n": {
@@ -99,7 +96,6 @@
       "telephone": "+81-42-649-9057",
       "parentOrganization": { "@id": "https://mangen.jp/#business" }
     },
-    "availableLanguage": ["ja", "zh", "en"],
-    "openingHours": "Mo-Su 00:00-24:00"
+    "availableLanguage": ["ja", "zh", "en"]
   }
 }

@@ -159,7 +159,6 @@ collections:
                   - { label: "名称", name: "name", widget: "string" }
                   - { label: "电话", name: "telephone", widget: "string" }
               - { label: "服务语言", name: "availableLanguage", widget: "list", field: { label: "语言代码", name: "language", widget: "string" } }
-              - { label: "营业时间", name: "openingHours", widget: "string" }
 
   # 2. 车型
   - name: "fleet"

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>页面不存在 | 株式会社万源</title>
+  <title>ページが見つかりません | 株式会社万源</title>
   <meta name="robots" content="noindex">
   <link rel="icon" type="image/png" href="/assets/img/favicon.png">
   <link rel="stylesheet" href="/assets/css/style.css">
@@ -11,10 +11,27 @@
 <body>
 <main class="hero">
   <div class="wrap">
-    <h1>Page not found</h1>
-    <p class="kicker">页面不存在 · このページは見つかりません</p>
-    <p><a href="/">日本語首页</a> · <a href="/zh">中文首页</a> · <a href="/en">English home</a></p>
+    <h1 id="not-found-title">ページが見つかりません</h1>
+    <p><a href="/" hreflang="ja" lang="ja">日本語トップ</a> · <a href="/zh" hreflang="zh-CN" lang="zh-CN">中文首页</a> · <a href="/en" hreflang="en" lang="en">English Home</a></p>
   </div>
 </main>
+<script>
+(function () {
+  var path = location.pathname || "/";
+  var lang = "ja";
+  if (path === "/zh" || path.indexOf("/zh/") === 0 || path === "/blog" || path.indexOf("/blog/") === 0) lang = "zh";
+  else if (path === "/en" || path.indexOf("/en/") === 0) lang = "en";
+  var copy = {
+    ja: { htmlLang: "ja", title: "ページが見つかりません" },
+    zh: { htmlLang: "zh-CN", title: "页面不存在" },
+    en: { htmlLang: "en", title: "Page not found" }
+  };
+  var item = copy[lang];
+  document.documentElement.lang = item.htmlLang;
+  document.title = item.title + " | 株式会社万源";
+  var heading = document.getElementById("not-found-title");
+  if (heading) heading.textContent = item.title;
+})();
+</script>
 </body>
 </html>
