@@ -81,8 +81,8 @@ PER_PAGE = 12
 FEATURED_MIN = 3
 FEATURED_MAX = 5
 FEATURED_WINDOW_DAYS = 14
-# Chinese homepage shows this many newest articles, separate from the journal's editor picks.
-HOME_GUIDE_LIMIT = 6
+# Chinese homepage: one lead plus four compact rows, separate from the journal's editor picks.
+HOME_GUIDE_LIMIT = 5
 HOME_GUIDE_START = "<!-- home-guides:start -->"
 HOME_GUIDE_END = "<!-- home-guides:end -->"
 # First row of the desktop guide grid. Auto picks avoid these newest posts when other candidates exist.
@@ -394,33 +394,39 @@ def select_home_guides(records, limit=HOME_GUIDE_LIMIT):
 
 
 def render_home_guide_card(post, lead=False):
+    width, height = ("960", "540") if lead else ("96", "72")
     cover = ""
     if post["cover"]:
         cover = (f'<img src="{text(post["cover"])}" alt="{text(post["coverAlt"] or post["title"])}" '
-                 f'loading="lazy" decoding="async" width="900" height="600">')
-    credit = render_credit(post)
-    credit_html = f'<p class="home-guide-credit">{credit}</p>' if credit else ""
-    kind = " home-guide--lead" if lead else ""
-    return (f'<article class="home-guide{kind}"><a href="{text(post["url"])}">{cover}'
-            f'<div class="home-guide-copy"><p class="home-guide-topic">{text(post["topic"])}</p>'
-            f'<h3>{text(post["title"])}</h3><p class="home-guide-excerpt">{text(post["excerpt"])}</p>'
-            f'<time datetime="{text(post["date"])}">{text(post["date"].replace("-", "."))}</time></div></a>'
-            f'{credit_html}</article>')
+                 f'loading="lazy" decoding="async" width="{width}" height="{height}">')
+    topic = f'<p class="home-guide-topic">{text(post["topic"])}</p>'
+    title = f'<h3>{text(post["title"])}</h3>'
+    when = f'<time datetime="{text(post["date"])}">{text(post["date"].replace("-", "."))}</time>'
+    if lead:
+        credit = render_credit(post)
+        credit_html = f'<p class="home-guide-credit">{credit}</p>' if credit else ""
+        return (f'<article class="home-guide home-guide--lead"><a href="{text(post["url"])}">{cover}'
+                f'<div class="home-guide-copy">{topic}{title}'
+                f'<p class="home-guide-excerpt">{text(post["excerpt"])}</p>{when}</div></a>'
+                f'{credit_html}</article>')
+    return (f'<article class="home-guide home-guide--row"><a href="{text(post["url"])}">{cover}'
+            f'<div class="home-guide-copy">{topic}{title}{when}</div></a></article>')
 
 
 def render_home_guides(records):
     posts = select_home_guides(records)
-    cards = ""
-    if posts:
-        cards = "\n".join(render_home_guide_card(post, index == 0) for index, post in enumerate(posts))
+    lead = render_home_guide_card(posts[0], True) if posts else ""
+    rows = "\n".join(render_home_guide_card(post) for post in posts[1:])
+    listing = f'    <div class="home-guide-list">\n{rows}\n    </div>' if rows else ""
     return (
         f'{HOME_GUIDE_START}\n'
         '<section class="sec" id="guides">\n'
         '  <div class="wrap">\n'
-        '    <h2>旅行指南</h2>\n'
-        '    <p class="sub">最近整理的行程、交通和实用说明。</p>\n'
-        f'    <div class="home-guides">\n{cards}\n    </div>\n'
-        '    <p class="home-guides-more"><a href="/blog/">查看全部旅行指南</a></p>\n'
+        '    <div class="home-guides-head">\n'
+        '      <h2>旅行指南</h2>\n'
+        '      <a class="home-guides-all" href="/blog/">查看全部 →</a>\n'
+        '    </div>\n'
+        f'    <div class="home-guides">\n{lead}\n{listing}\n    </div>\n'
         '  </div>\n'
         '</section>\n'
         f'{HOME_GUIDE_END}'

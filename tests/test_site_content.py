@@ -87,7 +87,11 @@ class SiteContentTests(unittest.TestCase):
                     self.assertIn('href="#guides">旅行指南</a>', nav)
                     guide = source.split('id="guides"', 1)[1].split("</section>", 1)[0]
                     self.assertIn("<h2>旅行指南</h2>", guide)
-                    self.assertIn('href="/blog/">查看全部旅行指南</a>', guide)
+                    self.assertIn('href="/blog/">查看全部 →</a>', guide)
+                    self.assertNotIn("查看全部旅行指南", guide)
+                    self.assertNotIn("home-guides-more", guide)
+                    self.assertEqual(guide.count("home-guide--lead"), 1)
+                    self.assertEqual(guide.count("home-guide--row"), 4)
                     self.assertLess(source.index('id="fleet"'), source.index('id="guides"'))
                     self.assertLess(source.index('id="guides"'), source.index('id="contact"'))
                     self.assertLess(source.index('id="guides"'), source.index('id="company"'))

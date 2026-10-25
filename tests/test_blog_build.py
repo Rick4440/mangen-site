@@ -215,7 +215,9 @@ class BuildTests(unittest.TestCase):
         self.assertLess(end, page.index('id="contact"'))
         block = page[start:end]
         self.assertIn('<h2>旅行指南</h2>', block)
-        self.assertIn('href="/blog/">查看全部旅行指南</a>', block)
+        self.assertIn('href="/blog/">查看全部 →</a>', block)
+        self.assertNotIn('查看全部旅行指南', block)
+        self.assertNotIn('home-guides-more', block)
         self.assertIn('最新 &lt;指南&gt;', block)
         self.assertIn('摘要 &amp; 说明', block)
         self.assertNotIn('<指南>', block)
@@ -224,9 +226,11 @@ class BuildTests(unittest.TestCase):
         self.assertIn('>交通接送</p>', block)
         self.assertIn('datetime="2026-10-25"', block)
         links = re.findall(r'<article class="home-guide[^"]*">\s*<a href="([^"]+)">', block)
-        self.assertEqual(len(links), 6)
+        self.assertEqual(len(links), 5)
         self.assertEqual(links[0], '/blog/b-20261025-000001')
         self.assertEqual(block.count('home-guide--lead'), 1)
+        self.assertEqual(block.count('home-guide--row'), 4)
+        self.assertEqual(block.count('home-guide-excerpt'), 1)
         featured = self.read('blog/index.html').split('id="featured-section"', 1)[1].split('</section>', 1)[0]
         featured_links = re.findall(r'href="(/blog/[^"]+)"', featured)
         self.assertNotEqual(links, featured_links)
