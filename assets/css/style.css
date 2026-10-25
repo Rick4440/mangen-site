@@ -124,6 +124,16 @@ img{max-width:100%;height:auto;display:block}
 .steps .step b{display:block;color:var(--accent);font-size:12px;letter-spacing:.08em;margin-bottom:6px}
 .steps .step span{font-size:16px}
 @media (max-width:780px){.steps{grid-template-columns:1fr}}
+.booking-steps{margin:6px 0 26px}
+.booking-steps h3{font-size:18px;line-height:1.45;margin:0 0 10px}
+.booking-steps .steps{grid-template-columns:repeat(3,minmax(0,1fr))}
+#flow{scroll-margin-top:76px}
+@media (max-width:520px){
+  .booking-steps{margin:4px 0 20px}
+  .booking-steps .steps{grid-template-columns:1fr;gap:8px}
+  .booking-steps .step{display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:left;padding:10px 12px}
+  .booking-steps .step b{margin:0;min-width:1.8em}
+}
 
 .values{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
 .values .v{padding:10px 14px;border:1px solid var(--line);border-radius:var(--radius);background:#fff;text-align:center}

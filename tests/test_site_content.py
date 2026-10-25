@@ -123,6 +123,30 @@ class SiteContentTests(unittest.TestCase):
                 for word in words:
                     self.assertIn(f"<span class=\"zh\">{word}</span>", company)
 
+    def test_booking_steps_sit_inside_the_contact_section(self):
+        # The old standalone booking section must not return.
+        expected = {
+            "index.html": ("ご予約の流れ", ("ご予約", "お見積り確認", "ご出発")),
+            "zh.html": ("预约流程", ("预约", "确认报价", "出行")),
+            "en.html": ("How to Book", ("Request", "Confirm the quote", "Travel")),
+        }
+        for name, (heading, steps) in expected.items():
+            source = (ROOT / name).read_text(encoding="utf-8")
+            contact = source.split('id="contact"', 1)[1].split("</section>", 1)[0]
+            with self.subTest(page=name):
+                self.assertNotIn('<section class="sec" id="flow">', source)
+                self.assertNotIn('<section class="sec alt" id="flow">', source)
+                self.assertNotIn("<h2>ご利用の流れ</h2>", source)
+                self.assertNotIn("<h2>预约流程</h2>", source)
+                self.assertNotIn("<h2>How it works</h2>", source)
+                self.assertIn('id="flow"', contact)
+                self.assertIn(f"<h3>{heading}</h3>", contact)
+                self.assertLess(contact.index("<h2>"), contact.index("<h3>"))
+                self.assertLess(contact.index("<h3>"), contact.index('data-bind="phones"'))
+                self.assertLess(contact.index('data-bind="phones"'), contact.index('data-form="contact"'))
+                for step in steps:
+                    self.assertIn(f"<span>{step}</span>", contact)
+
     def test_chinese_home_footer_uses_agreed_labels_and_preserves_destinations(self):
         # Reverting either short label or changing/adding a destination must fail.
         links = read_page("zh.html").footer_links
