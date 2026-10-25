@@ -222,6 +222,31 @@ class SiteContentTests(unittest.TestCase):
                 self.assertNotIn(">24h<", source)
                 self.assertNotIn("Hours:", source)
 
+    def test_founding_date_follows_the_company_name(self):
+        company = json.loads((ROOT / "content/settings/company.json").read_text(encoding="utf-8"))
+        self.assertEqual(company["schema"]["foundingDate"], "2020-08")
+        expected = {
+            "ja": ("設立", "2020年8月"),
+            "zh": ("成立时间", "2020年8月"),
+            "en": ("Established", "August 2020"),
+        }
+        for lang, row in expected.items():
+            rows = company["info_rows_i18n"][lang]
+            self.assertEqual((rows[1]["label"], rows[1]["value"]), row)
+            self.assertIn(rows[0]["label"], ("会社名", "公司名称", "Company"))
+        pages = {
+            "index.html": "<tr><td>設立</td><td>2020年8月</td></tr>",
+            "zh.html": "<tr><td>成立时间</td><td>2020年8月</td></tr>",
+            "en.html": "<tr><td>Established</td><td>August 2020</td></tr>",
+        }
+        for name, row in pages.items():
+            source = (ROOT / name).read_text(encoding="utf-8")
+            table = source.split('data-bind="company-info"', 1)[1].split("</tbody>", 1)[0]
+            with self.subTest(page=name):
+                self.assertIn(row, table)
+                self.assertIn('"foundingDate":"2020-08"', source)
+                self.assertLess(table.index(row), table.index("1147-33"))
+
     def test_brand_has_company_names_without_literal_newline_escape(self):
         # Reintroducing a literal backslash-n between brand spans must fail.
         for name in SITE_PAGES:
