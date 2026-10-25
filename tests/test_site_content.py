@@ -230,22 +230,43 @@ class SiteContentTests(unittest.TestCase):
             "zh": ("成立时间", "2020年8月"),
             "en": ("Established", "August 2020"),
         }
+        representatives = {
+            "ja": ("代表者", "代表取締役 梁超"),
+            "zh": ("代表人", "代表董事 梁超"),
+            "en": ("Representative", "Chao Liang, Representative Director"),
+        }
+        self.assertNotIn("founder", company["schema"])
         for lang, row in expected.items():
             rows = company["info_rows_i18n"][lang]
             self.assertEqual((rows[1]["label"], rows[1]["value"]), row)
+            self.assertEqual((rows[2]["label"], rows[2]["value"]), representatives[lang])
             self.assertIn(rows[0]["label"], ("会社名", "公司名称", "Company"))
         pages = {
-            "index.html": "<tr><td>設立</td><td>2020年8月</td></tr>",
-            "zh.html": "<tr><td>成立时间</td><td>2020年8月</td></tr>",
-            "en.html": "<tr><td>Established</td><td>August 2020</td></tr>",
+            "index.html": (
+                "<tr><td>設立</td><td>2020年8月</td></tr>",
+                "<tr><td>代表者</td><td>代表取締役 梁超</td></tr>",
+            ),
+            "zh.html": (
+                "<tr><td>成立时间</td><td>2020年8月</td></tr>",
+                "<tr><td>代表人</td><td>代表董事 梁超</td></tr>",
+            ),
+            "en.html": (
+                "<tr><td>Established</td><td>August 2020</td></tr>",
+                "<tr><td>Representative</td><td>Chao Liang, Representative Director</td></tr>",
+            ),
         }
-        for name, row in pages.items():
+        for name, (founded, representative) in pages.items():
             source = (ROOT / name).read_text(encoding="utf-8")
             table = source.split('data-bind="company-info"', 1)[1].split("</tbody>", 1)[0]
+            schema = json.loads(re.search(
+                r'<script id="business-schema" type="application/ld\+json">(.*?)</script>',
+                source,
+            ).group(1))
             with self.subTest(page=name):
-                self.assertIn(row, table)
-                self.assertIn('"foundingDate":"2020-08"', source)
-                self.assertLess(table.index(row), table.index("1147-33"))
+                self.assertLess(table.index(founded), table.index(representative))
+                self.assertLess(table.index(representative), table.index("1147-33"))
+                self.assertEqual(schema["foundingDate"], "2020-08")
+                self.assertNotIn("founder", schema)
 
     def test_brand_has_company_names_without_literal_newline_escape(self):
         # Reintroducing a literal backslash-n between brand spans must fail.
