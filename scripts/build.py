@@ -81,6 +81,10 @@ PER_PAGE = 12
 FEATURED_MIN = 3
 FEATURED_MAX = 5
 FEATURED_WINDOW_DAYS = 14
+# Chinese homepage shows this many newest articles, separate from the journal's editor picks.
+HOME_GUIDE_LIMIT = 6
+HOME_GUIDE_START = "<!-- home-guides:start -->"
+HOME_GUIDE_END = "<!-- home-guides:end -->"
 # First row of the desktop guide grid. Auto picks avoid these newest posts when other candidates exist.
 LATEST_ABOVE_FOLD = 3
 TOPICS = ["行程路线", "交通接送", "住宿美食", "购物退税", "季节活动", "礼仪与生活"]
@@ -373,6 +377,71 @@ def select_editor_picks(records, today):
     return chosen[:target]
 
 
+def select_home_guides(records, limit=HOME_GUIDE_LIMIT):
+    """Newest articles for the Chinese homepage.
+
+    The large card is always the newest article. The other cards continue in
+    date order, preferring a topic that is not already in the row. This stays
+    off the journal front, which leads with the manual pin and then rotates
+    posts from outside the newest row.
+    """
+    ordered = sorted(records, key=lambda post: (post["date"], post["slug"]), reverse=True)
+    if not ordered:
+        return []
+    chosen = [ordered[0]]
+    chosen.extend(_take_diverse(ordered[1:], limit - 1, chosen, date.min, newest_first=True))
+    return chosen[:limit]
+
+
+def render_home_guide_card(post, lead=False):
+    cover = ""
+    if post["cover"]:
+        cover = (f'<img src="{text(post["cover"])}" alt="{text(post["coverAlt"] or post["title"])}" '
+                 f'loading="lazy" decoding="async" width="900" height="600">')
+    credit = render_credit(post)
+    credit_html = f'<p class="home-guide-credit">{credit}</p>' if credit else ""
+    kind = " home-guide--lead" if lead else ""
+    return (f'<article class="home-guide{kind}"><a href="{text(post["url"])}">{cover}'
+            f'<div class="home-guide-copy"><p class="home-guide-topic">{text(post["topic"])}</p>'
+            f'<h3>{text(post["title"])}</h3><p class="home-guide-excerpt">{text(post["excerpt"])}</p>'
+            f'<time datetime="{text(post["date"])}">{text(post["date"].replace("-", "."))}</time></div></a>'
+            f'{credit_html}</article>')
+
+
+def render_home_guides(records):
+    posts = select_home_guides(records)
+    cards = ""
+    if posts:
+        cards = "\n".join(render_home_guide_card(post, index == 0) for index, post in enumerate(posts))
+    return (
+        f'{HOME_GUIDE_START}\n'
+        '<section class="sec" id="guides">\n'
+        '  <div class="wrap">\n'
+        '    <h2>旅行指南</h2>\n'
+        '    <p class="sub">最近整理的行程、交通和实用说明。</p>\n'
+        f'    <div class="home-guides">\n{cards}\n    </div>\n'
+        '    <p class="home-guides-more"><a href="/blog/">查看全部旅行指南</a></p>\n'
+        '  </div>\n'
+        '</section>\n'
+        f'{HOME_GUIDE_END}'
+    )
+
+
+def update_chinese_homepage(records):
+    path = ROOT / "zh.html"
+    if not path.exists():
+        return
+    page = path.read_text(encoding="utf-8")
+    start = page.find(HOME_GUIDE_START)
+    end = page.find(HOME_GUIDE_END)
+    if start < 0 or end < start:
+        raise ValueError("zh.html is missing home guide markers")
+    end += len(HOME_GUIDE_END)
+    updated = page[:start] + render_home_guides(records) + page[end:]
+    if updated != page:
+        path.write_text(updated, encoding="utf-8")
+
+
 def render_featured(posts):
     if not posts:
         return ""
@@ -533,6 +602,7 @@ def main():
         ET.SubElement(entry, ns + "loc").text = BASE + path
         if path in dates: ET.SubElement(entry, ns + "lastmod").text = dates[path]
     ET.ElementTree(urls).write(ROOT / "sitemap.xml", encoding="utf-8", xml_declaration=True)
+    update_chinese_homepage(records)
     print(f"Built {len(posts)} articles, {page_count} index page(s), search catalog and sitemap")
 
 

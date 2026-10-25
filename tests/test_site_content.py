@@ -78,8 +78,23 @@ class SiteContentTests(unittest.TestCase):
                     section = source.split(f'id="{anchor}"', 1)[1].split("</section>", 1)[0]
                     heading = re.search(r"<h2>([^<]+)</h2>", section).group(1)
                     self.assertEqual(heading, label)
+                checked = source
+                if name == "zh.html" and "<!-- home-guides:start -->" in source:
+                    checked = source.split("<!-- home-guides:start -->", 1)[0] + source.split("<!-- home-guides:end -->", 1)[1]
                 for phrase in stale:
-                    self.assertNotIn(phrase, source)
+                    self.assertNotIn(phrase, checked)
+                if name == "zh.html":
+                    self.assertIn('href="#guides">旅行指南</a>', nav)
+                    guide = source.split('id="guides"', 1)[1].split("</section>", 1)[0]
+                    self.assertIn("<h2>旅行指南</h2>", guide)
+                    self.assertIn('href="/blog/">查看全部旅行指南</a>', guide)
+                    self.assertLess(source.index('id="fleet"'), source.index('id="guides"'))
+                    self.assertLess(source.index('id="guides"'), source.index('id="contact"'))
+                    self.assertLess(source.index('id="guides"'), source.index('id="company"'))
+                else:
+                    self.assertNotIn('id="guides"', source)
+                    self.assertNotIn("查看全部旅行指南", source)
+                    self.assertIn('href="/blog/"', nav)
         for name in ("scripts/journal-header.html", "assets/js/main.js", "assets/js/journal.js"):
             source = (ROOT / name).read_text(encoding="utf-8")
             for phrase in stale:

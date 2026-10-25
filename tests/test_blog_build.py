@@ -193,6 +193,42 @@ class BuildTests(unittest.TestCase):
         self.assertLess(section.index('/blog/osaka-kyoto-nara-3days'), section.index('featured-mini'))
         self.assertNotIn('id="featured-section"', self.read('blog/page/2/index.html'))
 
+    def test_chinese_homepage_shows_latest_guides_apart_from_editor_picks(self):
+        shutil.copy(ROOT / 'zh.html', self.root / 'zh.html')
+        (self.root / 'content/posts' / 'b-20261025-000001.md').write_text(
+            '---\ndate: 2026-10-25\ncategory: b\ntopic: 交通接送\n'
+            'title: "最新 <指南>"\nexcerpt: "摘要 & 说明"\n---\n正文\n')
+        self.build()
+        page = self.read('zh.html')
+        header = page.split('</header>', 1)[0]
+        self.assertIn('href="#guides">旅行指南</a>', header)
+        self.assertNotIn('href="/blog/">旅行指南</a>', header)
+        start = page.index('<!-- home-guides:start -->')
+        end = page.index('<!-- home-guides:end -->')
+        self.assertLess(page.index('id="fleet"'), start)
+        self.assertLess(end, page.index('id="quality"'))
+        self.assertLess(end, page.index('id="contact"'))
+        block = page[start:end]
+        self.assertIn('<h2>旅行指南</h2>', block)
+        self.assertIn('href="/blog/">查看全部旅行指南</a>', block)
+        self.assertIn('最新 &lt;指南&gt;', block)
+        self.assertIn('摘要 &amp; 说明', block)
+        self.assertNotIn('<指南>', block)
+        self.assertIn('loading="lazy"', block)
+        self.assertNotIn('loading="eager"', block)
+        self.assertIn('>交通接送</p>', block)
+        self.assertIn('datetime="2026-10-25"', block)
+        links = re.findall(r'<article class="home-guide[^"]*">\s*<a href="([^"]+)">', block)
+        self.assertEqual(len(links), 6)
+        self.assertEqual(links[0], '/blog/b-20261025-000001')
+        self.assertEqual(block.count('home-guide--lead'), 1)
+        featured = self.read('blog/index.html').split('id="featured-section"', 1)[1].split('</section>', 1)[0]
+        featured_links = re.findall(r'href="(/blog/[^"]+)"', featured)
+        self.assertNotEqual(links, featured_links)
+        self.assertLess(featured.index('/blog/osaka-kyoto-nara-3days'), featured.index('featured-mini'))
+        self.build()
+        self.assertEqual(self.read('zh.html'), page)
+
 
 def _builder():
     spec = importlib.util.spec_from_file_location('mangen_build', ROOT / 'scripts' / 'build.py')
