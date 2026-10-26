@@ -77,10 +77,10 @@ img{max-width:100%;height:auto;display:block}
 @media (max-width:900px){.fleet{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:520px){.fleet .body{height:100px}.fleet .info{padding:8px 8px 10px}.fleet-note{margin-top:12px;text-align:left}}
 
-/* Chinese homepage travel guides. Built into zh.html; not used on ja/en. */
+/* Shared lead + four rows: Chinese homepage 旅行指南 and /blog/ 编辑精选. */
 #guides{scroll-margin-top:76px}
 .home-guides-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin:0 0 16px}
-.home-guides-head h2{margin:0}
+.home-guides-head h2{margin:0;font-size:26px;line-height:1.35}
 .home-guides-all{flex:0 0 auto;font-size:13px;line-height:1.4;color:var(--accent-ink)}
 .home-guides-all:hover{color:var(--accent)}
 .home-guides{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;align-items:stretch}

@@ -1,0 +1,21 @@
+# After a push to main, submit sitemap URLs that are new or whose lastmod changed.
+# IndexNow checks the public key file at the site root. No Actions secret is required.
+# Setup notes: docs-deploy.md, section IndexNow.
+name: IndexNow
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Submit new or changed URLs
+        env:
+          INDEXNOW_BEFORE: ${{ github.event.before }}
+        run: python3 scripts/indexnow.py
