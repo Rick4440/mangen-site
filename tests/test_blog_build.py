@@ -2,6 +2,7 @@
 from datetime import date
 from pathlib import Path
 from html.parser import HTMLParser
+import hashlib
 import importlib.util
 import json
 import math
@@ -200,8 +201,8 @@ class BuildTests(unittest.TestCase):
 
     def test_chinese_homepage_shows_latest_guides_apart_from_editor_picks(self):
         shutil.copy(ROOT / 'zh.html', self.root / 'zh.html')
-        (self.root / 'content/posts' / 'b-20261025-000001.md').write_text(
-            '---\ndate: 2026-10-25\ncategory: b\ntopic: 交通接送\n'
+        (self.root / 'content/posts' / 'b-20261026-000001.md').write_text(
+            '---\ndate: 2026-10-26\ncategory: b\ntopic: 交通接送\n'
             'title: "最新 <指南>"\nexcerpt: "摘要 & 说明"\n---\n正文\n')
         self.build()
         page = self.read('zh.html')
@@ -224,10 +225,10 @@ class BuildTests(unittest.TestCase):
         self.assertIn('loading="lazy"', block)
         self.assertNotIn('loading="eager"', block)
         self.assertIn('>交通接送</p>', block)
-        self.assertIn('datetime="2026-10-25"', block)
+        self.assertIn('datetime="2026-10-26"', block)
         links = re.findall(r'<article class="home-guide[^"]*">\s*<a href="([^"]+)">', block)
         self.assertEqual(len(links), 5)
-        self.assertEqual(links[0], '/blog/b-20261025-000001')
+        self.assertEqual(links[0], '/blog/b-20261026-000001')
         self.assertEqual(block.count('home-guide--lead'), 1)
         self.assertEqual(block.count('home-guide--row'), 4)
         self.assertEqual(block.count('home-guide-excerpt'), 1)
@@ -237,6 +238,44 @@ class BuildTests(unittest.TestCase):
         self.assertLess(featured.index('/blog/osaka-kyoto-nara-3days'), featured.index('featured-mini'))
         self.build()
         self.assertEqual(self.read('zh.html'), page)
+
+    def test_local_stylesheets_and_scripts_use_content_hashes(self):
+        for name in ("index.html", "zh.html", "en.html", "404.html", "quote.html"):
+            shutil.copy(ROOT / name, self.root / name)
+        header = self.read("scripts/journal-header.html")
+        self.build()
+        self.assertEqual(self.read("scripts/journal-header.html"), header)
+        pages = [
+            "index.html", "zh.html", "en.html", "404.html", "quote.html",
+            "scripts/article-template.html", "scripts/blog-index-template.html",
+            "blog/index.html", "blog/osaka-kyoto-nara-3days.html",
+        ]
+        hashes = {}
+        for path in (self.root / "assets").rglob("*"):
+            if path.suffix in {".css", ".js"} and path.is_file():
+                hashes["/" + path.relative_to(self.root).as_posix()] = hashlib.sha256(path.read_bytes()).hexdigest()[:12]
+        for name in pages:
+            source = self.read(name)
+            refs = re.findall(r'/assets/[A-Za-z0-9_./-]+\.(?:css|js)(?:\?[^"\']*)?', source)
+            with self.subTest(page=name):
+                self.assertTrue(refs)
+                for ref in refs:
+                    path = ref.split("?", 1)[0]
+                    self.assertEqual(ref, f"{path}?v={hashes[path]}")
+                self.assertNotIn("?v=20261024-", source)
+                if "fonts.googleapis.com" in source:
+                    self.assertIn("fonts.googleapis.com/css2?family=", source)
+                    self.assertNotIn("fonts.googleapis.com/css2?v=", source)
+        style = self.root / "assets/css/style.css"
+        style.write_bytes(style.read_bytes() + b"\n/* cache-bust probe */\n")
+        changed = hashlib.sha256(style.read_bytes()).hexdigest()[:12]
+        self.build()
+        self.assertIn(f'/assets/css/style.css?v={changed}', self.read("index.html"))
+        self.assertIn(f'/assets/css/style.css?v={changed}', self.read("blog/index.html"))
+        self.assertIn(f'/assets/css/style.css?v={changed}', self.read("404.html"))
+        self.assertNotIn(f'/assets/css/style.css?v={hashes["/assets/css/style.css"]}', self.read("zh.html"))
+        self.assertIn(f'/assets/js/main.js?v={hashes["/assets/js/main.js"]}', self.read("en.html"))
+        self.assertIn(f'/assets/quote/styles.css?v={hashes["/assets/quote/styles.css"]}', self.read("quote.html"))
 
 
 def _builder():

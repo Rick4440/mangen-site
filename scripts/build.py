@@ -539,6 +539,50 @@ def render_pagination(current, total):
     return ''.join(items)
 
 
+_ASSET_REF = re.compile(r'(?P<path>/assets/[A-Za-z0-9_./-]+\.(?:css|js))(?:\?[^"\'\s>]*)?')
+_ASSET_HASH_LEN = 12
+
+
+def version_asset_refs(html):
+    """Append a short content hash so edge caches drop stale stylesheets and scripts."""
+    versions = {}
+
+    def version(url_path):
+        if url_path not in versions:
+            file_path = ROOT / url_path.lstrip("/")
+            if file_path.is_file():
+                versions[url_path] = hashlib.sha256(file_path.read_bytes()).hexdigest()[:_ASSET_HASH_LEN]
+            else:
+                versions[url_path] = None
+        return versions[url_path]
+
+    def replace(match):
+        digest = version(match.group("path"))
+        if not digest:
+            return match.group(0)
+        return f'{match.group("path")}?v={digest}'
+
+    return _ASSET_REF.sub(replace, html)
+
+
+def stamp_html_assets():
+    paths = []
+    for name in (
+        "index.html", "zh.html", "en.html", "404.html", "quote.html",
+        "scripts/journal-header.html", "scripts/article-template.html", "scripts/blog-index-template.html",
+    ):
+        path = ROOT / name
+        if path.is_file():
+            paths.append(path)
+    if BLOG.is_dir():
+        paths.extend(sorted(BLOG.rglob("*.html")))
+    for path in paths:
+        original = path.read_text(encoding="utf-8")
+        updated = version_asset_refs(original)
+        if updated != original:
+            path.write_text(updated, encoding="utf-8")
+
+
 def main():
     posts = [post for path in POSTS.glob("*.md") if not (post := load_post(path))[0].get("draft", False)]
     posts.sort(key=lambda item: (item[2], item[1]), reverse=True)
@@ -609,6 +653,7 @@ def main():
         if path in dates: ET.SubElement(entry, ns + "lastmod").text = dates[path]
     ET.ElementTree(urls).write(ROOT / "sitemap.xml", encoding="utf-8", xml_declaration=True)
     update_chinese_homepage(records)
+    stamp_html_assets()
     print(f"Built {len(posts)} articles, {page_count} index page(s), search catalog and sitemap")
 
 
