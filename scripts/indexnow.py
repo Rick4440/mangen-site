@@ -1,7 +1,8 @@
 """Tell IndexNow about sitemap URLs that are new or whose lastmod changed.
 
-The key file at the site root is public on purpose. IndexNow fetches it to
-confirm the host. There is no Actions secret.
+The URL list comes from this checkout's sitemap.xml and the previous commit.
+The runner does not request mangen.jp. IndexNow fetches the public key file
+itself. There is no Actions secret.
 """
 from pathlib import Path
 import json
@@ -9,13 +10,17 @@ import os
 import re
 import subprocess
 import sys
-import time
+import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
 HOST = "mangen.jp"
-ENDPOINT = "https://api.indexnow.org/indexnow"
+ENDPOINTS = (
+    "https://api.indexnow.org/indexnow",
+    "https://www.bing.com/indexnow",
+)
+URL_LIMIT = 10000
 _KEY_NAME = re.compile(r"^[a-f0-9]{32}\.txt$")
 
 
@@ -52,19 +57,6 @@ def find_key(root=ROOT):
     return matches[0].stem
 
 
-def wait_for_key(key, attempts=30, pause=20):
-    url = f"https://{HOST}/{key}.txt"
-    for _ in range(attempts):
-        try:
-            with urllib.request.urlopen(url, timeout=15) as response:
-                if response.read().decode("utf-8").strip() == key:
-                    return url
-        except Exception:
-            pass
-        time.sleep(pause)
-    raise SystemExit(f"IndexNow key is not live at {url}. Deploy the Pages build, then rerun this workflow.")
-
-
 def submit(key, urls):
     payload = json.dumps({
         "host": HOST,
@@ -72,11 +64,27 @@ def submit(key, urls):
         "keyLocation": f"https://{HOST}/{key}.txt",
         "urlList": urls,
     }).encode("utf-8")
-    request = urllib.request.Request(ENDPOINT, data=payload, method="POST", headers={"Content-Type": "application/json; charset=utf-8"})
-    with urllib.request.urlopen(request, timeout=30) as response:
-        if response.status not in (200, 202):
-            raise SystemExit(f"IndexNow returned HTTP {response.status}.")
-    print(f"Submitted {len(urls)} URL(s) to {ENDPOINT}.")
+    for endpoint in ENDPOINTS:
+        request = urllib.request.Request(
+            endpoint,
+            data=payload,
+            method="POST",
+            headers={"Content-Type": "application/json; charset=utf-8"},
+        )
+        try:
+            with urllib.request.urlopen(request, timeout=30) as response:
+                status = response.status
+                body = response.read().decode("utf-8", errors="replace")
+        except urllib.error.HTTPError as error:
+            status = error.code
+            body = error.read().decode("utf-8", errors="replace")
+        except urllib.error.URLError as error:
+            print(f"{endpoint} request failed: {error.reason}")
+            raise SystemExit(1) from error
+        if status not in (200, 202):
+            print(f"{endpoint} returned HTTP {status}: {body}")
+            raise SystemExit(1)
+        print(f"Submitted {len(urls)} URL(s) to {endpoint}.")
 
 
 def previous_sitemap(before):
@@ -91,12 +99,12 @@ def previous_sitemap(before):
 def main():
     key = find_key()
     current = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
-    urls = changed_locations(previous_sitemap(os.environ.get("INDEXNOW_BEFORE", "")), current)
+    urls = [loc for loc in changed_locations(previous_sitemap(os.environ.get("INDEXNOW_BEFORE", "")), current) if loc]
     if not urls:
         print("No new or changed sitemap URLs.")
         return
-    wait_for_key(key)
-    submit(key, urls)
+    for start in range(0, len(urls), URL_LIMIT):
+        submit(key, urls[start:start + URL_LIMIT])
 
 
 if __name__ == "__main__":

@@ -3,8 +3,10 @@ from datetime import date, timedelta
 from pathlib import Path
 from html import escape
 from html.parser import HTMLParser
+import contextlib
 import hashlib
 import importlib.util
+import io
 import json
 import math
 import os
@@ -336,8 +338,12 @@ class BuildTests(unittest.TestCase):
             self.assertIn('rel="alternate" type="application/atom+xml" title="日本旅行指南" href="https://mangen.jp/blog/feed.xml"', page)
         key = _indexnow().find_key(ROOT)
         self.assertEqual((ROOT / f'{key}.txt').read_text(encoding='utf-8').strip(), key)
+        script = (ROOT / 'scripts/indexnow.py').read_text()
         workflow = (ROOT / '.github/workflows/indexnow.yml').read_text()
-        self.assertIn('api.indexnow.org', (ROOT / 'scripts/indexnow.py').read_text())
+        self.assertIn('https://api.indexnow.org/indexnow', script)
+        self.assertIn('https://www.bing.com/indexnow', script)
+        self.assertNotIn('def wait_for_key', script)
+        self.assertNotIn('https://mangen.jp', workflow)
         self.assertIn('INDEXNOW_BEFORE', workflow)
         self.assertNotIn('secrets.', workflow)
 
@@ -705,5 +711,52 @@ class DiscoveryTests(unittest.TestCase):
             'https://mangen.jp/blog/old', 'https://mangen.jp/blog/new',
         ])
         self.assertEqual(indexnow.changed_locations('', current)[0], 'https://mangen.jp/')
+
+    def test_submit_posts_to_indexnow_and_bing_without_fetching_the_site(self):
+        indexnow = _indexnow()
+        seen = []
+
+        class Response:
+            def __init__(self, status, body):
+                self.status = status
+                self._body = body
+            def read(self):
+                return self._body
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                return False
+
+        def urlopen(request, timeout=30):
+            seen.append(request.full_url)
+            payload = json.loads(request.data.decode())
+            self.assertEqual(payload['host'], 'mangen.jp')
+            self.assertEqual(payload['keyLocation'], 'https://mangen.jp/e61e8cdfd15dbe8d1e1c92f0140ffbf1.txt')
+            self.assertNotIn('mangen.jp', request.full_url)
+            if 'bing.com' in request.full_url:
+                return Response(202, b'')
+            return Response(200, b'')
+
+        original = indexnow.urllib.request.urlopen
+        indexnow.urllib.request.urlopen = urlopen
+        try:
+            indexnow.submit('e61e8cdfd15dbe8d1e1c92f0140ffbf1', ['https://mangen.jp/blog/new'])
+            self.assertEqual(seen, [
+                'https://api.indexnow.org/indexnow',
+                'https://www.bing.com/indexnow',
+            ])
+            def rejected(request, timeout=30):
+                raise indexnow.urllib.error.HTTPError(
+                    request.full_url, 403, 'Forbidden', None, io.BytesIO(b'cf-challenge'),
+                )
+            indexnow.urllib.request.urlopen = rejected
+            captured = io.StringIO()
+            with self.assertRaises(SystemExit):
+                with contextlib.redirect_stdout(captured):
+                    indexnow.submit('e61e8cdfd15dbe8d1e1c92f0140ffbf1', ['https://mangen.jp/blog/new'])
+            self.assertIn('HTTP 403', captured.getvalue())
+            self.assertIn('cf-challenge', captured.getvalue())
+        finally:
+            indexnow.urllib.request.urlopen = original
 
 if __name__ == '__main__': unittest.main()
