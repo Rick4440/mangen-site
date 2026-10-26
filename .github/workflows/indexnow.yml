@@ -1,5 +1,7 @@
 # After a push to main, submit sitemap URLs that are new or whose lastmod changed.
-# IndexNow checks the public key file at the site root. No Actions secret is required.
+# The runner compares sitemap.xml in this checkout with the previous commit.
+# It does not request mangen.jp. IndexNow fetches the public key file itself.
+# No Actions secret is required.
 # Setup notes: docs-deploy.md, section IndexNow.
 name: IndexNow
 
