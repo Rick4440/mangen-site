@@ -1,6 +1,7 @@
 """Build output contracts; each test runs the actual static generator in isolation."""
 from datetime import date, timedelta
 from pathlib import Path
+from html import escape
 from html.parser import HTMLParser
 import hashlib
 import importlib.util
@@ -282,6 +283,31 @@ class BuildTests(unittest.TestCase):
         self.assertIn(f'/assets/js/main.js?v={hashes["/assets/js/main.js"]}', self.read("en.html"))
         self.assertIn(f'/assets/quote/styles.css?v={hashes["/assets/quote/styles.css"]}', self.read("quote.html"))
 
+    def test_every_article_related_block_is_static_cards(self):
+        self.build()
+        catalog = {post['slug']: post for post in json.loads(self.read('blog/articles.json'))['posts']}
+        self.assertNotIn('tags', next(iter(catalog.values())))
+        for slug, post in catalog.items():
+            page = self.read(f'blog/{slug}.html')
+            self.assertIn('class="related-reading"', page, slug)
+            section = page.split('class="related-reading"', 1)[1].split('</section>', 1)[0]
+            hrefs = re.findall(r'<a href="([^"]+)">', section)
+            pool = sum(1 for other in catalog.values() if other['slug'] != slug and (
+                other['topic'] == post['topic'] or set(other['regions']) & set(post['regions'])))
+            self.assertGreaterEqual(len(hrefs), min(3, pool), slug)
+            self.assertLessEqual(len(hrefs), 5, slug)
+            self.assertEqual(len(hrefs), len(set(hrefs)), slug)
+            self.assertNotIn(post['url'], hrefs, slug)
+            self.assertEqual(section.count('<img ') + section.count('related-thumb'), len(hrefs))
+            self.assertIn('loading="lazy"', section)
+            for href in hrefs:
+                other = catalog[href.removeprefix('/blog/')]
+                shares_topic = other['topic'] == post['topic']
+                shares_region = bool(set(other['regions']) & set(post['regions']))
+                self.assertTrue(shares_topic or shares_region, slug)
+                self.assertIn(f'datetime="{other["date"]}"', section)
+                self.assertIn(escape(other['title'], quote=True), section)
+
 
 def _builder():
     spec = importlib.util.spec_from_file_location('mangen_build', ROOT / 'scripts' / 'build.py')
@@ -368,5 +394,82 @@ class EditorPickTests(unittest.TestCase):
         self.assertEqual([post['slug'] for post in picks], [f'old-{i}' for i in range(5, 0, -1)])
         short = old[:2]
         self.assertEqual(len(self.build.select_editor_picks(short, self.today)), 2)
+
+
+def _guide(build, slug, published, topic, places, tags=None, title=None, cover='/assets/uploads/x.png'):
+    return {
+        'slug': slug, 'url': f'/blog/{slug}', 'date': published, 'topic': topic,
+        'destinations': places, 'regions': build.regions_for(places), 'tags': tags or [],
+        'title': title or slug, 'cover': cover, 'coverAlt': title or slug,
+    }
+
+
+class RelatedArticleTests(unittest.TestCase):
+    def setUp(self):
+        self.build = _builder()
+
+    def test_newest_page_links_the_older_matches_and_not_itself(self):
+        posts = [_guide(self.build, f'g-{i:02d}', f'2026-01-{i+1:02d}', '行程路线', ['东京']) for i in range(8)]
+        newest = posts[-1]
+        related = self.build.select_related_map(posts)
+        slugs = [post['slug'] for post in related[newest['slug']]]
+        self.assertEqual(slugs, [f'g-{i:02d}' for i in range(5)])
+        self.assertNotIn(newest['slug'], slugs)
+        again = [post['slug'] for post in self.build.select_related_map(list(reversed(posts)))[newest['slug']]]
+        self.assertEqual(again, slugs)
+        inbound = {post['slug']: 0 for post in posts}
+        for picks in related.values():
+            for post in picks:
+                inbound[post['slug']] += 1
+        self.assertTrue(all(count > 0 for count in inbound.values()))
+        self.assertGreaterEqual(inbound['g-00'], inbound['g-07'])
+
+    def test_region_and_topic_win_then_same_topic_fills_a_short_pool(self):
+        tokyo = [_guide(self.build, f'tokyo-{i}', f'2026-02-0{i+1}', '行程路线', ['东京']) for i in range(2)]
+        osaka = [_guide(self.build, f'osaka-{i}', f'2026-03-0{i+1}', '行程路线', ['大阪']) for i in range(6)]
+        other = _guide(self.build, 'food', '2026-04-01', '住宿美食', ['东京'])
+        related = self.build.select_related_map(tokyo + osaka + [other])
+        slugs = [post['slug'] for post in related['tokyo-1']]
+        self.assertIn('tokyo-0', slugs)
+        self.assertNotIn('food', slugs)
+        self.assertTrue(all(slug.startswith('osaka-') or slug == 'tokyo-0' for slug in slugs))
+        self.assertGreaterEqual(len(slugs), 3)
+        self.assertLessEqual(len(slugs), 5)
+
+    def test_same_tag_counts_and_region_only_is_the_last_resort(self):
+        tagged = _guide(self.build, 'tagged', '2026-05-01', '购物退税', ['大阪'], tags=['退税'])
+        peer = _guide(self.build, 'peer', '2026-05-02', '礼仪与生活', ['大阪'], tags=['退税'])
+        far = _guide(self.build, 'far', '2026-05-03', '礼仪与生活', ['东京'], tags=['退税'])
+        neighbors = [_guide(self.build, f'near-{i}', f'2026-06-0{i+1}', '住宿美食', ['大阪']) for i in range(4)]
+        solo = _guide(self.build, 'solo', '2026-07-01', '季节活动', ['京都'])
+        related = self.build.select_related_map([tagged, peer, far, solo, *neighbors])
+        tagged_slugs = [post['slug'] for post in related['tagged']]
+        self.assertEqual(tagged_slugs[0], 'peer')
+        self.assertIn('far', tagged_slugs)
+        self.assertLess(tagged_slugs.index('peer'), tagged_slugs.index('far'))
+        solo_slugs = [post['slug'] for post in related['solo']]
+        self.assertEqual(solo_slugs, [])
+        thin = self.build.select_related_map([solo, neighbors[0]])
+        self.assertEqual([post['slug'] for post in thin['solo']], [])
+
+    def test_region_neighbors_fill_when_the_topic_is_unique(self):
+        solo = _guide(self.build, 'solo', '2026-07-01', '季节活动', ['大阪'])
+        neighbors = [_guide(self.build, f'near-{i}', f'2026-06-0{i+1}', '住宿美食', ['大阪']) for i in range(4)]
+        tokyo = _guide(self.build, 'tokyo', '2026-08-01', '住宿美食', ['东京'])
+        related = self.build.select_related_map([solo, tokyo, *neighbors])
+        self.assertEqual([post['slug'] for post in related['solo']], [f'near-{i}' for i in range(4)])
+
+    def test_cards_show_thumbnail_title_date_and_escape(self):
+        post = _guide(self.build, 'old', '2026-01-02', '行程路线', ['东京'], title='旧文 <指南> & 说明', cover='')
+        covered = _guide(self.build, 'pic', '2026-01-03', '行程路线', ['东京'], title='有图', cover='/assets/uploads/a.png')
+        html = self.build.render_related_section([post, covered])
+        self.assertIn('class="related-thumb"', html)
+        self.assertIn('src="/assets/uploads/a.png"', html)
+        self.assertIn('loading="lazy"', html)
+        self.assertIn('旧文 &lt;指南&gt; &amp; 说明', html)
+        self.assertIn('datetime="2026-01-02"', html)
+        self.assertIn('>2026.01.02</time>', html)
+        self.assertNotIn('<指南>', html)
+        self.assertEqual(self.build.render_related_section([]), '')
 
 if __name__ == '__main__': unittest.main()

@@ -87,6 +87,8 @@ HOME_GUIDE_START = "<!-- home-guides:start -->"
 HOME_GUIDE_END = "<!-- home-guides:end -->"
 # First row of the desktop guide grid. Auto picks avoid these newest posts when other candidates exist.
 LATEST_ABOVE_FOLD = 3
+RELATED_MIN = 3
+RELATED_MAX = 5
 TOPICS = ["行程路线", "交通接送", "住宿美食", "购物退税", "季节活动", "礼仪与生活"]
 # Older labels still publish into the six topics, so a batch written with the previous names does not break the build.
 TOPIC_ALIASES = {
@@ -190,6 +192,13 @@ def post_record(post):
         raise ValueError(f"Invalid featured_order in {slug}: {featured_order}")
     else:
         featured_order = int(featured_order)
+    raw_tags = data.get("tags") or []
+    if isinstance(raw_tags, str):
+        raw_tags = [part.strip() for part in re.split(r"[,，]", raw_tags) if part.strip()]
+    elif isinstance(raw_tags, list):
+        raw_tags = [str(part).strip() for part in raw_tags if str(part).strip()]
+    else:
+        raw_tags = []
     return {"slug": slug, "url": f"/blog/{slug}", "title": title, "excerpt": excerpt,
             "date": published, "updated": modified, "category": CATEGORY_LABELS.get(data.get("category"), "旅行指南"),
             "topic": topic, "destinations": destinations, "regions": regions_for(destinations),
@@ -200,6 +209,7 @@ def post_record(post):
             "coverLicense": data.get("cover_license") or "", "coverLicenseUrl": data.get("cover_license_url") or "",
             "coverCreatorUrl": data.get("cover_creator_url") or "", "coverCaption": data.get("cover_caption") or "",
             "coverChanges": data.get("cover_changes") or "",
+            "tags": list(dict.fromkeys(raw_tags)),
             "search": plain(title + " " + excerpt + " " + body)}
 
 
@@ -565,6 +575,84 @@ def version_asset_refs(html):
     return _ASSET_REF.sub(replace, html)
 
 
+def _post_regions(post):
+    if post.get("regions"):
+        return set(post["regions"])
+    return set(regions_for(post.get("destinations") or []))
+
+
+def _post_tags(post):
+    return {str(tag) for tag in (post.get("tags") or []) if str(tag).strip()}
+
+
+def related_tier(source, candidate):
+    """2 shares a topic or tag and a region; 1 is the same topic or tag; 0 is region only.
+
+    The CMS category letter is a coarse bucket (many topics share 旅行指南), so it is
+    not a match signal. Topic is the published category.
+    """
+    if candidate["slug"] == source["slug"]:
+        return None
+    topical = (bool(source.get("topic")) and source.get("topic") == candidate.get("topic")
+               or bool(_post_tags(source) & _post_tags(candidate)))
+    same_region = bool(_post_regions(source) & _post_regions(candidate))
+    if topical and same_region:
+        return 2
+    if topical:
+        return 1
+    if same_region:
+        return 0
+    return None
+
+
+def select_related_map(records):
+    """3–5 related articles per page. Newer pages give their links to older matches first."""
+    sources = sorted(records, key=lambda post: (post.get("date") or "", post["slug"]), reverse=True)
+    inbound = {post["slug"]: 0 for post in records}
+    chosen = {}
+    for source in sources:
+        bands = {2: [], 1: [], 0: []}
+        for candidate in records:
+            tier = related_tier(source, candidate)
+            if tier is not None:
+                bands[tier].append(candidate)
+        selected = []
+        seen = set()
+        for tier in (2, 1, 0):
+            if len(selected) >= RELATED_MAX:
+                break
+            if tier < 2 and len(selected) >= RELATED_MIN:
+                break
+            band = [item for item in bands[tier] if item["slug"] not in seen]
+            band.sort(key=lambda item: (inbound[item["slug"]], item.get("date") or "", item["slug"]))
+            selected.extend(band[:RELATED_MAX - len(selected)])
+            seen.update(item["slug"] for item in selected)
+        for item in selected:
+            inbound[item["slug"]] += 1
+        chosen[source["slug"]] = selected
+    return chosen
+
+
+def render_related_section(posts):
+    if not posts:
+        return ""
+    items = []
+    for post in posts:
+        if post.get("cover"):
+            thumb = (f'<img src="{text(post["cover"])}" alt="{text(post.get("coverAlt") or post["title"])}" '
+                     f'loading="lazy" decoding="async" width="320" height="240">')
+        else:
+            thumb = '<span class="related-thumb" aria-hidden="true"></span>'
+        shown = text(str(post.get("date") or "").replace("-", "."))
+        items.append(
+            f'<li><a href="{text(post["url"])}">{thumb}<span class="related-copy">'
+            f'<span class="related-title">{text(post["title"])}</span>'
+            f'<time datetime="{text(post.get("date") or "")}">{shown}</time></span></a></li>'
+        )
+    return ('<section class="related-reading" aria-label="相关阅读"><h2>相关阅读</h2><ul>'
+            + "".join(items) + "</ul></section>")
+
+
 def stamp_html_assets():
     paths = []
     for name in (
@@ -589,15 +677,11 @@ def main():
     if not posts:
         raise ValueError("No articles found in content/posts")
     records = [post_record(post) for post in posts]
+    related_map = select_related_map(records)
     BLOG.mkdir(parents=True, exist_ok=True)
     header = (ROOT / "scripts/journal-header.html").read_text(encoding="utf-8")
     template = (ROOT / "scripts/article-template.html").read_text(encoding="utf-8")
     for (data, slug, published, body), post in zip(posts, records):
-        # Rank by explicit content metadata; stable input order breaks ties.
-        related = sorted([p for p in records if p["slug"] != slug], key=lambda p: (
-            bool(set(p["destinations"]) & set(post["destinations"]) - {"全日本"}),
-            p["topic"] == post["topic"], p["featured"]), reverse=True)[:3]
-        related_links = '\n'.join(f'<li><a href="{text(p["url"])}"><span class="guide-taxonomy">{text(p["topic"])}</span>{text(p["title"])}</a></li>' for p in related)
         schema = {"@context": "https://schema.org", "@type": "Article", "headline": post["title"],
                   "description": post["excerpt"], "inLanguage": "zh-CN", "mainEntityOfPage": BASE + post["url"],
                   "datePublished": published, "dateModified": post["updated"],
@@ -611,7 +695,8 @@ def main():
         toc = '<details class="article-toc"><summary>本文目录</summary><nav aria-label="本文目录"><ol>'+''.join(f'<li class="toc-level-{level}"><a href="#{text(anchor)}">{text(plain(label))}</a></li>' for level, anchor, label in headings)+'</ol></nav></details>' if headings else ""
         updated = f' · 更新于 <time datetime="{text(post["updated"])}">{text(post["updated"])}</time>' if post["updated"] != published else ""
         page = render_template(template, {"HEADER": header, "TITLE": text(post["title"]), "DESCRIPTION": text(post["excerpt"]),
-            "DATE": text(published), "UPDATED": updated, "BODY": body, "URL": BASE + post["url"], "RELATED": related_links,
+            "DATE": text(published), "UPDATED": updated, "BODY": body, "URL": BASE + post["url"],
+            "RELATED": render_related_section(related_map.get(slug, [])),
             "CATEGORY": text(post["topic"]), "DESTINATIONS": (" · " + text(" / ".join(post["destinations"]))) if post["destinations"] else "", "COVER": cover, "TOC": toc,
             "OG_IMAGE": text(BASE + (post["cover"] or "/assets/img/logo.png")), "SCHEMA": json.dumps(schema, ensure_ascii=False).replace("<", "\\u003c")})
         (BLOG / f"{slug}.html").write_text(page, encoding="utf-8")
@@ -641,7 +726,8 @@ def main():
                 generated = directory / "index.html"
                 if generated.exists(): generated.unlink()
                 if not any(directory.iterdir()): directory.rmdir()
-    (BLOG / "articles.json").write_text(json.dumps({"perPage": PER_PAGE, "posts": records}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    public_records = [{key: value for key, value in post.items() if key != "tags"} for post in records]
+    (BLOG / "articles.json").write_text(json.dumps({"perPage": PER_PAGE, "posts": public_records}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
     ET.register_namespace("", "http://www.sitemaps.org/schemas/sitemap/0.9")
     ns = "{http://www.sitemaps.org/schemas/sitemap/0.9}"
