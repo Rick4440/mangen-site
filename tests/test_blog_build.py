@@ -122,13 +122,21 @@ class BuildTests(unittest.TestCase):
         for path in (self.root / 'blog').rglob('*.html'):
             with self.subTest(page=path.relative_to(self.root)):
                 header = path.read_text().split('</header>', 1)[0]
-                for href, label in [('/zh#services', '用车服务'), ('/zh#fleet', '车型介绍'),
+                for href, label in [('/zh#services', '用车服务'), ('/zh#fleet', '车型阵容'),
                                     ('/blog/', '旅行指南'), ('/zh#contact', '联系我们'),
                                     ('/zh#company', '公司介绍')]:
                     self.assertIn(f'href="{href}">{label}</a>', header)
-                self.assertIn('日本語首页', header)
-                self.assertIn('English 首页', header)
-                self.assertNotIn('>JA</a>', header)
+                self.assertIn('lang="ja" aria-label="日本語">JA</a>', header)
+                self.assertIn('lang="zh-CN" aria-label="中文">ZH</a>', header)
+                self.assertIn('lang="en" aria-label="English">EN</a>', header)
+                self.assertIn('href="/"', header)
+                self.assertIn('href="/zh"', header)
+                self.assertIn('href="/en"', header)
+                self.assertNotIn('日本語首页', header)
+                self.assertNotIn('English 首页', header)
+                self.assertNotIn('>日本語</a>', header)
+                self.assertNotIn('>中文</a>', header)
+                self.assertNotIn('>English</a>', header)
     def test_generated_footer_labels_are_consistent_and_keep_destinations(self):
         self.build()
         # Reverting a footer template must fail for all articles or list pages.
@@ -189,6 +197,46 @@ class BuildTests(unittest.TestCase):
         # The only manual pin stays the lead card, ahead of the automatic cards.
         self.assertLess(section.index('/blog/osaka-kyoto-nara-3days'), section.index('featured-mini'))
         self.assertNotIn('id="featured-section"', self.read('blog/page/2/index.html'))
+
+    def test_chinese_homepage_shows_latest_guides_apart_from_editor_picks(self):
+        shutil.copy(ROOT / 'zh.html', self.root / 'zh.html')
+        (self.root / 'content/posts' / 'b-20261025-000001.md').write_text(
+            '---\ndate: 2026-10-25\ncategory: b\ntopic: 交通接送\n'
+            'title: "最新 <指南>"\nexcerpt: "摘要 & 说明"\n---\n正文\n')
+        self.build()
+        page = self.read('zh.html')
+        header = page.split('</header>', 1)[0]
+        self.assertIn('href="#guides">旅行指南</a>', header)
+        self.assertNotIn('href="/blog/">旅行指南</a>', header)
+        start = page.index('<!-- home-guides:start -->')
+        end = page.index('<!-- home-guides:end -->')
+        self.assertLess(page.index('id="fleet"'), start)
+        self.assertLess(end, page.index('id="quality"'))
+        self.assertLess(end, page.index('id="contact"'))
+        block = page[start:end]
+        self.assertIn('<h2>旅行指南</h2>', block)
+        self.assertIn('href="/blog/">查看全部 →</a>', block)
+        self.assertNotIn('查看全部旅行指南', block)
+        self.assertNotIn('home-guides-more', block)
+        self.assertIn('最新 &lt;指南&gt;', block)
+        self.assertIn('摘要 &amp; 说明', block)
+        self.assertNotIn('<指南>', block)
+        self.assertIn('loading="lazy"', block)
+        self.assertNotIn('loading="eager"', block)
+        self.assertIn('>交通接送</p>', block)
+        self.assertIn('datetime="2026-10-25"', block)
+        links = re.findall(r'<article class="home-guide[^"]*">\s*<a href="([^"]+)">', block)
+        self.assertEqual(len(links), 5)
+        self.assertEqual(links[0], '/blog/b-20261025-000001')
+        self.assertEqual(block.count('home-guide--lead'), 1)
+        self.assertEqual(block.count('home-guide--row'), 4)
+        self.assertEqual(block.count('home-guide-excerpt'), 1)
+        featured = self.read('blog/index.html').split('id="featured-section"', 1)[1].split('</section>', 1)[0]
+        featured_links = re.findall(r'href="(/blog/[^"]+)"', featured)
+        self.assertNotEqual(links, featured_links)
+        self.assertLess(featured.index('/blog/osaka-kyoto-nara-3days'), featured.index('featured-mini'))
+        self.build()
+        self.assertEqual(self.read('zh.html'), page)
 
 
 def _builder():

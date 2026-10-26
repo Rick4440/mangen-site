@@ -65,6 +65,92 @@ def read_page(name):
 
 
 class SiteContentTests(unittest.TestCase):
+    def test_section_headings_match_nav_labels(self):
+        # Nav wording is the source of truth for each in-page anchor.
+        anchors = ("services", "fleet", "contact", "company")
+        stale = ("服务内容", "车型介绍", "关于我们", "サービス内容", "車両ラインナップ")
+        for name in HOME_PAGES:
+            source = (ROOT / name).read_text(encoding="utf-8")
+            nav = source.split("<nav>", 1)[1].split("</nav>", 1)[0]
+            with self.subTest(page=name):
+                for anchor in anchors:
+                    label = re.search(rf'href="#{anchor}">([^<]+)</a>', nav).group(1)
+                    section = source.split(f'id="{anchor}"', 1)[1].split("</section>", 1)[0]
+                    heading = re.search(r"<h2>([^<]+)</h2>", section).group(1)
+                    self.assertEqual(heading, label)
+                checked = source
+                if name == "zh.html" and "<!-- home-guides:start -->" in source:
+                    checked = source.split("<!-- home-guides:start -->", 1)[0] + source.split("<!-- home-guides:end -->", 1)[1]
+                for phrase in stale:
+                    self.assertNotIn(phrase, checked)
+                if name == "zh.html":
+                    self.assertIn('href="#guides">旅行指南</a>', nav)
+                    guide = source.split('id="guides"', 1)[1].split("</section>", 1)[0]
+                    self.assertIn("<h2>旅行指南</h2>", guide)
+                    self.assertIn('href="/blog/">查看全部 →</a>', guide)
+                    self.assertNotIn("查看全部旅行指南", guide)
+                    self.assertNotIn("home-guides-more", guide)
+                    self.assertEqual(guide.count("home-guide--lead"), 1)
+                    self.assertEqual(guide.count("home-guide--row"), 4)
+                    self.assertLess(source.index('id="fleet"'), source.index('id="guides"'))
+                    self.assertLess(source.index('id="guides"'), source.index('id="contact"'))
+                    self.assertLess(source.index('id="guides"'), source.index('id="company"'))
+                else:
+                    self.assertNotIn('id="guides"', source)
+                    self.assertNotIn("查看全部旅行指南", source)
+                    self.assertIn('href="/blog/"', nav)
+        for name in ("scripts/journal-header.html", "assets/js/main.js", "assets/js/journal.js"):
+            source = (ROOT / name).read_text(encoding="utf-8")
+            for phrase in stale:
+                self.assertNotIn(phrase, source)
+
+    def test_reasons_sit_inside_the_company_section(self):
+        # The old standalone why-choose section must not return.
+        expected = {
+            "index.html": ("万源が選ばれる理由", ("真心", "熱意", "忍耐", "責任感")),
+            "zh.html": ("选择万源的理由", ("真心", "热心", "耐心", "责任心")),
+            "en.html": ("Why Mangen", ("Sincerity", "Passion", "Patience", "Responsibility")),
+        }
+        for name, (heading, words) in expected.items():
+            source = (ROOT / name).read_text(encoding="utf-8")
+            company = source.split('id="company"', 1)[1].split("</section>", 1)[0]
+            with self.subTest(page=name):
+                self.assertNotIn('<section class="sec" id="quality">', source)
+                self.assertNotIn("<h2>選ばれる理由</h2>", source)
+                self.assertNotIn("<h2>选择万源的理由</h2>", source)
+                self.assertNotIn("<h2>Why Choose Us</h2>", source)
+                self.assertIn(f'id="quality"', company)
+                self.assertIn(f"<h3>{heading}</h3>", company)
+                self.assertLess(company.index('data-bind="company-desc"'), company.index("<h3>"))
+                self.assertLess(company.index("<h3>"), company.index('data-bind="company-info"'))
+                self.assertLess(company.index('data-bind="company-info"'), company.index('data-bind="license-1"'))
+                for word in words:
+                    self.assertIn(f"<span class=\"zh\">{word}</span>", company)
+
+    def test_booking_steps_sit_inside_the_contact_section(self):
+        # The old standalone booking section must not return.
+        expected = {
+            "index.html": ("ご予約の流れ", ("ご予約", "お見積り確認", "ご出発")),
+            "zh.html": ("预约流程", ("预约", "确认报价", "出行")),
+            "en.html": ("How to Book", ("Request", "Confirm the quote", "Travel")),
+        }
+        for name, (heading, steps) in expected.items():
+            source = (ROOT / name).read_text(encoding="utf-8")
+            contact = source.split('id="contact"', 1)[1].split("</section>", 1)[0]
+            with self.subTest(page=name):
+                self.assertNotIn('<section class="sec" id="flow">', source)
+                self.assertNotIn('<section class="sec alt" id="flow">', source)
+                self.assertNotIn("<h2>ご利用の流れ</h2>", source)
+                self.assertNotIn("<h2>预约流程</h2>", source)
+                self.assertNotIn("<h2>How it works</h2>", source)
+                self.assertIn('id="flow"', contact)
+                self.assertIn(f"<h3>{heading}</h3>", contact)
+                self.assertLess(contact.index("<h2>"), contact.index("<h3>"))
+                self.assertLess(contact.index("<h3>"), contact.index('data-bind="phones"'))
+                self.assertLess(contact.index('data-bind="phones"'), contact.index('data-form="contact"'))
+                for step in steps:
+                    self.assertIn(f"<span>{step}</span>", contact)
+
     def test_chinese_home_footer_uses_agreed_labels_and_preserves_destinations(self):
         # Reverting either short label or changing/adding a destination must fail.
         links = read_page("zh.html").footer_links
@@ -175,6 +261,101 @@ class SiteContentTests(unittest.TestCase):
                 for card, item in zip(cards, fleet["items"]):
                     for field in ("name_i18n", "seats_i18n", "luggage_i18n", "use_i18n"):
                         self.assertIn(item[field][code], card)
+
+    def test_language_switchers_use_short_codes_with_descriptive_names(self):
+        # Visible labels are JA / ZH / EN. The accessible name stays the language's own name.
+        expected = (
+            'hreflang="ja" lang="ja" aria-label="日本語">JA</a>',
+            'hreflang="zh-CN" lang="zh-CN" aria-label="中文">ZH</a>',
+            'hreflang="en" lang="en" aria-label="English">EN</a>',
+        )
+        for name in ("index.html", "zh.html", "en.html", "scripts/journal-header.html"):
+            source = (ROOT / name).read_text(encoding="utf-8")
+            with self.subTest(page=name):
+                for snippet in expected:
+                    self.assertIn(snippet, source)
+                self.assertIn('href="/"', source)
+                self.assertIn('href="/zh"', source)
+                self.assertIn('href="/en"', source)
+                self.assertNotIn("日本語首页", source)
+                self.assertNotIn("英语首页", source)
+                self.assertNotIn("English 首页", source)
+                self.assertNotIn(">日本語</a>", source)
+                self.assertNotIn(">中文</a>", source)
+                self.assertNotIn(">English</a>", source)
+
+    def test_not_found_page_names_each_home_in_its_own_language(self):
+        source = (ROOT / "404.html").read_text(encoding="utf-8")
+        self.assertIn('href="/" hreflang="ja" lang="ja">日本語トップ</a>', source)
+        self.assertIn('href="/zh" hreflang="zh-CN" lang="zh-CN">中文首页</a>', source)
+        self.assertIn('href="/en" hreflang="en" lang="en">English Home</a>', source)
+        self.assertNotIn("日本語首页", source)
+        self.assertNotIn("English home", source)
+        self.assertIn('path.indexOf("/zh/")', source)
+        self.assertIn('path.indexOf("/en/")', source)
+
+    def test_company_hours_are_not_published(self):
+        company = json.loads((ROOT / "content/settings/company.json").read_text(encoding="utf-8"))
+        self.assertNotIn("openingHours", company["schema"])
+        for rows in company["info_rows_i18n"].values():
+            labels = [row["label"] for row in rows]
+            self.assertNotIn("営業時間", labels)
+            self.assertNotIn("营业时间", labels)
+            self.assertNotIn("Hours", labels)
+        for name in HOME_PAGES:
+            source = (ROOT / name).read_text(encoding="utf-8")
+            with self.subTest(page=name):
+                self.assertNotIn("openingHours", source)
+                self.assertNotIn("24時間", source)
+                self.assertNotIn("24 小时", source)
+                self.assertNotIn(">24h<", source)
+                self.assertNotIn("Hours:", source)
+
+    def test_founding_date_follows_the_company_name(self):
+        company = json.loads((ROOT / "content/settings/company.json").read_text(encoding="utf-8"))
+        self.assertEqual(company["schema"]["foundingDate"], "2020-08")
+        expected = {
+            "ja": ("設立", "2020年8月"),
+            "zh": ("成立时间", "2020年8月"),
+            "en": ("Established", "August 2020"),
+        }
+        representatives = {
+            "ja": ("代表者", "代表取締役 梁超"),
+            "zh": ("代表人", "代表董事 梁超"),
+            "en": ("Representative", "Chao Liang, Representative Director"),
+        }
+        self.assertNotIn("founder", company["schema"])
+        for lang, row in expected.items():
+            rows = company["info_rows_i18n"][lang]
+            self.assertEqual((rows[1]["label"], rows[1]["value"]), row)
+            self.assertEqual((rows[2]["label"], rows[2]["value"]), representatives[lang])
+            self.assertIn(rows[0]["label"], ("会社名", "公司名称", "Company"))
+        pages = {
+            "index.html": (
+                "<tr><td>設立</td><td>2020年8月</td></tr>",
+                "<tr><td>代表者</td><td>代表取締役 梁超</td></tr>",
+            ),
+            "zh.html": (
+                "<tr><td>成立时间</td><td>2020年8月</td></tr>",
+                "<tr><td>代表人</td><td>代表董事 梁超</td></tr>",
+            ),
+            "en.html": (
+                "<tr><td>Established</td><td>August 2020</td></tr>",
+                "<tr><td>Representative</td><td>Chao Liang, Representative Director</td></tr>",
+            ),
+        }
+        for name, (founded, representative) in pages.items():
+            source = (ROOT / name).read_text(encoding="utf-8")
+            table = source.split('data-bind="company-info"', 1)[1].split("</tbody>", 1)[0]
+            schema = json.loads(re.search(
+                r'<script id="business-schema" type="application/ld\+json">(.*?)</script>',
+                source,
+            ).group(1))
+            with self.subTest(page=name):
+                self.assertLess(table.index(founded), table.index(representative))
+                self.assertLess(table.index(representative), table.index("1147-33"))
+                self.assertEqual(schema["foundingDate"], "2020-08")
+                self.assertNotIn("founder", schema)
 
     def test_brand_has_company_names_without_literal_newline_escape(self):
         # Reintroducing a literal backslash-n between brand spans must fail.

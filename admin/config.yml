@@ -116,6 +116,7 @@ collections:
           - label: "公司信息展示（多语言）"
             name: "info_rows_i18n"
             widget: "object"
+            hint: "公司名之后依次为成立时间和代表人。代表人只写在这里，不要写入下方搜索引擎资料。"
             fields:
               - { label: "日文", name: "ja", widget: "list", fields: [{ label: "项目", name: "label", widget: "string" }, { label: "内容", name: "value", widget: "string" }] }
               - { label: "中文", name: "zh", widget: "list", fields: [{ label: "项目", name: "label", widget: "string" }, { label: "内容", name: "value", widget: "string" }] }
@@ -159,7 +160,7 @@ collections:
                   - { label: "名称", name: "name", widget: "string" }
                   - { label: "电话", name: "telephone", widget: "string" }
               - { label: "服务语言", name: "availableLanguage", widget: "list", field: { label: "语言代码", name: "language", widget: "string" } }
-              - { label: "营业时间", name: "openingHours", widget: "string" }
+              - { label: "成立时间", name: "foundingDate", widget: "string", hint: "ISO 年月，例如 2020-08" }
 
   # 2. 车型
   - name: "fleet"

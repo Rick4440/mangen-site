@@ -77,6 +77,47 @@ img{max-width:100%;height:auto;display:block}
 @media (max-width:900px){.fleet{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:520px){.fleet .body{height:100px}.fleet .info{padding:8px 8px 10px}.fleet-note{margin-top:12px;text-align:left}}
 
+/* Chinese homepage travel guides. Built into zh.html; not used on ja/en. */
+#guides{scroll-margin-top:76px}
+.home-guides-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin:0 0 16px}
+.home-guides-head h2{margin:0}
+.home-guides-all{flex:0 0 auto;font-size:13px;line-height:1.4;color:var(--accent-ink)}
+.home-guides-all:hover{color:var(--accent)}
+.home-guides{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;align-items:stretch}
+.home-guide--lead,.home-guide-list{min-width:0;border:1px solid var(--line);border-radius:var(--radius);background:#fff;overflow:hidden}
+.home-guide--lead>a{display:flex;flex-direction:column;height:100%;color:inherit}
+.home-guide--lead img{width:100%;aspect-ratio:16/9;object-fit:cover;background:#f7f6f2}
+.home-guide--lead .home-guide-copy{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;min-width:0;flex:1}
+.home-guide--lead h3{font-size:22px;line-height:1.4;margin:0}
+.home-guide-topic{margin:0;font-size:11px;letter-spacing:.06em;color:var(--accent-ink)}
+.home-guide-excerpt{margin:0;font-size:13px;line-height:1.6;color:var(--sub);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.home-guide time{font-size:12px;color:var(--sub)}
+.home-guide--lead time{margin-top:auto}
+.home-guide-credit{margin:0;padding:0 16px 12px;font-size:10px;line-height:1.5;color:#817b70;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.home-guide-credit a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.home-guide-list{display:flex;flex-direction:column}
+.home-guide--row{min-width:0}
+.home-guide--row+.home-guide--row{border-top:1px solid var(--line)}
+.home-guide--row a{display:flex;align-items:center;gap:12px;min-width:0;height:100%;padding:10px 12px;color:inherit}
+.home-guide--row img{width:96px;height:72px;flex:0 0 96px;aspect-ratio:4/3;object-fit:cover;border-radius:6px;background:#f7f6f2}
+.home-guide--row .home-guide-copy{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.home-guide--row h3{margin:0;font-size:15px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.home-guide--lead a:hover h3,.home-guide--row a:hover h3{color:var(--accent)}
+@media (min-width:900px){
+  .home-guides{grid-template-columns:minmax(0,55fr) minmax(0,45fr);gap:18px}
+  .home-guide-list{height:100%}
+  .home-guide--row{flex:1 1 0}
+}
+@media (max-width:414px){
+  #guides.sec{padding:36px 0}
+  .home-guides-head{margin-bottom:12px}
+  .home-guide--lead h3{font-size:18px}
+  .home-guide--lead .home-guide-copy{padding:12px 12px 14px}
+  .home-guide--row a{gap:10px;padding:10px}
+  .home-guide--row img{width:84px;height:63px;flex-basis:84px}
+  .home-guide--row h3{font-size:14px}
+}
+
 /* Services / Values */
 .service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .service{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:20px}
@@ -88,6 +129,16 @@ img{max-width:100%;height:auto;display:block}
 .steps .step b{display:block;color:var(--accent);font-size:12px;letter-spacing:.08em;margin-bottom:6px}
 .steps .step span{font-size:16px}
 @media (max-width:780px){.steps{grid-template-columns:1fr}}
+.booking-steps{margin:6px 0 26px}
+.booking-steps h3{font-size:18px;line-height:1.45;margin:0 0 10px}
+.booking-steps .steps{grid-template-columns:repeat(3,minmax(0,1fr))}
+#flow{scroll-margin-top:76px}
+@media (max-width:520px){
+  .booking-steps{margin:4px 0 20px}
+  .booking-steps .steps{grid-template-columns:1fr;gap:8px}
+  .booking-steps .step{display:flex;align-items:center;justify-content:flex-start;gap:12px;text-align:left;padding:10px 12px}
+  .booking-steps .step b{margin:0;min-width:1.8em}
+}
 
 .values{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
 .values .v{padding:10px 14px;border:1px solid var(--line);border-radius:var(--radius);background:#fff;text-align:center}
@@ -123,6 +174,16 @@ img{max-width:100%;height:auto;display:block}
 /* Company */
 .company-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:38px;align-items:start}
 @media (max-width:900px){.company-grid{grid-template-columns:1fr}}
+#company .wrap>p{max-width:46rem;margin:8px 0 0}
+.company-reasons{margin:22px 0 26px}
+.company-reasons h3{font-size:18px;line-height:1.45;margin:0 0 6px}
+.company-reasons .sub{margin:0 0 12px}
+.company-reasons .values{margin-top:0}
+#quality{scroll-margin-top:76px}
+@media (max-width:414px){
+  .company-reasons{margin:16px 0 20px}
+  .company-reasons .values .v{padding:8px 6px}
+}
 .company-table{width:100%;font-size:13px;border-collapse:collapse}
 .company-table td{padding:8px 0;border-bottom:1px solid var(--line)}
 .company-table td:first-child{color:var(--sub);width:32%}

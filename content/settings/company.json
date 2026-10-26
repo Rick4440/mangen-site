@@ -44,24 +44,27 @@
   "info_rows_i18n": {
     "ja": [
       { "label": "会社名", "value": "株式会社万源" },
+      { "label": "設立", "value": "2020年8月" },
+      { "label": "代表者", "value": "代表取締役 梁超" },
       { "label": "所在地", "value": "大阪府堺市北区金岡町1147-33" },
       { "label": "対応エリア", "value": "関東・関西中心（その他地域はご相談ください）" },
-      { "label": "対応言語", "value": "日本語 / 中文 / English" },
-      { "label": "営業時間", "value": "24時間" }
+      { "label": "対応言語", "value": "日本語 / 中文 / English" }
     ],
     "zh": [
       { "label": "公司名称", "value": "株式会社万源" },
+      { "label": "成立时间", "value": "2020年8月" },
+      { "label": "代表人", "value": "代表董事 梁超" },
       { "label": "地址", "value": "大阪府堺市北区金岡町1147-33" },
       { "label": "服务区域", "value": "以关东、关西为主（其他地区可咨询）" },
-      { "label": "服务语言", "value": "日语 / 中文 / 英语" },
-      { "label": "营业时间", "value": "24 小时" }
+      { "label": "服务语言", "value": "日语 / 中文 / 英语" }
     ],
     "en": [
       { "label": "Company", "value": "Mangen Co., Ltd." },
+      { "label": "Established", "value": "August 2020" },
+      { "label": "Representative", "value": "Chao Liang, Representative Director" },
       { "label": "Address", "value": "1147-33 Kanaoka-cho, Kita-ku, Sakai, Osaka" },
       { "label": "Area", "value": "Mainly Kanto & Kansai (other areas on request)" },
-      { "label": "Languages", "value": "Japanese / Chinese / English" },
-      { "label": "Hours", "value": "24h" }
+      { "label": "Languages", "value": "Japanese / Chinese / English" }
     ]
   },
   "desc_i18n": {
@@ -100,6 +103,6 @@
       "parentOrganization": { "@id": "https://mangen.jp/#business" }
     },
     "availableLanguage": ["ja", "zh", "en"],
-    "openingHours": "Mo-Su 00:00-24:00"
+    "foundingDate": "2020-08"
   }
 }

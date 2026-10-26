@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@500;600&family=Noto+Serif+SC:wght@500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/style.css">
-  <script id="business-schema" type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","@id":"https://mangen.jp/#business","name":"株式会社万源","alternateName":"Mangen Co., Ltd.","description":"東京・大阪の空港送迎・貸切ハイヤー。日中英対応ドライバー。","url":"https://mangen.jp/","telephone":"+81-72-275-4665, +81-42-649-9057","priceRange":"¥¥","address":{"@type":"PostalAddress","streetAddress":"金岡町1147-33","addressLocality":"堺市北区","addressRegion":"大阪府","postalCode":"591-8022","addressCountry":"JP"},"areaServed":[{"@type":"AdministrativeArea","name":"Tokyo Metropolis"},{"@type":"AdministrativeArea","name":"Osaka Prefecture"},{"@type":"AdministrativeArea","name":"Kanto"},{"@type":"AdministrativeArea","name":"Kansai"}],"department":{"@type":"LocalBusiness","name":"株式会社万源 東京","telephone":"+81-42-649-9057","parentOrganization":{"@id":"https://mangen.jp/#business"}},"availableLanguage":["ja","zh","en"],"openingHours":"Mo-Su 00:00-24:00"}</script>
+  <script id="business-schema" type="application/ld+json">{"@context":"https://schema.org","@type":"LocalBusiness","@id":"https://mangen.jp/#business","name":"株式会社万源","alternateName":"Mangen Co., Ltd.","description":"東京・大阪の空港送迎・貸切ハイヤー。日中英対応ドライバー。","url":"https://mangen.jp/","telephone":"+81-72-275-4665, +81-42-649-9057","priceRange":"¥¥","address":{"@type":"PostalAddress","streetAddress":"金岡町1147-33","addressLocality":"堺市北区","addressRegion":"大阪府","postalCode":"591-8022","addressCountry":"JP"},"areaServed":[{"@type":"AdministrativeArea","name":"Tokyo Metropolis"},{"@type":"AdministrativeArea","name":"Osaka Prefecture"},{"@type":"AdministrativeArea","name":"Kanto"},{"@type":"AdministrativeArea","name":"Kansai"}],"department":{"@type":"LocalBusiness","name":"株式会社万源 東京","telephone":"+81-42-649-9057","parentOrganization":{"@id":"https://mangen.jp/#business"}},"availableLanguage":["ja","zh","en"],"foundingDate":"2020-08"}</script>
 </head>
 <body>
 
@@ -43,10 +43,10 @@
         <li><a href="#company">About</a></li>
       </ul>
     </nav>
-    <div class="lang-switch">
-      <a href="/">JA</a>
-      <a href="/zh">ZH</a>
-      <a href="/en" class="active">EN</a>
+    <div class="lang-switch" aria-label="Language">
+      <a href="/" hreflang="ja" lang="ja" aria-label="日本語">JA</a>
+      <a href="/zh" hreflang="zh-CN" lang="zh-CN" aria-label="中文">ZH</a>
+      <a href="/en" class="active" hreflang="en" lang="en" aria-label="English">EN</a>
     </div>
   </div>
 </header>
@@ -89,33 +89,17 @@
   </div>
 </section>
 
-<section class="sec" id="quality">
-  <div class="wrap">
-    <h2>Why Choose Us</h2>
-    <p class="sub">Sincerity, passion, patience, responsibility.</p>
-    <div class="values">
-      <div class="v"><span class="zh">Sincerity</span></div>
-      <div class="v"><span class="zh">Passion</span></div>
-      <div class="v"><span class="zh">Patience</span></div>
-      <div class="v"><span class="zh">Responsibility</span></div>
-    </div>
-  </div>
-</section>
-
-<section class="sec alt" id="flow">
-  <div class="wrap">
-    <h2>How it works</h2>
-    <ol class="steps">
-      <li class="step"><b>01</b><span>Request</span></li>
-      <li class="step"><b>02</b><span>Confirm the quote</span></li>
-      <li class="step"><b>03</b><span>Travel</span></li>
-    </ol>
-  </div>
-</section>
-
 <section class="sec" id="contact">
   <div class="wrap">
     <h2>Contact</h2>
+    <div class="booking-steps" id="flow">
+      <h3>How to Book</h3>
+      <ol class="steps">
+        <li class="step"><b>01</b><span>Request</span></li>
+        <li class="step"><b>02</b><span>Confirm the quote</span></li>
+        <li class="step"><b>03</b><span>Travel</span></li>
+      </ol>
+    </div>
     <p class="sub">Call us or fill in the form below.</p>
     <div class="contact-grid">
       <div>
@@ -128,7 +112,6 @@
         </div>
         <ul class="contact-facts">
           <li>Address: 1147-33 Kanaoka-cho, Kita-ku, Sakai, Osaka</li>
-          <li>Hours: 24h</li>
         </ul>
       </div>
       <div>
@@ -160,23 +143,28 @@
 <section class="sec alt" id="company">
   <div class="wrap">
     <h2>About</h2>
-    <div class="company-grid">
-      <div>
-        <p data-bind="company-desc">Mangen Co., Ltd. delivers trustworthy, safe, comfortable and customizable mobility for visitors to Japan. Sincerity, passion, patience and responsibility guide every trip.</p>
-        <div class="license">
-          <div class="item" data-bind="license-1"><small>Kinki Transport Bureau permit</small><b>近運自二第209号</b></div>
-          <div class="item" data-bind="license-2"><small>Osaka Prefecture Governor registration, Travel Service Arrangement Business</small><b>大阪府知事登録旅行サービス手配業 第7456号</b></div>
-        </div>
+    <p data-bind="company-desc">Mangen Co., Ltd. delivers trustworthy, safe, comfortable and customizable mobility for visitors to Japan. Sincerity, passion, patience and responsibility guide every trip.</p>
+    <div class="company-reasons" id="quality">
+      <h3>Why Mangen</h3>
+      <p class="sub">Sincerity, passion, patience, responsibility.</p>
+      <div class="values">
+        <div class="v"><span class="zh">Sincerity</span></div>
+        <div class="v"><span class="zh">Passion</span></div>
+        <div class="v"><span class="zh">Patience</span></div>
+        <div class="v"><span class="zh">Responsibility</span></div>
       </div>
-      <div>
-        <table class="company-table"><tbody data-bind="company-info">
-          <tr><td>Company</td><td>Mangen Co., Ltd.</td></tr>
-          <tr><td>Address</td><td>1147-33 Kanaoka-cho, Kita-ku, Sakai, Osaka</td></tr>
-          <tr><td>Area</td><td>Mainly Kanto &amp; Kansai (other areas on request)</td></tr>
-          <tr><td>Languages</td><td>Japanese / Chinese / English</td></tr>
-          <tr><td>Hours</td><td>24h</td></tr>
-        </tbody></table>
-      </div>
+    </div>
+    <table class="company-table"><tbody data-bind="company-info">
+      <tr><td>Company</td><td>Mangen Co., Ltd.</td></tr>
+      <tr><td>Established</td><td>August 2020</td></tr>
+      <tr><td>Representative</td><td>Chao Liang, Representative Director</td></tr>
+      <tr><td>Address</td><td>1147-33 Kanaoka-cho, Kita-ku, Sakai, Osaka</td></tr>
+      <tr><td>Area</td><td>Mainly Kanto &amp; Kansai (other areas on request)</td></tr>
+      <tr><td>Languages</td><td>Japanese / Chinese / English</td></tr>
+    </tbody></table>
+    <div class="license">
+      <div class="item" data-bind="license-1"><small>Kinki Transport Bureau permit</small><b>近運自二第209号</b></div>
+      <div class="item" data-bind="license-2"><small>Osaka Prefecture Governor registration, Travel Service Arrangement Business</small><b>大阪府知事登録旅行サービス手配業 第7456号</b></div>
     </div>
   </div>
 </section>
@@ -201,7 +189,7 @@
     <div>
       <h4>Links</h4>
       <ul>
-        <li><a href="/blog/">Blog</a></li>
+        <li><a href="/blog/">Travel Guide</a></li>
         <li><a href="#services">Services</a></li>
         <li><a href="#company">About</a></li>
       </ul>
