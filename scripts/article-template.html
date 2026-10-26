@@ -16,8 +16,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;600;700&family=Shippori+Mincho:wght@500;600&family=Noto+Serif+SC:wght@500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/assets/css/style.css?v=c76efec17fb7">
-  <link rel="stylesheet" href="/assets/css/journal.css?v=4767138d0595">
+  <link rel="stylesheet" href="/assets/css/style.css?v=9ef25577e4c6">
+  <link rel="stylesheet" href="/assets/css/journal.css?v=a32dc5be42a5">
   <script type="application/ld+json">{{SCHEMA}}</script>
 </head>
 <body class="journal-page journal-article-page">
@@ -29,12 +29,14 @@
   <nav class="crumb"><a href="/zh">首页</a> &gt; <a href="/blog/">旅行指南</a> &gt; <span>{{TITLE}}</span></nav>
   <header>
     <h1>{{TITLE}}</h1>
-    <div class="meta"><time datetime="{{DATE}}">{{DATE}}</time>{{UPDATED}}{{DESTINATIONS}} · {{CATEGORY}} · 株式会社万源</div>
+    <div class="meta">发布于 <time datetime="{{DATE}}">{{DATE}}</time>{{UPDATED}}{{DESTINATIONS}} · {{CATEGORY}} · <a href="/editorial/zh/">株式会社万源</a></div>
   </header>
   <p class="article-summary">{{DESCRIPTION}}</p>
 {{COVER}}
 {{TOC}}
   <div class="body">{{BODY}}</div>
+  {{REVIEW_NOTE}}
+  {{SERVICE}}
 
   <div class="cta-block">
     <h3>需要机场接送、定制包车或商务考察用车？</h3>

@@ -30,6 +30,8 @@ class BuildTests(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory(); self.root = Path(self.tmp.name)
         for name in ['scripts', 'content', 'blog', 'assets']:
             shutil.copytree(ROOT / name, self.root / name)
+        for name in ('index.html', 'zh.html', 'en.html'):
+            shutil.copy2(ROOT / name, self.root / name)
         self.original = sorted(p.stem for p in (self.root / 'content/posts').glob('*.md'))
     def tearDown(self): self.tmp.cleanup()
     def build(self):
@@ -52,13 +54,19 @@ class BuildTests(unittest.TestCase):
         total = len(self.original) + 20
         routes = ['blog/index.html'] + [f'blog/page/{n}/index.html' for n in range(2, math.ceil(total / 12) + 1)]
         self.assertTrue((self.root / routes[1]).exists(), 'More than 12 posts must produce page 2')
-        all_urls=[]
+        all_urls=[]; descriptions=[]
         for i, route in enumerate(routes, 1):
             page = Elements(self.read(route)); cards = page.cards(); all_urls += [c['href'] for c in cards]
             self.assertEqual(len(cards), min(12, total - (i - 1) * 12))
             canonical='https://mangen.jp/blog/' if i==1 else f'https://mangen.jp/blog/page/{i}/'
             self.assertEqual(page.attrs('link', rel='canonical')[0]['href'], canonical)
             self.assertIn(canonical, self.read('sitemap.xml'))
+            description = page.attrs('meta', name='description')[0]['content']
+            self.assertEqual(page.attrs('meta', **{'property': 'og:description'})[0]['content'], description)
+            descriptions.append(description)
+            if i > 1:
+                self.assertIn(f'第 {i} 页。', description)
+        self.assertEqual(len(descriptions), len(set(descriptions)))
         self.assertEqual(len(all_urls), total)
         self.assertEqual(len(set(all_urls)), total)
         self.assertIn('href="/blog/page/2/"', self.read(routes[0]))
@@ -281,6 +289,71 @@ class BuildTests(unittest.TestCase):
         self.assertNotIn(f'/assets/css/style.css?v={hashes["/assets/css/style.css"]}', self.read("zh.html"))
         self.assertIn(f'/assets/js/main.js?v={hashes["/assets/js/main.js"]}', self.read("en.html"))
         self.assertIn(f'/assets/quote/styles.css?v={hashes["/assets/quote/styles.css"]}', self.read("quote.html"))
+
+
+    def test_editorial_policy_schema_service_block_and_shared_source_note(self):
+        self.build()
+        airport = self.read('blog/b-20261017-090000.html')
+        source = (self.root / 'content/posts/b-20261017-090000.md').read_text()
+        self.assertNotIn('资料核对：', source)
+        self.assertIn('reviewed:', source)
+        self.assertIn('https://tokyo-haneda.com/service/facilities/observation_deck.html', airport)
+        self.assertEqual(airport.count('class="source-note"'), 1)
+        self.assertIn('资料核对：<time datetime="2026-10-17">2026-10-17</time>', airport)
+        self.assertIn('发布于 <time datetime="2026-10-17">2026-10-17</time>', airport)
+        self.assertNotIn('更新于', airport)
+        self.assertIn('"url": "https://mangen.jp/editorial/zh/"', airport)
+        self.assertIn('"logo": {"@type": "ImageObject", "url": "https://mangen.jp/assets/img/logo.png"}', airport)
+        self.assertNotIn('"dateModified"', airport)
+        self.assertIn('href="/zh#services">用车服务</a>', airport)
+        self.assertIn('href="/zh#fleet">车型阵容</a>', airport)
+        self.assertIn('href="/zh#contact">联系我们</a>', airport)
+        self.assertIn('为访日旅客与商务人士提供在日出行用车。', airport)
+        niseko = self.read('blog/d-20261021-090004.html')
+        niseko_source = (self.root / 'content/posts/d-20261021-090004.md').read_text()
+        self.assertIn('日期为雪场计划，实际开放受雪况与运营调整影响。', niseko_source)
+        self.assertIn('日期为雪场计划，实际开放受雪况与运营调整影响。', niseko)
+        self.assertNotIn('class="guide-service"', niseko)
+        self.assertIn('class="source-note"', niseko)
+        kyoto = self.read('blog/d-20261025-090003.html')
+        self.assertNotIn('class="guide-service"', kyoto)
+        osaka = self.read('blog/osaka-kyoto-nara-3days.html')
+        self.assertIn('class="guide-service"', osaka)
+        self.assertNotIn('class="source-note"', osaka)
+        changed = self.read('blog/first-trip-japan-2026.html')
+        self.assertIn('"dateModified": "2026-10-14"', changed)
+        self.assertIn('发布于 <time datetime="2026-09-24">2026-09-24</time>', changed)
+        self.assertIn('更新于 <time datetime="2026-10-14">2026-10-14</time>', changed)
+        self.assertNotIn('class="guide-service"', changed)
+        for route, canonical in (
+            ('editorial/index.html', 'https://mangen.jp/editorial/'),
+            ('editorial/zh/index.html', 'https://mangen.jp/editorial/zh/'),
+            ('editorial/en/index.html', 'https://mangen.jp/editorial/en/'),
+        ):
+            page = self.read(route)
+            self.assertIn('content="index,follow"', page)
+            self.assertNotIn('noindex', page)
+            self.assertIn(f'href="{canonical}"', page)
+            self.assertIn('hreflang="ja" href="https://mangen.jp/editorial/"', page)
+            self.assertIn('hreflang="zh-CN" href="https://mangen.jp/editorial/zh/"', page)
+            self.assertIn('hreflang="en" href="https://mangen.jp/editorial/en/"', page)
+            self.assertIn('hreflang="x-default" href="https://mangen.jp/editorial/"', page)
+            self.assertIn('TODO', page)
+            self.assertIn('示意图（AI 辅助制作），非实景，仅供参考。', page)
+            self.assertIn('info@mangen.jp', page)
+            self.assertNotIn('梁超', page)
+            self.assertNotIn('Chao Liang', page)
+            self.assertLess(page.index('072-275-4665'), page.index('042-649-9057'))
+            self.assertIn(f'<lastmod>2026-10-26T00:00:00+09:00</lastmod>', self.read('sitemap.xml'))
+            self.assertIn(f'<loc>{canonical}</loc>', self.read('sitemap.xml'))
+        zh = self.read('editorial/zh/index.html')
+        self.assertIn('href="/zh#services">用车服务</a>', zh)
+        self.assertIn('href="/blog/">旅行指南</a>', zh)
+        self.assertIn('>JA</a>', zh)
+        self.assertIn('>ZH</a>', zh)
+        self.assertIn('>EN</a>', zh)
+        self.assertNotIn('24/7', zh)
+        self.assertNotIn('24小时营业', zh)
 
 
 def _builder():
