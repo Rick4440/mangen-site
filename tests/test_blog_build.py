@@ -297,6 +297,48 @@ class BuildTests(unittest.TestCase):
         self.assertIn(f'/assets/js/main.js?v={hashes["/assets/js/main.js"]}', self.read("en.html"))
         self.assertIn(f'/assets/quote/styles.css?v={hashes["/assets/quote/styles.css"]}', self.read("quote.html"))
 
+    def test_feed_sitemap_timestamps_and_indexnow_key(self):
+        self.build()
+        robots = (ROOT / 'robots.txt').read_text()
+        self.assertIn('Sitemap: https://mangen.jp/sitemap.xml', robots)
+        self.assertIn('User-agent: *', robots)
+        catalog = json.loads(self.read('blog/articles.json'))['posts']
+        self.assertNotIn('updated_at', catalog[0])
+        osaka = next(post for post in catalog if post['slug'] == 'osaka-kyoto-nara-3days')
+        sitemap = self.read('sitemap.xml')
+        self.assertIn(f'<lastmod>{osaka["updated"]}T00:00:00+09:00</lastmod>', sitemap)
+        self.assertIn('<loc>https://mangen.jp/blog/feed.xml</loc>', sitemap)
+        page2 = self.read('blog/page/2/index.html')
+        self.assertIn('content="从城市漫步到山间温泉，找到适合你的日本旅行灵感。万源整理行程路线、交通接送与实用旅行指南。第 2 页。"', page2)
+        self.assertNotEqual(
+            re.search(r'name="description" content="([^"]*)"', self.read('blog/index.html')).group(1),
+            re.search(r'name="description" content="([^"]*)"', page2).group(1),
+        )
+        self.assertNotRegex(sitemap, r'<lastmod>\d{4}-\d{2}-\d{2}</lastmod>')
+        for stamp in re.findall(r'<lastmod>(.*?)</lastmod>', sitemap):
+            self.assertRegex(stamp, r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+09:00$')
+        import xml.etree.ElementTree as ET
+        root = ET.fromstring(sitemap)
+        ns = {'sm': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
+        for loc in ('https://mangen.jp/', 'https://mangen.jp/zh', 'https://mangen.jp/en'):
+            node = next(item for item in root.findall('sm:url', ns) if item.findtext('sm:loc', namespaces=ns) == loc)
+            self.assertIsNone(node.find('sm:lastmod', ns))
+        feed = self.read('blog/feed.xml')
+        entries = feed.split('<entry>')[1:]
+        slugs = [re.search(r'<id>https://mangen.jp/blog/([^<]+)</id>', entry).group(1) for entry in entries]
+        self.assertEqual(slugs, [post['slug'] for post in catalog[:50]])
+        self.assertEqual(feed.count('<entry>'), 50)
+        self.assertIn('xmlns="http://www.w3.org/2005/Atom"', feed)
+        for name in ('blog/index.html', 'blog/page/2/index.html', 'blog/osaka-kyoto-nara-3days.html'):
+            page = self.read(name)
+            self.assertIn('rel="alternate" type="application/atom+xml" title="日本旅行指南" href="https://mangen.jp/blog/feed.xml"', page)
+        key = _indexnow().find_key(ROOT)
+        self.assertEqual((ROOT / f'{key}.txt').read_text(encoding='utf-8').strip(), key)
+        workflow = (ROOT / '.github/workflows/indexnow.yml').read_text()
+        self.assertIn('api.indexnow.org', (ROOT / 'scripts/indexnow.py').read_text())
+        self.assertIn('INDEXNOW_BEFORE', workflow)
+        self.assertNotIn('secrets.', workflow)
+
     def test_topic_and_region_hubs_are_crawlable_indexes(self):
         stale = self.root / 'blog/topic/not-a-topic/index.html'
         stale.parent.mkdir(parents=True)
@@ -372,6 +414,13 @@ class BuildTests(unittest.TestCase):
                 self.assertTrue(shares_topic or shares_region, slug)
                 self.assertIn(f'datetime="{other["date"]}"', section)
                 self.assertIn(escape(other['title'], quote=True), section)
+
+
+def _indexnow():
+    spec = importlib.util.spec_from_file_location('mangen_indexnow', ROOT / 'scripts' / 'indexnow.py')
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
 
 def _builder():
@@ -557,5 +606,32 @@ class HubCopyTests(unittest.TestCase):
         self.assertEqual(intro, '收录目的地属于大阪・关西的旅行指南。大阪・关西包含：大阪、神户、奈良、姬路、和歌山、滋贺、箕面。')
         self.assertNotIn('推荐', intro)
         self.assertNotIn('最佳', intro)
+
+
+class DiscoveryTests(unittest.TestCase):
+    def test_timestamps_use_japan_offset_and_do_not_invent_a_clock(self):
+        build = _builder()
+        self.assertEqual(build.jst_timestamp('2026-10-14'), '2026-10-14T00:00:00+09:00')
+        self.assertEqual(build.jst_timestamp(date(2026, 10, 14)), '2026-10-14T00:00:00+09:00')
+        self.assertEqual(
+            build.jst_timestamp(build.datetime(2026, 10, 14, 1, 0, tzinfo=build.timezone.utc)),
+            '2026-10-14T10:00:00+09:00',
+        )
+
+    def test_indexnow_submits_only_new_or_changed_sitemap_urls(self):
+        indexnow = _indexnow()
+        previous = (
+            '<urlset><url><loc>https://mangen.jp/</loc></url>'
+            '<url><loc>https://mangen.jp/blog/old</loc><lastmod>2026-01-01T00:00:00+09:00</lastmod></url></urlset>'
+        )
+        current = (
+            '<urlset><url><loc>https://mangen.jp/</loc></url>'
+            '<url><loc>https://mangen.jp/blog/old</loc><lastmod>2026-02-01T00:00:00+09:00</lastmod></url>'
+            '<url><loc>https://mangen.jp/blog/new</loc><lastmod>2026-03-01T00:00:00+09:00</lastmod></url></urlset>'
+        )
+        self.assertEqual(indexnow.changed_locations(previous, current), [
+            'https://mangen.jp/blog/old', 'https://mangen.jp/blog/new',
+        ])
+        self.assertEqual(indexnow.changed_locations('', current)[0], 'https://mangen.jp/')
 
 if __name__ == '__main__': unittest.main()
