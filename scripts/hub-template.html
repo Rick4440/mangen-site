@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{TITLE}} | 日本旅行指南 | 株式会社万源</title>
+  <meta name="description" content="{{DESCRIPTION}}">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="{{CANONICAL}}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{TITLE}} | 日本旅行指南 | 株式会社万源">
+  <meta property="og:description" content="{{DESCRIPTION}}">
+  <meta property="og:url" content="{{CANONICAL}}">
+  <meta property="og:image" content="https://mangen.jp/assets/img/logo.png">
+  <meta property="og:locale" content="zh_CN">
+  <meta name="twitter:card" content="summary_large_image">
+  {{PAGINATION_HEAD}}
+  <link rel="icon" type="image/png" href="/assets/img/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&family=Shippori+Mincho:wght@500;600&family=Noto+Serif+SC:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/style.css?v=c89ca400ee3f">
+  <link rel="stylesheet" href="/assets/css/journal.css?v=5852c53bae69">
+  <script src="/assets/js/main.js?v=e1613e24f698" defer></script>
+  <script type="application/ld+json">{{SCHEMA}}</script>
+</head>
+<body class="journal-page">
+{{HEADER}}
+<main id="main-content" class="journal wrap hub-page">
+  <nav class="crumb" aria-label="面包屑"><a href="/zh">首页</a> &gt; <a href="/blog/">旅行指南</a> &gt; <span>{{NAME}}</span></nav>
+  <h1>{{NAME}}</h1>
+  <p class="hub-intro">{{INTRO}}</p>
+  <p class="hub-count">共 {{TOTAL}} 篇</p>
+  <div class="guide-grid">{{CARDS}}</div>
+  <nav class="journal-pagination" aria-label="分页">{{PAGINATION}}</nav>
+</main>
+<footer class="journal-footer"><div class="wrap"><a href="/zh">株式会社万源 <span>MANGEN</span></a><p>大阪 072-275-4665 · 东京 042-649-9057 · info@mangen.jp<br>大阪府堺市北区金岡町1147-33</p><a href="/zh#company">公司介绍</a></div></footer>
+</body>
+</html>

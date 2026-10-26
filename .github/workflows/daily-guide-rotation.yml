@@ -1,0 +1,32 @@
+# Rebuild the static guide picks once per Japan calendar day.
+# GitHub schedules in UTC. 15:05 UTC is 00:05 Asia/Tokyo (no daylight-saving time).
+# The workflow only starts a Cloudflare Pages deployment. Pages must run
+# `python -m pip install -r requirements.txt && python scripts/build.py`
+# so the five links are written into the HTML crawlers fetch.
+# Setup: docs-deploy.md, section 每日精选轮换.
+name: Daily guide rotation
+
+on:
+  schedule:
+    - cron: "5 15 * * *"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger the Cloudflare Pages deploy hook
+        env:
+          HOOK: ${{ secrets.CLOUDFLARE_PAGES_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "Set the Actions secret CLOUDFLARE_PAGES_DEPLOY_HOOK to the Pages deploy hook URL for branch main."
+            echo "Steps are in docs-deploy.md under 每日精选轮换."
+            exit 1
+          fi
+          code=$(curl --silent --show-error --output /tmp/pages-hook.json --write-out "%{http_code}" --request POST "$HOOK")
+          if [ "$code" -lt 200 ] || [ "$code" -ge 300 ]; then
+            echo "Deploy hook returned HTTP $code"
+            exit 1
+          fi
+          echo "Cloudflare Pages accepted the rebuild."
