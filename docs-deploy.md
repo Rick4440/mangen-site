@@ -6,6 +6,25 @@
 
 将 `mangen.jp` 绑定到 Pages，并在域名完成注册、DNS 生效后检查 HTTPS、`/robots.txt` 和 `/sitemap.xml`。在此之前，canonical 中的正式域名并不代表它已开通。
 
+## 每日精选轮换
+
+中文首页「旅行指南」和 `/blog/`「编辑精选」的五篇链接是构建时写进 HTML 的。Cloudflare Pages 的构建命令必须保持为 `python -m pip install -r requirements.txt && python scripts/build.py`，输出目录 `.`。只重新部署仓库里现成的 HTML、不跑这个构建，日期不会变，五篇也不会变。
+
+没有新提交的日子，用 GitHub Actions 在日本时间 00:05 调用 Cloudflare Pages 的部署钩子。仓库里的工作流是 `.github/workflows/daily-guide-rotation.yml`。它不改 Git 历史。钩子地址是密钥，不要写进仓库。
+
+Rick 需要做的设置：
+
+1. Cloudflare 控制台打开 **Workers & Pages → mangen-site → Settings → Builds → Deploy hooks**。
+2. **Create deploy hook**。名称填 `daily-guide-rotation`，要构建的分支选 `main`。
+3. 复制生成的 URL。形式是 `https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/` 后面接一串 id。
+4. GitHub 打开 `Rick4440/mangen-site` → **Settings → Secrets and variables → Actions → New repository secret**。
+5. Name 必须是 `CLOUDFLARE_PAGES_DEPLOY_HOOK`。Value 粘贴上一步的完整 URL。
+6. 确认 Pages 生产分支是 `main`，构建命令和输出目录与上文一致。
+7. 把包含该工作流的提交合并到 `main`。GitHub 的定时任务只对默认分支上的工作流生效，合并前不会在 00:05 运行。
+8. 合并后到 **Actions → Daily guide rotation → Run workflow** 手动跑一次。成功时 Cloudflare 上会出现一次新的 `main` 部署。密钥没配时，这一步会失败并提示缺少 `CLOUDFLARE_PAGES_DEPLOY_HOOK`。
+
+定时表达式是 `5 15 * * *`（UTC 15:05，即日本时间 00:05）。GitHub 的定时任务偶尔会晚几分钟；构建用的是运行当时的日本日期。
+
 ## 咨询表单
 
 网页表单使用 Web3Forms，三语首页的 `access_key` 对应“万源官网咨询”表单，通知收件人是 `mangeninc@gmail.com`。表单由浏览器直接提交，提交成功以 Web3Forms JSON 的 `success: true` 为准。发布后从正式网页真实提交一次，在 Web3Forms Submissions 及 Gmail 收件箱同时核对；无法送达时页面保留邮件草稿入口。旧 `/api/contact` 的 Formspree 转发接口已不再被前端调用。
