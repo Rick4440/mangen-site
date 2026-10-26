@@ -52,13 +52,19 @@ class BuildTests(unittest.TestCase):
         total = len(self.original) + 20
         routes = ['blog/index.html'] + [f'blog/page/{n}/index.html' for n in range(2, math.ceil(total / 12) + 1)]
         self.assertTrue((self.root / routes[1]).exists(), 'More than 12 posts must produce page 2')
-        all_urls=[]
+        all_urls=[]; descriptions=[]
         for i, route in enumerate(routes, 1):
             page = Elements(self.read(route)); cards = page.cards(); all_urls += [c['href'] for c in cards]
             self.assertEqual(len(cards), min(12, total - (i - 1) * 12))
             canonical='https://mangen.jp/blog/' if i==1 else f'https://mangen.jp/blog/page/{i}/'
             self.assertEqual(page.attrs('link', rel='canonical')[0]['href'], canonical)
             self.assertIn(canonical, self.read('sitemap.xml'))
+            description = page.attrs('meta', name='description')[0]['content']
+            self.assertEqual(page.attrs('meta', **{'property': 'og:description'})[0]['content'], description)
+            descriptions.append(description)
+            if i > 1:
+                self.assertIn(f'第 {i} 页。', description)
+        self.assertEqual(len(descriptions), len(set(descriptions)))
         self.assertEqual(len(all_urls), total)
         self.assertEqual(len(set(all_urls)), total)
         self.assertIn('href="/blog/page/2/"', self.read(routes[0]))
@@ -328,6 +334,9 @@ class BuildTests(unittest.TestCase):
         self.assertIn('https://mangen.jp/blog/topic/routes/</loc>', sitemap)
         self.assertIn('https://mangen.jp/blog/region/tokyo-kanto/</loc>', sitemap)
         self.assertIn('https://mangen.jp/blog/topic/routes/page/2/</loc>', sitemap)
+        hub_lastmod = re.search(r'https://mangen.jp/blog/region/tokyo-kanto/</loc>\s*<lastmod>([^<]+)</lastmod>', sitemap)
+        self.assertIsNotNone(hub_lastmod)
+        self.assertRegex(hub_lastmod.group(1), r'^\d{4}-\d{2}-\d{2}T00:00:00\+09:00$')
         self.assertLess(sitemap.index('tokyo-kanto'), sitemap.index('osaka-kansai'))
 
 
