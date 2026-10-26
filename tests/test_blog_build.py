@@ -1,5 +1,5 @@
 """Build output contracts; each test runs the actual static generator in isolation."""
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 from html.parser import HTMLParser
 import importlib.util
@@ -200,8 +200,13 @@ class BuildTests(unittest.TestCase):
 
     def test_chinese_homepage_shows_latest_guides_apart_from_editor_picks(self):
         shutil.copy(ROOT / 'zh.html', self.root / 'zh.html')
-        (self.root / 'content/posts' / 'b-20261025-000001.md').write_text(
-            '---\ndate: 2026-10-25\ncategory: b\ntopic: 交通接送\n'
+        # Keep the fixture newest as real daily articles are added.
+        self.build()
+        latest_date = max(date.fromisoformat(post['date']) for post in json.loads(self.read('blog/articles.json'))['posts'])
+        fixture_date = (latest_date + timedelta(days=1)).isoformat()
+        fixture_slug = 'b-' + fixture_date.replace('-', '') + '-000001'
+        (self.root / 'content/posts' / f'{fixture_slug}.md').write_text(
+            f'---\ndate: {fixture_date}\ncategory: b\ntopic: 交通接送\n'
             'title: "最新 <指南>"\nexcerpt: "摘要 & 说明"\n---\n正文\n')
         self.build()
         page = self.read('zh.html')
@@ -224,10 +229,10 @@ class BuildTests(unittest.TestCase):
         self.assertIn('loading="lazy"', block)
         self.assertNotIn('loading="eager"', block)
         self.assertIn('>交通接送</p>', block)
-        self.assertIn('datetime="2026-10-25"', block)
+        self.assertIn(f'datetime="{fixture_date}"', block)
         links = re.findall(r'<article class="home-guide[^"]*">\s*<a href="([^"]+)">', block)
         self.assertEqual(len(links), 5)
-        self.assertEqual(links[0], '/blog/b-20261025-000001')
+        self.assertEqual(links[0], f'/blog/{fixture_slug}')
         self.assertEqual(block.count('home-guide--lead'), 1)
         self.assertEqual(block.count('home-guide--row'), 4)
         self.assertEqual(block.count('home-guide-excerpt'), 1)
