@@ -1,6 +1,7 @@
 """Build output contracts; each test runs the actual static generator in isolation."""
 from datetime import date, timedelta
 from pathlib import Path
+from html import escape
 from html.parser import HTMLParser
 import hashlib
 import importlib.util
@@ -102,7 +103,7 @@ class BuildTests(unittest.TestCase):
         self.assertTrue(tags)
         for tag in tags:
             self.assertNotIn(' / ', tag)
-        self.assertIn('class="guide-taxonomy">大阪 · 行程路线</div>', source)
+        self.assertIn('class="guide-taxonomy">东京<span> · </span>行程路线</div>', source)
         self.assertNotIn('大阪 / 京都 / 奈良', source)
         topic_buttons = [item['value'] for item in Elements(source).attrs('button', **{'data-filter': 'topic'}) if item['value']]
         self.assertEqual(topic_buttons, ['行程路线', '交通接送', '住宿美食', '购物退税', '季节活动', '礼仪与生活'])
@@ -177,11 +178,10 @@ class BuildTests(unittest.TestCase):
 
     def test_cover_credits_include_source_author_license_and_crop_note(self):
         self.build()
-        page = self.read('blog/index.html')
-        self.assertIn('https://creativecommons.org/licenses/by-sa/4.0', page)
-        self.assertIn('https://commons.wikimedia.org/wiki/User:Martin_Falbisoner', page)
-        self.assertIn('网页显示裁切', page)
         article = self.read('blog/osaka-kyoto-nara-3days.html')
+        self.assertIn('https://creativecommons.org/licenses/by-sa/4.0', article)
+        self.assertIn('https://commons.wikimedia.org/wiki/User:Martin_Falbisoner', article)
+        self.assertIn('网页显示裁切', article)
         self.assertIn('2016', article)
         self.assertIn('cover', article)
 
@@ -193,17 +193,22 @@ class BuildTests(unittest.TestCase):
         post = next(p for p in json.loads(self.read('blog/articles.json'))['posts'] if p['slug'] == path.stem)
         self.assertEqual(post['destinations'], ['京都'])
 
-    def test_editor_picks_show_a_lead_and_smaller_cards_with_the_pinned_guide(self):
+    def test_blog_picks_use_the_shared_lead_and_four_rows(self):
         self.build()
         page = self.read('blog/index.html')
         section = page.split('id="featured-section"', 1)[1].split('</section>', 1)[0]
-        self.assertEqual(section.count('class="featured-lead'), 1)
-        minis = section.count('class="featured-mini"')
-        self.assertGreaterEqual(minis, 2)
-        self.assertLessEqual(1 + minis, 5)
-        # The only manual pin stays the lead card, ahead of the automatic cards.
-        self.assertLess(section.index('/blog/osaka-kyoto-nara-3days'), section.index('featured-mini'))
+        self.assertEqual(section.count('home-guide--lead'), 1)
+        self.assertEqual(section.count('home-guide--row'), 4)
+        self.assertNotIn('featured-lead', section)
+        self.assertNotIn('featured-mini', section)
+        self.assertIn('编辑精选', section)
         self.assertNotIn('id="featured-section"', self.read('blog/page/2/index.html'))
+        picks = re.findall(r'<article class="home-guide[^"]*">\s*<a href="([^"]+)">', section)
+        cards = re.findall(r'class="guide-card[^"]*" href="([^"]+)"', page)
+        self.assertEqual(len(picks), 5)
+        self.assertEqual(len(cards), 12)
+        # The latest-article grid stays in publication order and is not the rotating set.
+        self.assertNotEqual(cards[:5], picks)
 
     def test_chinese_homepage_shows_latest_guides_apart_from_editor_picks(self):
         shutil.copy(ROOT / 'zh.html', self.root / 'zh.html')
@@ -230,23 +235,27 @@ class BuildTests(unittest.TestCase):
         self.assertIn('href="/blog/">查看全部 →</a>', block)
         self.assertNotIn('查看全部旅行指南', block)
         self.assertNotIn('home-guides-more', block)
-        self.assertIn('最新 &lt;指南&gt;', block)
-        self.assertIn('摘要 &amp; 说明', block)
-        self.assertNotIn('<指南>', block)
         self.assertIn('loading="lazy"', block)
         self.assertNotIn('loading="eager"', block)
-        self.assertIn('>交通接送</p>', block)
-        self.assertIn(f'datetime="{fixture_date}"', block)
         links = re.findall(r'<article class="home-guide[^"]*">\s*<a href="([^"]+)">', block)
         self.assertEqual(len(links), 5)
-        self.assertEqual(links[0], f'/blog/{fixture_slug}')
+        self.assertNotIn(f'/blog/{fixture_slug}', links)
         self.assertEqual(block.count('home-guide--lead'), 1)
         self.assertEqual(block.count('home-guide--row'), 4)
         self.assertEqual(block.count('home-guide-excerpt'), 1)
-        featured = self.read('blog/index.html').split('id="featured-section"', 1)[1].split('</section>', 1)[0]
-        featured_links = re.findall(r'href="(/blog/[^"]+)"', featured)
-        self.assertNotEqual(links, featured_links)
-        self.assertLess(featured.index('/blog/osaka-kyoto-nara-3days'), featured.index('featured-mini'))
+        self.assertIn(f'data-guide-date="', block)
+        featured_page = self.read('blog/index.html')
+        featured = featured_page.split('id="featured-section"', 1)[1].split('</section>', 1)[0]
+        featured_links = re.findall(r'<article class="home-guide[^"]*">\s*<a href="([^"]+)">', featured)
+        self.assertEqual(links, featured_links)
+        self.assertEqual(block.split('data-guide-date="', 1)[1].split('"', 1)[0], featured.split('data-guide-date="', 1)[1].split('"', 1)[0])
+        self.assertEqual(featured.count('home-guide--lead'), 1)
+        self.assertEqual(featured.count('home-guide--row'), 4)
+        cards = re.findall(r'class="guide-card[^"]*" href="([^"]+)"', featured_page)
+        self.assertEqual(cards[0], f'/blog/{fixture_slug}')
+        self.assertIn('最新 &lt;指南&gt;', featured_page)
+        self.assertIn('摘要 &amp; 说明', featured_page)
+        self.assertNotIn('<指南>', featured_page)
         self.build()
         self.assertEqual(self.read('zh.html'), page)
 
@@ -339,6 +348,31 @@ class BuildTests(unittest.TestCase):
         self.assertRegex(hub_lastmod.group(1), r'^\d{4}-\d{2}-\d{2}T00:00:00\+09:00$')
         self.assertLess(sitemap.index('tokyo-kanto'), sitemap.index('osaka-kansai'))
 
+    def test_every_article_related_block_is_static_cards(self):
+        self.build()
+        catalog = {post['slug']: post for post in json.loads(self.read('blog/articles.json'))['posts']}
+        self.assertNotIn('tags', next(iter(catalog.values())))
+        for slug, post in catalog.items():
+            page = self.read(f'blog/{slug}.html')
+            self.assertIn('class="related-reading"', page, slug)
+            section = page.split('class="related-reading"', 1)[1].split('</section>', 1)[0]
+            hrefs = re.findall(r'<a href="([^"]+)">', section)
+            pool = sum(1 for other in catalog.values() if other['slug'] != slug and (
+                other['topic'] == post['topic'] or set(other['regions']) & set(post['regions'])))
+            self.assertGreaterEqual(len(hrefs), min(3, pool), slug)
+            self.assertLessEqual(len(hrefs), 5, slug)
+            self.assertEqual(len(hrefs), len(set(hrefs)), slug)
+            self.assertNotIn(post['url'], hrefs, slug)
+            self.assertEqual(section.count('<img ') + section.count('related-thumb'), len(hrefs))
+            self.assertIn('loading="lazy"', section)
+            for href in hrefs:
+                other = catalog[href.removeprefix('/blog/')]
+                shares_topic = other['topic'] == post['topic']
+                shares_region = bool(set(other['regions']) & set(post['regions']))
+                self.assertTrue(shares_topic or shares_region, slug)
+                self.assertIn(f'datetime="{other["date"]}"', section)
+                self.assertIn(escape(other['title'], quote=True), section)
+
 
 def _builder():
     spec = importlib.util.spec_from_file_location('mangen_build', ROOT / 'scripts' / 'build.py')
@@ -347,54 +381,67 @@ def _builder():
     return module
 
 
-def _post(slug, published, topic, places, featured=False, order=None, until=''):
-    return {'slug': slug, 'date': published, 'topic': topic, 'destinations': places,
-            'featured': featured, 'featured_order': order, 'featured_until': until}
+def _guide(slug, published, topic='行程路线', places=None, cover='/assets/uploads/fixture.png', links=None):
+    return {'slug': slug, 'url': f'/blog/{slug}', 'title': slug, 'excerpt': '', 'date': published,
+            'topic': topic, 'destinations': places or [], 'featured': False, 'cover': cover,
+            'body_links': links or []}
 
 
-class EditorPickTests(unittest.TestCase):
+class DailyGuideTests(unittest.TestCase):
     def setUp(self):
         self.build = _builder()
         self.today = date(2026, 10, 24)
 
-    def test_manual_pins_keep_order_and_stop_at_five(self):
-        posts = [_post(f'pin-{i}', '2026-09-01', f'topic-{i}', [f'place-{i}'], True, order=6 - i) for i in range(6)]
-        posts.append(_post('newer', '2026-10-23', 'extra', ['tokyo'], True))
-        picks = self.build.select_editor_picks(posts, self.today)
-        self.assertEqual([post['slug'] for post in picks], ['pin-5', 'pin-4', 'pin-3', 'pin-2', 'pin-1'])
-
-    def test_expired_pin_loses_priority_and_same_day_selection_is_stable(self):
-        posts = [
-            _post('old-pin', '2026-10-01', '路线', ['大阪'], True, until='2026-10-23'),
-            _post('kept', '2026-09-22', '行程', ['京都'], True, order=1),
-        ]
-        posts += [_post(f'auto-{i}', '2026-10-20', f'主题{i}', [f'地区{i}']) for i in range(6)]
-        first = [post['slug'] for post in self.build.select_editor_picks(posts, self.today)]
-        second = [post['slug'] for post in self.build.select_editor_picks(posts, self.today)]
-        self.assertEqual(first[0], 'kept')
-        self.assertNotIn('old-pin', first)
-        self.assertEqual(len(first), 5)
+    def test_same_date_is_stable_and_the_next_date_is_a_different_set(self):
+        posts = [_guide(f'p-{index:02d}', f'2026-09-{index + 1:02d}', topic=self.build.TOPICS[index % 6]) for index in range(12)]
+        first = [post['slug'] for post in self.build.select_daily_guides(posts, self.today)]
+        second = [post['slug'] for post in self.build.select_daily_guides(list(reversed(posts)), self.today)]
+        nxt = [post['slug'] for post in self.build.select_daily_guides(posts, self.today + timedelta(days=1))]
         self.assertEqual(first, second)
-        self.assertNotEqual(
-            self.build.rotation_rank('auto-0', self.today),
-            self.build.rotation_rank('auto-0', date(2026, 10, 25)),
-        )
+        self.assertEqual(len(first), 5)
+        self.assertNotEqual(set(first), set(nxt))
 
-    def test_auto_fill_skips_the_latest_row_and_repeats_a_topic_only_when_needed(self):
-        newest = [_post(f'new-{i}', f'2026-10-{24 - i:02d}', '交通出行', ['东京']) for i in range(3)]
-        mixed = [
-            _post('a1', '2026-10-18', '行程路线', ['京都']),
-            _post('a2', '2026-10-18', '行程路线', ['奈良']),
-            _post('b', '2026-10-17', '季节活动', ['大阪']),
-            _post('c', '2026-10-17', '礼仪与生活', ['北海道']),
-            _post('d', '2026-10-16', '购物退税', ['福冈']),
-            _post('e', '2026-10-16', '景点行程', ['箱根']),
-        ]
-        picks = self.build.select_editor_picks(newest + mixed, self.today)
-        slugs = [post['slug'] for post in picks]
+    def test_skips_articles_without_a_raster_thumbnail(self):
+        posts = [_guide(f'p-{index}', f'2026-08-{index + 1:02d}') for index in range(6)]
+        posts.append(_guide('bare', '2026-10-01', cover=''))
+        posts.append(_guide('vector', '2026-10-02', cover='/assets/uploads/x.svg'))
+        slugs = [post['slug'] for post in self.build.select_daily_guides(posts, self.today)]
+        self.assertNotIn('bare', slugs)
+        self.assertNotIn('vector', slugs)
         self.assertEqual(len(slugs), 5)
-        self.assertTrue(set(slugs).isdisjoint({post['slug'] for post in newest}))
-        self.assertEqual(sum(post['topic'] == '行程路线' for post in picks), 1)
+
+    def test_less_linked_older_articles_lead_when_the_window_starts(self):
+        posts = [_guide(f'quiet-{index}', f'2020-01-{index + 1:02d}') for index in range(5)]
+        posts.append(_guide('popular', '2026-10-01'))
+        for post in posts:
+            if post['slug'] != 'popular':
+                post['body_links'] = ['popular']
+        ordinal = self.today.toordinal()
+        while (ordinal * 5) % len(posts):
+            ordinal += 1
+        day = date.fromordinal(ordinal)
+        picks = [post['slug'] for post in self.build.select_daily_guides(posts, day)]
+        counts = self.build.inbound_link_counts(posts, day)
+        self.assertGreater(counts['popular'], counts['quiet-0'])
+        self.assertEqual(picks[0], 'quiet-0')
+        self.assertNotIn('popular', picks)
+        previous = {post['slug'] for post in self.build.select_daily_guides(posts, day - timedelta(days=1))}
+        self.assertNotEqual(set(picks), previous)
+
+    def test_short_pool_returns_every_article_with_a_thumbnail(self):
+        posts = [_guide('only', '2026-01-01'), _guide('two', '2026-01-02', cover='')]
+        self.assertEqual([post['slug'] for post in self.build.select_daily_guides(posts, self.today)], ['only'])
+
+    def test_card_text_is_escaped(self):
+        html = self.build.render_home_guide_card({
+            'url': '/blog/x', 'title': '最新 <指南>', 'excerpt': '摘要 & 说明', 'topic': '交通接送',
+            'date': '2026-10-26', 'cover': '/assets/uploads/fixture.png', 'coverAlt': '',
+            'coverCredit': '', 'coverLicense': '', 'coverCaption': '', 'coverChanges': '',
+            'coverSource': '', 'coverLicenseUrl': '', 'coverCreatorUrl': '',
+        }, True)
+        self.assertIn('最新 &lt;指南&gt;', html)
+        self.assertIn('摘要 &amp; 说明', html)
+        self.assertNotIn('<指南>', html)
 
     def test_retired_topic_names_publish_as_the_six_current_topics(self):
         build = _builder()
@@ -419,12 +466,83 @@ class EditorPickTests(unittest.TestCase):
             {'destinations': [place]} for place in build.DESTINATIONS
         ])), 6)
 
-    def test_old_catalog_falls_back_to_recent_posts_and_short_catalogs_stay_short(self):
-        old = [_post(f'old-{i}', '2026-01-01', f'topic-{i}', [f'place-{i}']) for i in range(6)]
-        picks = self.build.select_editor_picks(old, self.today)
-        self.assertEqual([post['slug'] for post in picks], [f'old-{i}' for i in range(5, 0, -1)])
-        short = old[:2]
-        self.assertEqual(len(self.build.select_editor_picks(short, self.today)), 2)
+
+
+def _related_post(build, slug, published, topic, places, tags=None, title=None, cover='/assets/uploads/x.png'):
+    return {
+        'slug': slug, 'url': f'/blog/{slug}', 'date': published, 'topic': topic,
+        'destinations': places, 'regions': build.regions_for(places), 'tags': tags or [],
+        'title': title or slug, 'cover': cover, 'coverAlt': title or slug,
+    }
+
+
+class RelatedArticleTests(unittest.TestCase):
+    def setUp(self):
+        self.build = _builder()
+
+    def test_newest_page_links_the_older_matches_and_not_itself(self):
+        posts = [_related_post(self.build, f'g-{i:02d}', f'2026-01-{i+1:02d}', '行程路线', ['东京']) for i in range(8)]
+        newest = posts[-1]
+        related = self.build.select_related_map(posts)
+        slugs = [post['slug'] for post in related[newest['slug']]]
+        self.assertEqual(slugs, [f'g-{i:02d}' for i in range(5)])
+        self.assertNotIn(newest['slug'], slugs)
+        again = [post['slug'] for post in self.build.select_related_map(list(reversed(posts)))[newest['slug']]]
+        self.assertEqual(again, slugs)
+        inbound = {post['slug']: 0 for post in posts}
+        for picks in related.values():
+            for post in picks:
+                inbound[post['slug']] += 1
+        self.assertTrue(all(count > 0 for count in inbound.values()))
+        self.assertGreaterEqual(inbound['g-00'], inbound['g-07'])
+
+    def test_region_and_topic_win_then_same_topic_fills_a_short_pool(self):
+        tokyo = [_related_post(self.build, f'tokyo-{i}', f'2026-02-0{i+1}', '行程路线', ['东京']) for i in range(2)]
+        osaka = [_related_post(self.build, f'osaka-{i}', f'2026-03-0{i+1}', '行程路线', ['大阪']) for i in range(6)]
+        other = _related_post(self.build, 'food', '2026-04-01', '住宿美食', ['东京'])
+        related = self.build.select_related_map(tokyo + osaka + [other])
+        slugs = [post['slug'] for post in related['tokyo-1']]
+        self.assertIn('tokyo-0', slugs)
+        self.assertNotIn('food', slugs)
+        self.assertTrue(all(slug.startswith('osaka-') or slug == 'tokyo-0' for slug in slugs))
+        self.assertGreaterEqual(len(slugs), 3)
+        self.assertLessEqual(len(slugs), 5)
+
+    def test_same_tag_counts_and_region_only_is_the_last_resort(self):
+        tagged = _related_post(self.build, 'tagged', '2026-05-01', '购物退税', ['大阪'], tags=['退税'])
+        peer = _related_post(self.build, 'peer', '2026-05-02', '礼仪与生活', ['大阪'], tags=['退税'])
+        far = _related_post(self.build, 'far', '2026-05-03', '礼仪与生活', ['东京'], tags=['退税'])
+        neighbors = [_related_post(self.build, f'near-{i}', f'2026-06-0{i+1}', '住宿美食', ['大阪']) for i in range(4)]
+        solo = _related_post(self.build, 'solo', '2026-07-01', '季节活动', ['京都'])
+        related = self.build.select_related_map([tagged, peer, far, solo, *neighbors])
+        tagged_slugs = [post['slug'] for post in related['tagged']]
+        self.assertEqual(tagged_slugs[0], 'peer')
+        self.assertIn('far', tagged_slugs)
+        self.assertLess(tagged_slugs.index('peer'), tagged_slugs.index('far'))
+        solo_slugs = [post['slug'] for post in related['solo']]
+        self.assertEqual(solo_slugs, [])
+        thin = self.build.select_related_map([solo, neighbors[0]])
+        self.assertEqual([post['slug'] for post in thin['solo']], [])
+
+    def test_region_neighbors_fill_when_the_topic_is_unique(self):
+        solo = _related_post(self.build, 'solo', '2026-07-01', '季节活动', ['大阪'])
+        neighbors = [_related_post(self.build, f'near-{i}', f'2026-06-0{i+1}', '住宿美食', ['大阪']) for i in range(4)]
+        tokyo = _related_post(self.build, 'tokyo', '2026-08-01', '住宿美食', ['东京'])
+        related = self.build.select_related_map([solo, tokyo, *neighbors])
+        self.assertEqual([post['slug'] for post in related['solo']], [f'near-{i}' for i in range(4)])
+
+    def test_cards_show_thumbnail_title_date_and_escape(self):
+        post = _related_post(self.build, 'old', '2026-01-02', '行程路线', ['东京'], title='旧文 <指南> & 说明', cover='')
+        covered = _related_post(self.build, 'pic', '2026-01-03', '行程路线', ['东京'], title='有图', cover='/assets/uploads/a.png')
+        html = self.build.render_related_section([post, covered])
+        self.assertIn('class="related-thumb"', html)
+        self.assertIn('src="/assets/uploads/a.png"', html)
+        self.assertIn('loading="lazy"', html)
+        self.assertIn('旧文 &lt;指南&gt; &amp; 说明', html)
+        self.assertIn('datetime="2026-01-02"', html)
+        self.assertIn('>2026.01.02</time>', html)
+        self.assertNotIn('<指南>', html)
+        self.assertEqual(self.build.render_related_section([]), '')
 
 
 class HubCopyTests(unittest.TestCase):

@@ -78,15 +78,14 @@ def load_post(path):
 
 
 PER_PAGE = 12
-FEATURED_MIN = 3
-FEATURED_MAX = 5
-FEATURED_WINDOW_DAYS = 14
-# Chinese homepage: one lead plus four compact rows, separate from the journal's editor picks.
-HOME_GUIDE_LIMIT = 5
+# Shared by the Chinese homepage and /blog/ editor's picks: one lead plus four rows.
+GUIDE_PICK_COUNT = 5
 HOME_GUIDE_START = "<!-- home-guides:start -->"
 HOME_GUIDE_END = "<!-- home-guides:end -->"
-# First row of the desktop guide grid. Auto picks avoid these newest posts when other candidates exist.
-LATEST_ABOVE_FOLD = 3
+RELATED_MIN = 3
+RELATED_MAX = 5
+_THUMB_EXT = {".png", ".jpg", ".jpeg", ".webp", ".gif", ".avif"}
+_BODY_LINK = re.compile(r"(?:\]\(|https://mangen\.jp)/blog/([a-z0-9-]+)")
 TOPICS = ["行程路线", "交通接送", "住宿美食", "购物退税", "季节活动", "礼仪与生活"]
 # Older labels still publish into the six topics, so a batch written with the previous names does not break the build.
 TOPIC_ALIASES = {
@@ -207,6 +206,13 @@ def post_record(post):
         raise ValueError(f"Invalid featured_order in {slug}: {featured_order}")
     else:
         featured_order = int(featured_order)
+    raw_tags = data.get("tags") or []
+    if isinstance(raw_tags, str):
+        raw_tags = [part.strip() for part in re.split(r"[,，]", raw_tags) if part.strip()]
+    elif isinstance(raw_tags, list):
+        raw_tags = [str(part).strip() for part in raw_tags if str(part).strip()]
+    else:
+        raw_tags = []
     return {"slug": slug, "url": f"/blog/{slug}", "title": title, "excerpt": excerpt,
             "date": published, "updated": modified, "category": CATEGORY_LABELS.get(data.get("category"), "旅行指南"),
             "topic": topic, "destinations": destinations, "regions": regions_for(destinations),
@@ -217,7 +223,9 @@ def post_record(post):
             "coverLicense": data.get("cover_license") or "", "coverLicenseUrl": data.get("cover_license_url") or "",
             "coverCreatorUrl": data.get("cover_creator_url") or "", "coverCaption": data.get("cover_caption") or "",
             "coverChanges": data.get("cover_changes") or "",
-            "search": plain(title + " " + excerpt + " " + body)}
+            "tags": list(dict.fromkeys(raw_tags)),
+            "search": plain(title + " " + excerpt + " " + body),
+            "body_links": list(dict.fromkeys(_BODY_LINK.findall(body)))}
 
 
 def page_url(number):
@@ -306,108 +314,78 @@ def journal_today():
         return datetime.now(timezone(timedelta(hours=9))).date()
 
 
-def rotation_rank(slug, day):
-    return hashlib.sha256(f"{day.isoformat()}:{slug}".encode()).hexdigest()
+def usable_thumbnail(post):
+    """Raster cover shipped with the site. Empty covers and vector placeholders are not cards."""
+    cover = post.get("cover") or ""
+    return cover.startswith("/assets/") and ".." not in cover.split("/") and Path(cover).suffix.lower() in _THUMB_EXT
 
 
-def _active_pin(post, today):
-    if not post.get("featured"):
-        return False
-    until = post.get("featured_until") or ""
-    return not until or until >= today.isoformat()
+def related_posts(records, post, limit=3):
+    """Same related-reading order the article pages emit. Date then slug breaks ties."""
+    others = sorted((item for item in records if item["slug"] != post["slug"]),
+                    key=lambda item: (item["date"], item["slug"]), reverse=True)
+    return sorted(others, key=lambda item: (
+        bool(set(item.get("destinations") or []) & set(post.get("destinations") or []) - {"全日本"}),
+        item.get("topic") == post.get("topic"),
+        bool(item.get("featured"))), reverse=True)[:limit]
 
 
-def _region(post):
-    places = post.get("destinations") or []
-    return places[0] if places else ""
+def inbound_link_counts(records, day):
+    """How many already-published articles link here, via the body or related reading.
 
-
-def _take_diverse(pool, need, chosen, day, newest_first=False):
-    """Fill slots from pool. Prefer a new topic and a new region; relax only when that cannot fill the slots."""
-    if need <= 0:
-        return []
-    used = {post["slug"] for post in chosen}
-    topics = {post["topic"] for post in chosen}
-    regions = {_region(post) for post in chosen if _region(post)}
-    ordered = list(pool)
-    if newest_first:
-        ordered.sort(key=lambda post: (post["date"], post["slug"]), reverse=True)
-    else:
-        ordered.sort(key=lambda post: rotation_rank(post["slug"], day))
-    selected = []
-
-    def acceptable(post, mode):
-        if post["slug"] in used:
-            return False
-        topic_free = post["topic"] not in topics
-        region = _region(post)
-        region_free = not region or region not in regions
-        if mode == "strict":
-            return topic_free and region_free
-        if mode == "topic":
-            return topic_free
-        if mode == "region":
-            return region_free
-        return True
-
-    for mode in ("strict", "topic", "region", "any"):
-        for post in ordered:
-            if len(selected) >= need:
-                return selected
-            if acceptable(post, mode):
-                selected.append(post)
-                used.add(post["slug"])
-                topics.add(post["topic"])
-                if _region(post):
-                    regions.add(_region(post))
-    return selected
-
-
-def select_editor_picks(records, today):
-    """Choose 3–5 editor's picks. Manual pins come first; the rest rotate by date.
-
-    records may be in any order. The result is the lead card followed by smaller cards.
-    Fewer than three published articles returns every article.
+    The rotating picks are not counted: those links are what this ranking is choosing.
+    The latest-article index links every article once, so it does not change the order.
     """
-    ordered = sorted(records, key=lambda post: (post["date"], post["slug"]), reverse=True)
-    target = min(FEATURED_MAX, len(ordered))
-    if not ordered:
+    iso = day.isoformat() if isinstance(day, date) else str(day)
+    visible = [post for post in records if post.get("date", "") <= iso]
+    counts = {post["slug"]: 0 for post in visible}
+    for post in visible:
+        targets = {slug for slug in (post.get("body_links") or []) if slug in counts and slug != post["slug"]}
+        for item in related_posts(visible, post):
+            targets.add(item["slug"])
+        for slug in targets:
+            counts[slug] += 1
+    return counts
+
+
+def _ranked_guides(records, day):
+    counts = inbound_link_counts(records, day)
+    pool = [post for post in records if post.get("date", "") <= day.isoformat() and usable_thumbnail(post)]
+    pool.sort(key=lambda post: (counts.get(post["slug"], 0), post["date"], post["slug"]))
+    return pool
+
+
+def _guide_window(ranked, day):
+    if not ranked:
         return []
-    pins = [post for post in ordered if _active_pin(post, today)]
-    pins.sort(key=lambda post: (post.get("featured_order") is None, post.get("featured_order") or 0))
-    chosen = pins[:FEATURED_MAX]
-    chosen_slugs = {post["slug"] for post in chosen}
-    if len(chosen) >= target:
-        return chosen[:target]
-    start = (today - timedelta(days=FEATURED_WINDOW_DAYS)).isoformat()
-    above_fold = {post["slug"] for post in ordered[:LATEST_ABOVE_FOLD]}
-    recent = [post for post in ordered if post["date"] >= start and post["slug"] not in chosen_slugs]
-    preferred = [post for post in recent if post["slug"] not in above_fold]
-    overlap = [post for post in recent if post["slug"] in above_fold]
-    need = target - len(chosen)
-    chosen.extend(_take_diverse(preferred, need, chosen, today))
-    if len(chosen) < target:
-        chosen.extend(_take_diverse(overlap, target - len(chosen), chosen, today))
-    if len(chosen) < target:
-        fallback = [post for post in ordered if post["slug"] not in {item["slug"] for item in chosen}]
-        chosen.extend(_take_diverse(fallback, target - len(chosen), chosen, today, newest_first=True))
-    return chosen[:target]
+    count = min(GUIDE_PICK_COUNT, len(ranked))
+    if len(ranked) <= GUIDE_PICK_COUNT:
+        return ranked[:count]
+    start = (day.toordinal() * GUIDE_PICK_COUNT) % len(ranked)
+    return [ranked[(start + offset) % len(ranked)] for offset in range(count)]
 
 
-def select_home_guides(records, limit=HOME_GUIDE_LIMIT):
-    """Newest articles for the Chinese homepage.
+def select_daily_guides(records, day):
+    """Five articles shared by the homepage block and the blog editor's picks.
 
-    The large card is always the newest article. The other cards continue in
-    date order, preferring a topic that is not already in the row. This stays
-    off the journal front, which leads with the manual pin and then rotates
-    posts from outside the newest row.
+    `day` is an Asia/Tokyo calendar date. The same date always returns the same
+    five articles in the same order. The list walks articles that already have
+    fewer internal links, oldest first, so the extra links move through the
+    archive instead of staying on the newest posts. Articles without a usable
+    thumbnail are left out. When more than five articles qualify, the five
+    slugs are not the previous date's five.
     """
-    ordered = sorted(records, key=lambda post: (post["date"], post["slug"]), reverse=True)
-    if not ordered:
-        return []
-    chosen = [ordered[0]]
-    chosen.extend(_take_diverse(ordered[1:], limit - 1, chosen, date.min, newest_first=True))
-    return chosen[:limit]
+    if isinstance(day, str):
+        day = date.fromisoformat(day[:10])
+    ranked = _ranked_guides(records, day)
+    chosen = _guide_window(ranked, day)
+    if len(ranked) <= GUIDE_PICK_COUNT:
+        return chosen
+    previous = {post["slug"] for post in _guide_window(_ranked_guides(records, day - timedelta(days=1)), day - timedelta(days=1))}
+    if {post["slug"] for post in chosen} == previous:
+        start = ((day.toordinal() * GUIDE_PICK_COUNT) + 1) % len(ranked)
+        chosen = [ranked[(start + offset) % len(ranked)] for offset in range(GUIDE_PICK_COUNT)]
+    return chosen
 
 
 def render_home_guide_card(post, lead=False):
@@ -430,14 +408,14 @@ def render_home_guide_card(post, lead=False):
             f'<div class="home-guide-copy">{topic}{title}{when}</div></a></article>')
 
 
-def render_home_guides(records):
-    posts = select_home_guides(records)
+def render_home_guides(records, day):
+    posts = select_daily_guides(records, day)
     lead = render_home_guide_card(posts[0], True) if posts else ""
     rows = "\n".join(render_home_guide_card(post) for post in posts[1:])
     listing = f'    <div class="home-guide-list">\n{rows}\n    </div>' if rows else ""
     return (
         f'{HOME_GUIDE_START}\n'
-        '<section class="sec" id="guides">\n'
+        f'<section class="sec" id="guides" data-guide-date="{day.isoformat()}">\n'
         '  <div class="wrap">\n'
         '    <div class="home-guides-head">\n'
         '      <h2>旅行指南</h2>\n'
@@ -450,7 +428,7 @@ def render_home_guides(records):
     )
 
 
-def update_chinese_homepage(records):
+def update_chinese_homepage(records, day):
     path = ROOT / "zh.html"
     if not path.exists():
         return
@@ -460,45 +438,21 @@ def update_chinese_homepage(records):
     if start < 0 or end < start:
         raise ValueError("zh.html is missing home guide markers")
     end += len(HOME_GUIDE_END)
-    updated = page[:start] + render_home_guides(records) + page[end:]
+    updated = page[:start] + render_home_guides(records, day) + page[end:]
     if updated != page:
         path.write_text(updated, encoding="utf-8")
 
 
-def render_featured(posts):
+def render_featured(posts, day):
+    """Blog editor's picks use the same lead-plus-four markup as the homepage block."""
     if not posts:
         return ""
-
-    def cover_link(post, lead):
-        if not post["cover"]:
-            return ""
-        loading = 'loading="eager" fetchpriority="high"' if lead else 'loading="lazy" decoding="async"'
-        image = (f'<img src="{text(post["cover"])}" alt="" {loading} width="1200" height="800">')
-        if lead:
-            return f'<a class="featured-image" href="{text(post["url"])}" tabindex="-1" aria-hidden="true">{image}</a>'
-        return f'<span class="featured-mini-image">{image}</span>'
-
-    def taxonomy(post):
-        return taxonomy_html(post).replace("<span> · </span>", " · ")
-
-    lead = posts[0]
-    lead_cover = cover_link(lead, True)
-    lead_html = (f'<article class="featured-lead{" featured-lead--text" if not lead_cover else ""}">{lead_cover}'
-                 f'<div class="featured-copy"><div class="guide-taxonomy">{taxonomy(lead)}</div>'
-                 f'<h3><a href="{text(lead["url"])}">{text(lead["title"])}</a></h3><p>{text(lead["excerpt"])}</p>'
-                 f'<a class="text-link" href="{text(lead["url"])}">阅读指南</a></div>'
-                 + (f'<p class="image-credit">{render_credit(lead)}</p>' if lead_cover else "") + "</article>")
-    minis = []
-    for post in posts[1:]:
-        thumb = cover_link(post, False)
-        minis.append(f'<article class="featured-mini"><a href="{text(post["url"])}">{thumb}'
-                     f'<span class="featured-mini-copy"><span class="guide-taxonomy">{taxonomy(post)}</span>'
-                     f'<h3>{text(post["title"])}</h3></span></a></article>')
-    side = f'<div class="featured-side">{"".join(minis)}</div>' if minis else ""
-    count = len(posts)
-    return (f'<section class="featured-section" aria-labelledby="featured-title" id="featured-section">'
-            f'<h2 id="featured-title">编辑精选</h2>'
-            f'<div class="featured-layout featured-layout--{count}">{lead_html}{side}</div></section>')
+    lead = render_home_guide_card(posts[0], True)
+    rows = "".join(render_home_guide_card(post) for post in posts[1:])
+    listing = f'<div class="home-guide-list">{rows}</div>' if rows else ""
+    return (f'<section class="featured-section" id="featured-section" data-guide-date="{day.isoformat()}" aria-labelledby="featured-title">'
+            f'<div class="home-guides-head"><h2 id="featured-title">编辑精选</h2></div>'
+            f'<div class="home-guides">{lead}{listing}</div></section>')
 
 
 def render_destination_filters(records):
@@ -700,6 +654,84 @@ def version_asset_refs(html):
     return _ASSET_REF.sub(replace, html)
 
 
+def _post_regions(post):
+    if post.get("regions"):
+        return set(post["regions"])
+    return set(regions_for(post.get("destinations") or []))
+
+
+def _post_tags(post):
+    return {str(tag) for tag in (post.get("tags") or []) if str(tag).strip()}
+
+
+def related_tier(source, candidate):
+    """2 shares a topic or tag and a region; 1 is the same topic or tag; 0 is region only.
+
+    The CMS category letter is a coarse bucket (many topics share 旅行指南), so it is
+    not a match signal. Topic is the published category.
+    """
+    if candidate["slug"] == source["slug"]:
+        return None
+    topical = (bool(source.get("topic")) and source.get("topic") == candidate.get("topic")
+               or bool(_post_tags(source) & _post_tags(candidate)))
+    same_region = bool(_post_regions(source) & _post_regions(candidate))
+    if topical and same_region:
+        return 2
+    if topical:
+        return 1
+    if same_region:
+        return 0
+    return None
+
+
+def select_related_map(records):
+    """3–5 related articles per page. Newer pages give their links to older matches first."""
+    sources = sorted(records, key=lambda post: (post.get("date") or "", post["slug"]), reverse=True)
+    inbound = {post["slug"]: 0 for post in records}
+    chosen = {}
+    for source in sources:
+        bands = {2: [], 1: [], 0: []}
+        for candidate in records:
+            tier = related_tier(source, candidate)
+            if tier is not None:
+                bands[tier].append(candidate)
+        selected = []
+        seen = set()
+        for tier in (2, 1, 0):
+            if len(selected) >= RELATED_MAX:
+                break
+            if tier < 2 and len(selected) >= RELATED_MIN:
+                break
+            band = [item for item in bands[tier] if item["slug"] not in seen]
+            band.sort(key=lambda item: (inbound[item["slug"]], item.get("date") or "", item["slug"]))
+            selected.extend(band[:RELATED_MAX - len(selected)])
+            seen.update(item["slug"] for item in selected)
+        for item in selected:
+            inbound[item["slug"]] += 1
+        chosen[source["slug"]] = selected
+    return chosen
+
+
+def render_related_section(posts):
+    if not posts:
+        return ""
+    items = []
+    for post in posts:
+        if post.get("cover"):
+            thumb = (f'<img src="{text(post["cover"])}" alt="{text(post.get("coverAlt") or post["title"])}" '
+                     f'loading="lazy" decoding="async" width="320" height="240">')
+        else:
+            thumb = '<span class="related-thumb" aria-hidden="true"></span>'
+        shown = text(str(post.get("date") or "").replace("-", "."))
+        items.append(
+            f'<li><a href="{text(post["url"])}">{thumb}<span class="related-copy">'
+            f'<span class="related-title">{text(post["title"])}</span>'
+            f'<time datetime="{text(post.get("date") or "")}">{shown}</time></span></a></li>'
+        )
+    return ('<section class="related-reading" aria-label="相关阅读"><h2>相关阅读</h2><ul>'
+            + "".join(items) + "</ul></section>")
+
+
 def stamp_html_assets():
     paths = []
     for name in (
@@ -725,15 +757,11 @@ def main():
     if not posts:
         raise ValueError("No articles found in content/posts")
     records = [post_record(post) for post in posts]
+    related_map = select_related_map(records)
     BLOG.mkdir(parents=True, exist_ok=True)
     header = (ROOT / "scripts/journal-header.html").read_text(encoding="utf-8")
     template = (ROOT / "scripts/article-template.html").read_text(encoding="utf-8")
     for (data, slug, published, body), post in zip(posts, records):
-        # Rank by explicit content metadata; stable input order breaks ties.
-        related = sorted([p for p in records if p["slug"] != slug], key=lambda p: (
-            bool(set(p["destinations"]) & set(post["destinations"]) - {"全日本"}),
-            p["topic"] == post["topic"], p["featured"]), reverse=True)[:3]
-        related_links = '\n'.join(f'<li><a href="{text(p["url"])}"><span class="guide-taxonomy">{text(p["topic"])}</span>{text(p["title"])}</a></li>' for p in related)
         schema = {"@context": "https://schema.org", "@type": "Article", "headline": post["title"],
                   "description": post["excerpt"], "inLanguage": "zh-CN", "mainEntityOfPage": BASE + post["url"],
                   "datePublished": published, "dateModified": post["updated"],
@@ -747,7 +775,8 @@ def main():
         toc = '<details class="article-toc"><summary>本文目录</summary><nav aria-label="本文目录"><ol>'+''.join(f'<li class="toc-level-{level}"><a href="#{text(anchor)}">{text(plain(label))}</a></li>' for level, anchor, label in headings)+'</ol></nav></details>' if headings else ""
         updated = f' · 更新于 <time datetime="{text(post["updated"])}">{text(post["updated"])}</time>' if post["updated"] != published else ""
         page = render_template(template, {"HEADER": header, "TITLE": text(post["title"]), "DESCRIPTION": text(post["excerpt"]),
-            "DATE": text(published), "UPDATED": updated, "BODY": body, "URL": BASE + post["url"], "RELATED": related_links,
+            "DATE": text(published), "UPDATED": updated, "BODY": body, "URL": BASE + post["url"],
+            "RELATED": render_related_section(related_map.get(slug, [])),
             "CATEGORY": topic_hub_link(post), "DESTINATIONS": destination_hub_links(post), "COVER": cover, "TOC": toc,
             "OG_IMAGE": text(BASE + (post["cover"] or "/assets/img/logo.png")), "SCHEMA": json.dumps(schema, ensure_ascii=False).replace("<", "\\u003c")})
         (BLOG / f"{slug}.html").write_text(page, encoding="utf-8")
@@ -758,7 +787,8 @@ def main():
 
     index_template = (ROOT / "scripts/blog-index-template.html").read_text(encoding="utf-8")
     page_count = math.ceil(len(records) / PER_PAGE)
-    featured_html = render_featured(select_editor_picks(records, journal_today()))
+    today = journal_today()
+    featured_html = render_featured(select_daily_guides(records, today), today)
     for number in range(1, page_count + 1):
         output = BLOG / "index.html" if number == 1 else BLOG / "page" / str(number) / "index.html"
         output.parent.mkdir(parents=True, exist_ok=True)
@@ -782,7 +812,8 @@ def main():
                 generated = directory / "index.html"
                 if generated.exists(): generated.unlink()
                 if not any(directory.iterdir()): directory.rmdir()
-    (BLOG / "articles.json").write_text(json.dumps({"perPage": PER_PAGE, "posts": records}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    public_records = [{key: value for key, value in post.items() if key not in {"tags", "body_links"}} for post in records]
+    (BLOG / "articles.json").write_text(json.dumps({"perPage": PER_PAGE, "posts": public_records}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     hub_dates = write_hub_pages(records, header)
 
     ET.register_namespace("", "http://www.sitemaps.org/schemas/sitemap/0.9")
@@ -795,7 +826,7 @@ def main():
         ET.SubElement(entry, ns + "loc").text = BASE + path
         if path in dates: ET.SubElement(entry, ns + "lastmod").text = dates[path]
     ET.ElementTree(urls).write(ROOT / "sitemap.xml", encoding="utf-8", xml_declaration=True)
-    update_chinese_homepage(records)
+    update_chinese_homepage(records, today)
     stamp_html_assets()
     print(f"Built {len(posts)} articles, {page_count} index page(s), search catalog and sitemap")
 

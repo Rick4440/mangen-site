@@ -127,8 +127,13 @@
 .journal-article-page .article .body img{max-width:100%;height:auto}
 .journal-article-page .article .body figure{margin:24px 0}
 .journal-article-page .related-reading{border-top:1px solid var(--journal-line);padding-top:25px;margin-top:36px}
-.journal-article-page .related-reading h2{font-size:23px}.journal-article-page .related-reading ul{padding:0;list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.journal-article-page .related-reading li{font-size:15px;line-height:1.8}.related-reading .guide-taxonomy{display:block;margin-bottom:6px}
+.journal-article-page .related-reading h2{font-size:23px;margin:0 0 16px}
+.journal-article-page .related-reading ul{padding:0;margin:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px}
+.journal-article-page .related-reading li{min-width:0}
+.related-reading a{display:flex;flex-direction:column;gap:8px;min-width:0;color:inherit;text-decoration:none}
+.related-reading img,.related-reading .related-thumb{width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--journal-paper);display:block}
+.related-reading .related-title{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-size:14px;line-height:1.45;font-weight:600}
+.related-reading time{display:block;margin-top:6px;font-size:12px;line-height:1.4;color:var(--journal-muted)}
 .journal-article-page .article .cta-block{border-radius:0;background:var(--journal-paper);border-color:var(--journal-line)}
 @media(min-width:781px) and (max-width:1020px){.journal-intro{grid-template-columns:1fr 1fr;gap:25px}.journal-search input{font-size:12px}.journal-search button{padding:0 18px}.featured-layout{grid-template-columns:1fr}.featured-lead{grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr)}.featured-copy{padding:22px}.featured-copy h3{font-size:23px}.filter-options{gap:6px}.guide-copy h3{font-size:18px}}
 @media(max-width:780px){
@@ -154,7 +159,7 @@
   .journal-pagination{gap:3px;margin-top:18px}.journal-pagination a,.journal-pagination>span{padding:7px 10px;min-width:38px}
   .journal-cta>.wrap{display:block;padding-top:23px;padding-bottom:23px}.journal-cta h2{font-size:22px}.journal-cta p{font-size:13px;margin-top:6px}.journal-cta .outline-link{display:block;text-align:center;margin-top:18px;padding:11px 20px}
   .journal-footer>.wrap{flex-wrap:wrap;gap:9px 18px;font-size:10px}.journal-footer>.wrap>a:first-child{width:100%;font-size:12px}.journal-footer p{margin-right:auto}
-  .journal-article-page .article{padding-top:25px}.journal-article-page .article .meta{font-size:11px;line-height:1.9}.article-summary{font-size:15px;line-height:1.95}.article-toc{padding:12px 17px}.journal-article-page .related-reading ul{grid-template-columns:1fr;gap:16px}
+  .journal-article-page .article{padding-top:25px}.journal-article-page .article .meta{font-size:11px;line-height:1.9}.article-summary{font-size:15px;line-height:1.95}.article-toc{padding:12px 17px}.journal-article-page .related-reading ul{grid-template-columns:1fr;gap:0}.related-reading li{border-bottom:1px solid var(--journal-line)}.related-reading a{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;align-items:center;padding:12px 0}.related-reading img,.related-reading .related-thumb{width:96px;height:72px;aspect-ratio:auto}
 }
 @media(max-width:380px){.journal-header .inner{gap:6px;padding-left:18px;padding-right:18px}.journal-header .brand-ja{font-size:18px}.journal-header .lang-switch a{min-width:27px;padding:4px;font-size:10px}.journal-page .wrap{padding-left:18px;padding-right:18px}.journal-intro h1{font-size:30px}.journal-search input{font-size:11px}.journal-search button{padding:0 16px}.guide-card{grid-template-columns:96px minmax(0,1fr)}.guide-card--text{grid-template-columns:1fr}.guide-image{height:96px}.featured-copy h3{font-size:24px}}
 @media(prefers-reduced-motion:reduce){.journal-page *{scroll-behavior:auto!important;transition:none!important}}
