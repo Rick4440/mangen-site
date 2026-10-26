@@ -78,6 +78,8 @@ def load_post(path):
 
 
 PER_PAGE = 12
+FEED_LIMIT = 50
+JST = timezone(timedelta(hours=9))
 FEATURED_MIN = 3
 FEATURED_MAX = 5
 FEATURED_WINDOW_DAYS = 14
@@ -148,6 +150,29 @@ def resolve_destinations(raw, title):
     return infer_places(title)
 
 
+def jst_timestamp(value):
+    """ISO 8601 with +09:00. A calendar date is midnight in Japan, not the build clock."""
+    if isinstance(value, datetime):
+        moment = value if value.tzinfo else value.replace(tzinfo=JST)
+        return moment.astimezone(JST).isoformat(timespec="seconds")
+    if isinstance(value, date):
+        return datetime(value.year, value.month, value.day, tzinfo=JST).isoformat(timespec="seconds")
+    text_value = str(value or "").strip()
+    if re.fullmatch(r"\d{4}-\d{2}-\d{2}", text_value):
+        return f"{text_value}T00:00:00+09:00"
+    match = re.fullmatch(r"(\d{4}-\d{2}-\d{2})[T ](\d{2}:\d{2})(?::(\d{2}))?(Z|[+-]\d{2}:\d{2})?", text_value)
+    if not match:
+        raise ValueError(f"Unusable timestamp: {value}")
+    day, hm, sec, zone = match.groups()
+    sec = sec or "00"
+    if not zone:
+        return f"{day}T{hm}:{sec}+09:00"
+    if zone == "Z":
+        zone = "+00:00"
+    moment = datetime.fromisoformat(f"{day}T{hm}:{sec}{zone}")
+    return moment.astimezone(JST).isoformat(timespec="seconds")
+
+
 def plain(source):
     from html import unescape
     return re.sub(r"\s+", " ", unescape(re.sub(r"<[^>]+>", " ", str(source or "")))).strip()
@@ -191,7 +216,10 @@ def post_record(post):
     else:
         featured_order = int(featured_order)
     return {"slug": slug, "url": f"/blog/{slug}", "title": title, "excerpt": excerpt,
-            "date": published, "updated": modified, "category": CATEGORY_LABELS.get(data.get("category"), "旅行指南"),
+            "date": published, "updated": modified,
+            "published_at": jst_timestamp(data.get("date") or published),
+            "updated_at": jst_timestamp(data.get("updated") or data.get("date") or published),
+            "category": CATEGORY_LABELS.get(data.get("category"), "旅行指南"),
             "topic": topic, "destinations": destinations, "regions": regions_for(destinations),
             "featured": bool(data.get("featured")),
             "featured_order": featured_order, "featured_until": featured_until,
@@ -565,6 +593,39 @@ def version_asset_refs(html):
     return _ASSET_REF.sub(replace, html)
 
 
+def write_feed(records):
+    latest = records[:FEED_LIMIT]
+    if not latest:
+        return
+    updated = max(post["updated_at"] for post in latest)
+
+    def entry(post):
+        return (
+            "<entry>"
+            f"<title>{text(post['title'])}</title>"
+            f'<link href="{text(BASE + post["url"])}"/>'
+            f"<id>{text(BASE + post['url'])}</id>"
+            f"<published>{text(post['published_at'])}</published>"
+            f"<updated>{text(post['updated_at'])}</updated>"
+            f"<summary>{text(post['excerpt'])}</summary>"
+            "</entry>"
+        )
+
+    xml = (
+        '<?xml version="1.0" encoding="utf-8"?>\n'
+        '<feed xmlns="http://www.w3.org/2005/Atom">'
+        "<title>日本旅行指南</title>"
+        f'<link href="{BASE}/blog/feed.xml" rel="self"/>'
+        f'<link href="{BASE}/blog/" rel="alternate" type="text/html"/>'
+        f"<id>{BASE}/blog/feed.xml</id>"
+        f"<updated>{updated}</updated>"
+        "<author><name>株式会社万源</name></author>"
+        + "".join(entry(post) for post in latest)
+        + "</feed>\n"
+    )
+    (BLOG / "feed.xml").write_text(xml, encoding="utf-8")
+
+
 def stamp_html_assets():
     paths = []
     for name in (
@@ -641,12 +702,14 @@ def main():
                 generated = directory / "index.html"
                 if generated.exists(): generated.unlink()
                 if not any(directory.iterdir()): directory.rmdir()
-    (BLOG / "articles.json").write_text(json.dumps({"perPage": PER_PAGE, "posts": records}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    public_records = [{key: value for key, value in post.items() if key not in {"published_at", "updated_at"}} for post in records]
+    (BLOG / "articles.json").write_text(json.dumps({"perPage": PER_PAGE, "posts": public_records}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    write_feed(records)
 
     ET.register_namespace("", "http://www.sitemaps.org/schemas/sitemap/0.9")
     ns = "{http://www.sitemaps.org/schemas/sitemap/0.9}"
     urls = ET.Element(ns + "urlset")
-    dates = {post["url"]: post["updated"] for post in records}
+    dates = {post["url"]: post["updated_at"] for post in records}
     for path in ["/", "/zh", "/en", *(page_url(i) for i in range(1, page_count+1)), *dates]:
         entry = ET.SubElement(urls, ns + "url")
         ET.SubElement(entry, ns + "loc").text = BASE + path

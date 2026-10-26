@@ -6,6 +6,14 @@
 
 将 `mangen.jp` 绑定到 Pages，并在域名完成注册、DNS 生效后检查 HTTPS、`/robots.txt` 和 `/sitemap.xml`。在此之前，canonical 中的正式域名并不代表它已开通。
 
+## 指南订阅与 IndexNow
+
+`/blog/feed.xml` 是最新 50 篇旅行指南的 Atom 订阅。文章页和 `/blog/` 用 `<link rel="alternate">` 指向它。sitemap 里文章的 `lastmod` 使用 `+09:00` 的完整时间。稿件目前只写了日历日期，没有钟点，因此时间取该日日本时间 00:00，不用构建时刻冒充更新时间。
+
+推送到 `main` 后，GitHub Actions 工作流 IndexNow（`.github/workflows/indexnow.yml`）比较这次和上一次的 sitemap，把新增或 `lastmod` 变了的 URL POST 到 `https://api.indexnow.org/indexnow`。站点根目录的 `e61e8cdfd15dbe8d1e1c92f0140ffbf1.txt` 是公开校验文件，内容就是文件名。IndexNow 会来抓这个文件，所以它必须能被部署出去。不需要再设 GitHub Actions 密钥。
+
+工作流会先等 `https://mangen.jp/e61e8cdfd15dbe8d1e1c92f0140ffbf1.txt` 返回同一串字符，最多约 10 分钟，避免 Pages 还没发布时提交。超时就失败；等部署完成后到 Actions → IndexNow → Run workflow 再跑一次。手动运行时没有「上一次提交」，会提交 sitemap 里的全部 URL。定时轮换如果只在 Cloudflare 上重建、不产生新的 Git 提交，不会触发这次提交。
+
 ## 咨询表单
 
 网页表单使用 Web3Forms，三语首页的 `access_key` 对应“万源官网咨询”表单，通知收件人是 `mangeninc@gmail.com`。表单由浏览器直接提交，提交成功以 Web3Forms JSON 的 `success: true` 为准。发布后从正式网页真实提交一次，在 Web3Forms Submissions 及 Gmail 收件箱同时核对；无法送达时页面保留邮件草稿入口。旧 `/api/contact` 的 Formspree 转发接口已不再被前端调用。
