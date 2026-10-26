@@ -569,7 +569,11 @@ def main():
     for number in range(1, page_count + 1):
         output = BLOG / "index.html" if number == 1 else BLOG / "page" / str(number) / "index.html"
         output.parent.mkdir(parents=True, exist_ok=True)
+        guide_description = "从城市漫步到山间温泉，找到适合你的日本旅行灵感。万源整理行程路线、交通接送与实用旅行指南。"
+        if number > 1:
+            guide_description += f"第 {number} 页。"
         values = {"HEADER": header, "PAGE_TITLE": "日本旅行指南" + (f" · 第 {number} 页" if number > 1 else ""),
+            "DESCRIPTION": guide_description,
             "CANONICAL": BASE + page_url(number), "PAGE": number, "TOTAL": len(records), "PAGE_COUNT": page_count,
             "DESTINATION_FILTER": render_destination_filters(records),
             "TOPIC_FILTER": render_filters(records, "topic", "旅行主题", TOPICS),
