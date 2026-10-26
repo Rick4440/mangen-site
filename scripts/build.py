@@ -103,6 +103,23 @@ REGION_GROUPS = [
     ("冲绳", ("冲绳", "那霸")),
 ]
 OTHER_REGION = "其他"
+# Public hub URLs. Slugs stay in ASCII; the visible name is the taxonomy label.
+TOPIC_SLUGS = {
+    "行程路线": "routes",
+    "交通接送": "transfers",
+    "住宿美食": "food-and-stay",
+    "购物退税": "tax-free-shopping",
+    "季节活动": "seasons",
+    "礼仪与生活": "etiquette",
+}
+REGION_SLUGS = {
+    "东京・关东": "tokyo-kanto",
+    "大阪・关西": "osaka-kansai",
+    "京都": "kyoto",
+    "北海道": "hokkaido",
+    "冲绳": "okinawa",
+    "其他": "other",
+}
 REGION_CHIP_LIMIT = 6
 _GROUPED_PLACES = {place for _, places in REGION_GROUPS for place in places}
 if _GROUPED_PLACES - set(DESTINATIONS):
@@ -478,19 +495,137 @@ def render_filters(records, key, label, order):
     return f'<div class="filter-row filter-row--line"><span class="filter-label">{label}</span><div class="filter-options" role="group" aria-label="{label}">{buttons}</div></div>{select}'
 
 
-def render_pagination(current, total):
+def render_pagination(current, total, url_for=None):
+    url_for = url_for or page_url
     if total <= 1:
         return '<span class="page-summary">已显示全部指南</span>'
-    items = [f'<a href="{page_url(current-1)}" rel="prev">上一页</a>' if current > 1 else '<span aria-disabled="true">上一页</span>']
+    items = [f'<a href="{url_for(current-1)}" rel="prev">上一页</a>' if current > 1 else '<span aria-disabled="true">上一页</span>']
     visible = sorted({1, total, *range(max(1, current-2), min(total, current+2)+1)})
     previous = 0
     for number in visible:
         if previous and number > previous + 1:
             items.append('<span class="page-gap" aria-hidden="true">…</span>')
-        items.append(f'<a href="{page_url(number)}" aria-label="第 {number} 页"'+(' aria-current="page"' if number==current else '')+f'>{number}</a>')
+        items.append(f'<a href="{url_for(number)}" aria-label="第 {number} 页"'+(' aria-current="page"' if number==current else '')+f'>{number}</a>')
         previous = number
-    items.append(f'<a href="{page_url(current+1)}" rel="next">下一页</a>' if current < total else '<span aria-disabled="true">下一页</span>')
+    items.append(f'<a href="{url_for(current+1)}" rel="next">下一页</a>' if current < total else '<span aria-disabled="true">下一页</span>')
     return ''.join(items)
+
+
+def topic_hub_path(topic, page=1):
+    slug = TOPIC_SLUGS[topic]
+    return f"/blog/topic/{slug}/" if page == 1 else f"/blog/topic/{slug}/page/{page}/"
+
+
+def region_hub_path(region, page=1):
+    slug = REGION_SLUGS[region]
+    return f"/blog/region/{slug}/" if page == 1 else f"/blog/region/{slug}/page/{page}/"
+
+
+def topic_intro(topic):
+    return f"收录主题为{topic}的旅行指南。"
+
+
+def region_intro(region):
+    if region == OTHER_REGION:
+        names = "、".join(label for label, _ in REGION_GROUPS)
+        return f"收录目的地属于{region}的旅行指南。{region}指未归入{names}的目的地。"
+    places = dict(REGION_GROUPS)[region]
+    return f"收录目的地属于{region}的旅行指南。{region}包含：" + "、".join(places) + "。"
+
+
+def topic_hub_link(post):
+    return f'<a href="{text(topic_hub_path(post["topic"]))}">{text(post["topic"])}</a>'
+
+
+def destination_hub_links(post):
+    if not post["destinations"]:
+        return ""
+    parts = [f'<a href="{text(region_hub_path(place_region(place)))}">{text(place)}</a>' for place in post["destinations"]]
+    return " · " + " / ".join(parts)
+
+
+def render_hub_nav(records):
+    topics = [topic for topic in TOPICS if any(post["topic"] == topic for post in records)]
+    regions = [label for label, _ in REGION_GROUPS if any(label in post["regions"] for post in records)]
+    if any(OTHER_REGION in post["regions"] for post in records):
+        regions.append(OTHER_REGION)
+    topic_links = "".join(f'<li><a href="{text(topic_hub_path(topic))}">{text(topic)}</a></li>' for topic in topics)
+    region_links = "".join(f'<li><a href="{text(region_hub_path(region))}">{text(region)}</a></li>' for region in regions)
+    return ('<nav class="guide-hubs" aria-label="主题与地区">'
+            f'<p>主题</p><ul>{topic_links}</ul><p>地区</p><ul>{region_links}</ul></nav>')
+
+
+def hub_schema(name, description, canonical, posts, start):
+    items = [{"@type": "ListItem", "position": index, "url": BASE + post["url"], "name": post["title"]}
+             for index, post in enumerate(posts, start)]
+    return {
+        "@context": "https://schema.org",
+        "@graph": [
+            {"@type": "BreadcrumbList", "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "首页", "item": BASE + "/zh"},
+                {"@type": "ListItem", "position": 2, "name": "旅行指南", "item": BASE + "/blog/"},
+                {"@type": "ListItem", "position": 3, "name": name, "item": canonical},
+            ]},
+            {"@type": "CollectionPage", "name": name, "description": description, "url": canonical,
+             "inLanguage": "zh-CN", "mainEntity": {"@type": "ItemList", "numberOfItems": len(items), "itemListElement": items}},
+        ],
+    }
+
+
+def write_hub_pages(records, header):
+    """One crawlable index per topic and per region that has articles."""
+    template = (ROOT / "scripts/hub-template.html").read_text(encoding="utf-8")
+    groups = [("topic", topic, topic_intro, topic_hub_path) for topic in TOPICS]
+    groups += [("region", label, region_intro, region_hub_path) for label, _ in REGION_GROUPS]
+    groups.append(("region", OTHER_REGION, region_intro, region_hub_path))
+    written = set()
+    dates = {}
+    for _kind, name, intro_for, path_for in groups:
+        if _kind == "topic":
+            members = [post for post in records if post["topic"] == name]
+        else:
+            members = [post for post in records if name in post["regions"]]
+        if not members:
+            continue
+        intro = intro_for(name)
+        page_count = math.ceil(len(members) / PER_PAGE)
+        for number in range(1, page_count + 1):
+            chunk = members[(number - 1) * PER_PAGE:number * PER_PAGE]
+            url = path_for(name, number)
+            description = intro if number == 1 else f"{intro}第 {number} 页。"
+            title = name if number == 1 else f"{name} · 第 {number} 页"
+            canonical = BASE + url
+            head = ""
+            if number > 1:
+                head += f'<link rel="prev" href="{text(BASE + path_for(name, number - 1))}">'
+            if number < page_count:
+                head += f'<link rel="next" href="{text(BASE + path_for(name, number + 1))}">'
+            schema = json.dumps(hub_schema(name, description, canonical, chunk, (number - 1) * PER_PAGE + 1), ensure_ascii=False).replace("<", "\\u003c")
+            html = render_template(template, {
+                "HEADER": header, "TITLE": text(title), "NAME": text(name), "DESCRIPTION": text(description),
+                "CANONICAL": text(canonical), "INTRO": text(intro), "TOTAL": len(members),
+                "CARDS": "\n".join(render_card(post) for post in chunk),
+                "PAGINATION": render_pagination(number, page_count, lambda page, name=name, path_for=path_for: path_for(name, page)),
+                "PAGINATION_HEAD": head, "SCHEMA": schema,
+            })
+            output = BLOG.joinpath(*url.strip("/").split("/")[1:]) / "index.html"
+            output.parent.mkdir(parents=True, exist_ok=True)
+            output.write_text(html, encoding="utf-8")
+            written.add(output)
+            dates[url] = f"{max(post['updated'] for post in chunk)}T00:00:00+09:00"
+    for kind in ("topic", "region"):
+        root = BLOG / kind
+        if not root.exists():
+            continue
+        for page in root.rglob("index.html"):
+            if page not in written:
+                page.unlink()
+        for child in sorted(root.rglob("*"), reverse=True):
+            if child.is_dir() and not any(child.iterdir()):
+                child.rmdir()
+        if root.exists() and not any(root.iterdir()):
+            root.rmdir()
+    return dates
 
 
 _ASSET_REF = re.compile(r'(?P<path>/assets/[A-Za-z0-9_./-]+\.(?:css|js))(?:\?[^"\'\s>]*)?')
@@ -602,6 +737,7 @@ def stamp_html_assets():
     for name in (
         "index.html", "zh.html", "en.html", "404.html", "quote.html",
         "scripts/journal-header.html", "scripts/article-template.html", "scripts/blog-index-template.html",
+        "scripts/hub-template.html",
     ):
         path = ROOT / name
         if path.is_file():
@@ -641,7 +777,7 @@ def main():
         page = render_template(template, {"HEADER": header, "TITLE": text(post["title"]), "DESCRIPTION": text(post["excerpt"]),
             "DATE": text(published), "UPDATED": updated, "BODY": body, "URL": BASE + post["url"],
             "RELATED": render_related_section(related_map.get(slug, [])),
-            "CATEGORY": text(post["topic"]), "DESTINATIONS": (" · " + text(" / ".join(post["destinations"]))) if post["destinations"] else "", "COVER": cover, "TOC": toc,
+            "CATEGORY": topic_hub_link(post), "DESTINATIONS": destination_hub_links(post), "COVER": cover, "TOC": toc,
             "OG_IMAGE": text(BASE + (post["cover"] or "/assets/img/logo.png")), "SCHEMA": json.dumps(schema, ensure_ascii=False).replace("<", "\\u003c")})
         (BLOG / f"{slug}.html").write_text(page, encoding="utf-8")
     active = {f"{post['slug']}.html" for post in records}
@@ -664,6 +800,7 @@ def main():
             "CANONICAL": BASE + page_url(number), "PAGE": number, "TOTAL": len(records), "PAGE_COUNT": page_count,
             "DESTINATION_FILTER": render_destination_filters(records),
             "TOPIC_FILTER": render_filters(records, "topic", "旅行主题", TOPICS),
+            "HUB_NAV": render_hub_nav(records),
             "FEATURED": featured_html if number == 1 else "",
             "CARDS": '\n'.join(render_card(p) for p in records[(number-1)*PER_PAGE:number*PER_PAGE]),
             "PAGINATION": render_pagination(number, page_count)}
@@ -677,11 +814,13 @@ def main():
                 if not any(directory.iterdir()): directory.rmdir()
     public_records = [{key: value for key, value in post.items() if key not in {"tags", "body_links"}} for post in records]
     (BLOG / "articles.json").write_text(json.dumps({"perPage": PER_PAGE, "posts": public_records}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    hub_dates = write_hub_pages(records, header)
 
     ET.register_namespace("", "http://www.sitemaps.org/schemas/sitemap/0.9")
     ns = "{http://www.sitemaps.org/schemas/sitemap/0.9}"
     urls = ET.Element(ns + "urlset")
     dates = {post["url"]: post["updated"] for post in records}
+    dates.update(hub_dates)
     for path in ["/", "/zh", "/en", *(page_url(i) for i in range(1, page_count+1)), *dates]:
         entry = ET.SubElement(urls, ns + "url")
         ET.SubElement(entry, ns + "loc").text = BASE + path

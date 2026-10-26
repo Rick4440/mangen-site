@@ -297,6 +297,57 @@ class BuildTests(unittest.TestCase):
         self.assertIn(f'/assets/js/main.js?v={hashes["/assets/js/main.js"]}', self.read("en.html"))
         self.assertIn(f'/assets/quote/styles.css?v={hashes["/assets/quote/styles.css"]}', self.read("quote.html"))
 
+    def test_topic_and_region_hubs_are_crawlable_indexes(self):
+        stale = self.root / 'blog/topic/not-a-topic/index.html'
+        stale.parent.mkdir(parents=True)
+        stale.write_text('stale hub')
+        self.build()
+        self.assertFalse(stale.exists())
+        index = self.read('blog/index.html')
+        nav = index.split('class="guide-hubs"', 1)[1].split('</nav>', 1)[0]
+        self.assertLess(nav.index('/blog/region/tokyo-kanto/'), nav.index('/blog/region/osaka-kansai/'))
+        for slug in ('routes', 'transfers', 'food-and-stay', 'tax-free-shopping', 'seasons', 'etiquette'):
+            self.assertIn(f'href="/blog/topic/{slug}/"', nav)
+        for slug in ('tokyo-kanto', 'osaka-kansai', 'kyoto', 'hokkaido', 'okinawa', 'other'):
+            self.assertIn(f'href="/blog/region/{slug}/"', nav)
+        routes = self.read('blog/topic/routes/index.html')
+        self.assertIn('<title>行程路线 | 日本旅行指南 | 株式会社万源</title>', routes)
+        self.assertIn('content="收录主题为行程路线的旅行指南。"', routes)
+        self.assertIn('href="https://mangen.jp/blog/topic/routes/"', routes)
+        self.assertIn('"@type": "BreadcrumbList"', routes)
+        self.assertIn('"@type": "CollectionPage"', routes)
+        self.assertIn('"@type": "ItemList"', routes)
+        self.assertEqual(len(Elements(routes).cards()), 12)
+        self.assertIn('href="/blog/topic/routes/page/2/"', routes)
+        page2 = self.read('blog/topic/routes/page/2/index.html')
+        self.assertIn('<title>行程路线 · 第 2 页 | 日本旅行指南 | 株式会社万源</title>', page2)
+        self.assertIn('content="收录主题为行程路线的旅行指南。第 2 页。"', page2)
+        self.assertIn('rel="prev" href="https://mangen.jp/blog/topic/routes/"', page2)
+        first = {card['href'] for card in Elements(routes).cards()}
+        second = {card['href'] for card in Elements(page2).cards()}
+        self.assertTrue(second.isdisjoint(first))
+        kanto = self.read('blog/region/tokyo-kanto/index.html')
+        self.assertIn('收录目的地属于东京・关东的旅行指南。东京・关东包含：东京、横滨、镰仓、江之岛、川越、箱根、富士山、日光、高尾山、长瀞、足利、热海、羽田、成田。', kanto)
+        other = self.read('blog/region/other/index.html')
+        self.assertIn('其他指未归入东京・关东、大阪・关西、京都、北海道、冲绳的目的地。', other)
+        tax = self.read('blog/topic/tax-free-shopping/index.html')
+        self.assertIn('已显示全部指南', tax)
+        self.assertLessEqual(len(Elements(tax).cards()), 12)
+        article = self.read('blog/osaka-kyoto-nara-3days.html')
+        self.assertIn('href="/blog/topic/routes/">行程路线</a>', article)
+        self.assertIn('href="/blog/region/osaka-kansai/">大阪</a>', article)
+        self.assertIn('href="/blog/region/kyoto/">京都</a>', article)
+        self.assertIn('href="/blog/region/osaka-kansai/">奈良</a>', article)
+        self.assertIn('这条路线适合谁？', article.split('<div class="body">', 1)[1].split('</div>', 1)[0])
+        sitemap = self.read('sitemap.xml')
+        self.assertIn('https://mangen.jp/blog/topic/routes/</loc>', sitemap)
+        self.assertIn('https://mangen.jp/blog/region/tokyo-kanto/</loc>', sitemap)
+        self.assertIn('https://mangen.jp/blog/topic/routes/page/2/</loc>', sitemap)
+        hub_lastmod = re.search(r'https://mangen.jp/blog/region/tokyo-kanto/</loc>\s*<lastmod>([^<]+)</lastmod>', sitemap)
+        self.assertIsNotNone(hub_lastmod)
+        self.assertRegex(hub_lastmod.group(1), r'^\d{4}-\d{2}-\d{2}T00:00:00\+09:00$')
+        self.assertLess(sitemap.index('tokyo-kanto'), sitemap.index('osaka-kansai'))
+
     def test_every_article_related_block_is_static_cards(self):
         self.build()
         catalog = {post['slug']: post for post in json.loads(self.read('blog/articles.json'))['posts']}
@@ -492,5 +543,19 @@ class RelatedArticleTests(unittest.TestCase):
         self.assertIn('>2026.01.02</time>', html)
         self.assertNotIn('<指南>', html)
         self.assertEqual(self.build.render_related_section([]), '')
+
+
+class HubCopyTests(unittest.TestCase):
+    def test_intros_use_only_the_taxonomy_names(self):
+        build = _builder()
+        self.assertEqual(build.topic_intro('行程路线'), '收录主题为行程路线的旅行指南。')
+        self.assertEqual(build.topic_hub_path('交通接送'), '/blog/topic/transfers/')
+        self.assertEqual(build.topic_hub_path('礼仪与生活', 2), '/blog/topic/etiquette/page/2/')
+        self.assertEqual(build.region_hub_path('东京・关东'), '/blog/region/tokyo-kanto/')
+        self.assertEqual(build.region_hub_path('大阪・关西', 3), '/blog/region/osaka-kansai/page/3/')
+        intro = build.region_intro('大阪・关西')
+        self.assertEqual(intro, '收录目的地属于大阪・关西的旅行指南。大阪・关西包含：大阪、神户、奈良、姬路、和歌山、滋贺、箕面。')
+        self.assertNotIn('推荐', intro)
+        self.assertNotIn('最佳', intro)
 
 if __name__ == '__main__': unittest.main()

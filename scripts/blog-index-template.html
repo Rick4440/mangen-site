@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&family=Shippori+Mincho:wght@500;600&family=Noto+Serif+SC:wght@500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/style.css?v=c89ca400ee3f">
-  <link rel="stylesheet" href="/assets/css/journal.css?v=7a3da10d0617">
+  <link rel="stylesheet" href="/assets/css/journal.css?v=5852c53bae69">
   <script src="/assets/js/main.js?v=e1613e24f698" defer></script>
   <script src="/assets/js/journal.js?v=c4b73378263f" defer></script>
 </head>
@@ -31,6 +31,7 @@
     <form class="journal-search" role="search" action="/blog/" method="get"><label for="guide-search" class="sr-only">搜索旅行指南</label><input id="guide-search" type="search" name="q" placeholder="搜索城市、景点、路线或交通问题" autocomplete="off" maxlength="200"><button type="submit">搜索</button></form>
   </section>
   <section class="journal-filters" aria-label="筛选指南">{{DESTINATION_FILTER}}{{TOPIC_FILTER}}</section>
+  {{HUB_NAV}}
   <noscript><p class="journal-notice">所有指南均可直接阅读。启用 JavaScript 后可使用站内搜索与筛选。</p></noscript>
   <p class="journal-notice" id="journal-error" role="status" hidden></p>
   {{FEATURED}}
