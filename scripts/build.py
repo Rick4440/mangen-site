@@ -62,19 +62,104 @@ def render_markdown(source, path):
     return rendered
 
 
+_REVIEW_PREFIX = re.compile(r"^(资料核对日期|资料核对|信息核查日期|信息核验日期|信息核验)[：:]\s*")
+_REVIEW_KEEP = re.compile(r"本文|不代表|不构成|不是|不宣称|仅为|非实时|不把|并不|本次补充")
+_REVIEW_GENERIC = re.compile(r"请再核对|官方|为准|可能调整|可能变化|可能变动|路线为规划建议")
+EDITORIAL_LASTMOD = "2026-10-26T00:00:00+09:00"
+SERVICE_AREAS = {"东京・关东", "大阪・关西"}
+
+
+def _review_date(stamp):
+    """The Japan-time calendar date written in a source note. No date is invented."""
+    matched = re.search(r"日本时间为\s*(\d{4})年(\d{1,2})月(\d{1,2})日", stamp)
+    if matched:
+        return date(int(matched.group(1)), int(matched.group(2)), int(matched.group(3))).isoformat()
+    matched = re.search(r"日本时间为\s*(\d{1,2})月(\d{1,2})日", stamp)
+    if matched:
+        year = re.search(r"(\d{4})-\d{2}-\d{2}", stamp)
+        if not year:
+            return ""
+        return date(int(year.group(1)), int(matched.group(1)), int(matched.group(2))).isoformat()
+    matched = re.search(r"(\d{4})年(\d{1,2})月(\d{1,2})日", stamp)
+    if matched:
+        return date(int(matched.group(1)), int(matched.group(2)), int(matched.group(3))).isoformat()
+    matched = re.search(r"(\d{4}-\d{2}-\d{2})", stamp)
+    return matched.group(1) if matched else ""
+
+
+def detach_review_boilerplate(source):
+    """Lift one repeated closing note out of an article. Source links and specific caveats stay."""
+    stripped = source.replace("\r\n", "\n").strip("\n")
+    if not stripped:
+        return source, ""
+    parts = re.split(r"\n\s*\n", stripped)
+    last = parts[-1].strip()
+    if not _REVIEW_PREFIX.match(last):
+        return source, ""
+    stamp, _separator, rest = last.partition("。")
+    reviewed = _review_date(stamp)
+    if not reviewed:
+        return source, ""
+    kept = []
+    for sentence in [item.strip() for item in rest.split("。") if item.strip()]:
+        if _REVIEW_KEEP.search(sentence) or re.search(r"\d", sentence):
+            kept.append(sentence)
+        elif _REVIEW_GENERIC.search(sentence):
+            continue
+        else:
+            kept.append(sentence)
+    if kept:
+        parts[-1] = "。".join(kept) + "。"
+    else:
+        parts.pop()
+    return "\n\n".join(parts).strip() + "\n", reviewed
+
+
+def render_review_note(reviewed):
+    if not reviewed:
+        return ""
+    shown = text(reviewed)
+    return (
+        '<aside class="source-note"><p>资料核对：'
+        f'<time datetime="{shown}">{shown}</time>'
+        "（日本时间）。营业、交通、商品及现场规则可能调整，出行前请再核对文中官方来源。</p></aside>"
+    )
+
+
+def render_service_block(post):
+    """Existing homepage copy, only for guides whose region is Tokyo/Kanto or Osaka/Kansai."""
+    if not set(post.get("regions") or []) & SERVICE_AREAS:
+        return ""
+    return (
+        '<aside class="guide-service" aria-label="用车服务">'
+        "<h2>用车服务</h2><ul>"
+        '<li><a href="/zh#services">用车服务</a><p>为访日旅客与商务人士提供在日出行用车。</p></li>'
+        '<li><a href="/zh#fleet">车型阵容</a><p>按人数与用途挑选合适的车型。</p></li>'
+        '<li><a href="/zh#contact">联系我们</a></li>'
+        "</ul></aside>"
+    )
+
+
 def load_post(path):
     source = path.read_text(encoding="utf-8")
     match = re.match(r"\A---\s*\n(.*?)\n---\s*\n(.*)\Z", source, re.S)
     if not match:
         raise ValueError(f"Missing YAML front matter: {path}")
-    metadata = yaml.safe_load(match.group(1))
+    metadata = yaml.safe_load(match.group(1)) or {}
     slug = path.stem
     if not re.fullmatch(r"[a-z0-9-]+", slug):
         raise ValueError(f"Invalid slug: {path}")
     published = metadata.get("date")
     if isinstance(published, (date, datetime)):
         published = published.isoformat()[:10]
-    return metadata, slug, str(published), render_markdown(match.group(2), path)
+    body, reviewed = detach_review_boilerplate(match.group(2))
+    stated = str(metadata.get("reviewed") or "")[:10]
+    if stated:
+        date.fromisoformat(stated)
+    if reviewed and stated and reviewed != stated:
+        raise ValueError(f"Review date disagrees with the closing note in {slug}: {stated} / {reviewed}")
+    metadata["reviewed"] = stated or reviewed
+    return metadata, slug, str(published), render_markdown(body, path)
 
 
 PER_PAGE = 12
@@ -231,6 +316,9 @@ def post_record(post):
         raise ValueError(f"Invalid featured_order in {slug}: {featured_order}")
     else:
         featured_order = int(featured_order)
+    reviewed = str(data.get("reviewed") or "")[:10]
+    if reviewed:
+        date.fromisoformat(reviewed)
     raw_tags = data.get("tags") or []
     if isinstance(raw_tags, str):
         raw_tags = [part.strip() for part in re.split(r"[,，]", raw_tags) if part.strip()]
@@ -239,7 +327,7 @@ def post_record(post):
     else:
         raw_tags = []
     return {"slug": slug, "url": f"/blog/{slug}", "title": title, "excerpt": excerpt,
-            "date": published, "updated": modified,
+            "date": published, "updated": modified, "reviewed": reviewed,
             "published_at": jst_timestamp(data.get("date") or published),
             "updated_at": jst_timestamp(data.get("updated") or data.get("date") or published),
             "category": CATEGORY_LABELS.get(data.get("category"), "旅行指南"),
@@ -682,6 +770,31 @@ def version_asset_refs(html):
     return _ASSET_REF.sub(replace, html)
 
 
+def editorial_header(filename, home):
+    html = (ROOT / filename).read_text(encoding="utf-8")
+    start = html.index("<header")
+    header = html[start:html.index("</header>") + len("</header>")]
+    header = re.sub(r'href="#([^"]*)"', lambda match: f'href="{home}#{match.group(1)}"', header)
+    header = re.sub(r'href="[^"]*"([^>]*?hreflang="ja")', 'href="/editorial/"\\1', header)
+    header = re.sub(r'href="[^"]*"([^>]*?hreflang="zh-CN")', 'href="/editorial/zh/"\\1', header)
+    header = re.sub(r'href="[^"]*"([^>]*?hreflang="en")', 'href="/editorial/en/"\\1', header)
+    return header
+
+
+def write_editorial_pages():
+    pages = (
+        ("index.html", "/", "scripts/editorial-ja.html", ROOT / "editorial" / "index.html"),
+        ("zh.html", "/zh", "scripts/editorial-zh.html", ROOT / "editorial" / "zh" / "index.html"),
+        ("en.html", "/en", "scripts/editorial-en.html", ROOT / "editorial" / "en" / "index.html"),
+    )
+    for filename, home, template_name, output in pages:
+        template = (ROOT / template_name).read_text(encoding="utf-8")
+        output.parent.mkdir(parents=True, exist_ok=True)
+        page = render_template(template, {"HEADER": editorial_header(filename, home)})
+        page = page.replace('<meta name="robots" content="noindex">', '<meta name="robots" content="index,follow">', 1)
+        output.write_text(page, encoding="utf-8")
+
+
 def write_feed(records):
     latest = records[:FEED_LIMIT]
     if not latest:
@@ -797,7 +910,9 @@ def stamp_html_assets():
     paths = []
     for name in (
         "index.html", "zh.html", "en.html", "404.html", "quote.html",
+        "editorial/index.html", "editorial/zh/index.html", "editorial/en/index.html",
         "scripts/journal-header.html", "scripts/article-template.html", "scripts/blog-index-template.html",
+        "scripts/editorial-ja.html", "scripts/editorial-zh.html", "scripts/editorial-en.html",
         "scripts/hub-template.html",
     ):
         path = ROOT / name
@@ -825,8 +940,12 @@ def main():
     for (data, slug, published, body), post in zip(posts, records):
         schema = {"@context": "https://schema.org", "@type": "Article", "headline": post["title"],
                   "description": post["excerpt"], "inLanguage": "zh-CN", "mainEntityOfPage": BASE + post["url"],
-                  "datePublished": published, "dateModified": post["updated"],
-                  "author": {"@type": "Organization", "name": "株式会社万源"}, "publisher": {"@type": "Organization", "name": "株式会社万源"}}
+                  "datePublished": published,
+                  "author": {"@type": "Organization", "name": "株式会社万源", "url": BASE + "/editorial/zh/"},
+                  "publisher": {"@type": "Organization", "name": "株式会社万源", "url": BASE + "/",
+                                "logo": {"@type": "ImageObject", "url": BASE + "/assets/img/logo.png"}}}
+        if post["updated"] != published:
+            schema["dateModified"] = post["updated"]
         cover = ""
         if post["cover"]:
             schema["image"] = BASE + post["cover"]
@@ -838,6 +957,7 @@ def main():
         page = render_template(template, {"HEADER": header, "TITLE": text(post["title"]), "DESCRIPTION": text(post["excerpt"]),
             "DATE": text(published), "UPDATED": updated, "BODY": body, "URL": BASE + post["url"],
             "RELATED": render_related_section(related_map.get(slug, [])),
+            "REVIEW_NOTE": render_review_note(post.get("reviewed")), "SERVICE": render_service_block(post),
             "CATEGORY": topic_hub_link(post), "DESTINATIONS": destination_hub_links(post), "COVER": cover, "TOC": toc,
             "OG_IMAGE": text(BASE + (post["cover"] or "/assets/img/logo.png")), "SCHEMA": json.dumps(schema, ensure_ascii=False).replace("<", "\\u003c")})
         (BLOG / f"{slug}.html").write_text(page, encoding="utf-8")
@@ -873,11 +993,12 @@ def main():
                 generated = directory / "index.html"
                 if generated.exists(): generated.unlink()
                 if not any(directory.iterdir()): directory.rmdir()
-    hidden = {"published_at", "updated_at", "tags", "body_links"}
+    hidden = {"published_at", "updated_at", "tags", "body_links", "reviewed"}
     public_records = [{key: value for key, value in post.items() if key not in hidden} for post in records]
     (BLOG / "articles.json").write_text(json.dumps({"perPage": PER_PAGE, "posts": public_records}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     write_feed(records)
     hub_dates = write_hub_pages(records, header)
+    write_editorial_pages()
 
     ET.register_namespace("", "http://www.sitemaps.org/schemas/sitemap/0.9")
     ns = "{http://www.sitemaps.org/schemas/sitemap/0.9}"
@@ -886,10 +1007,12 @@ def main():
     dates.update(hub_dates)
     if records:
         dates["/blog/feed.xml"] = max(post["updated_at"] for post in records[:FEED_LIMIT])
-    for path in ["/", "/zh", "/en", *(page_url(i) for i in range(1, page_count+1)), *dates]:
+    editorial_paths = ["/editorial/", "/editorial/zh/", "/editorial/en/"]
+    for path in ["/", "/zh", "/en", *(page_url(i) for i in range(1, page_count+1)), *editorial_paths, *dates]:
         entry = ET.SubElement(urls, ns + "url")
         ET.SubElement(entry, ns + "loc").text = BASE + path
         if path in dates: ET.SubElement(entry, ns + "lastmod").text = dates[path]
+        elif path in editorial_paths: ET.SubElement(entry, ns + "lastmod").text = EDITORIAL_LASTMOD
     ET.ElementTree(urls).write(ROOT / "sitemap.xml", encoding="utf-8", xml_declaration=True)
     update_chinese_homepage(records, today)
     stamp_html_assets()
