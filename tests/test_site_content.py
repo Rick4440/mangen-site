@@ -284,6 +284,17 @@ class SiteContentTests(unittest.TestCase):
                 self.assertNotIn(">日本語</a>", source)
                 self.assertNotIn(">中文</a>", source)
                 self.assertNotIn(">English</a>", source)
+        cluster = (
+            '<link rel="alternate" hreflang="ja" href="https://mangen.jp/">',
+            '<link rel="alternate" hreflang="zh-CN" href="https://mangen.jp/zh">',
+            '<link rel="alternate" hreflang="en" href="https://mangen.jp/en">',
+            '<link rel="alternate" hreflang="x-default" href="https://mangen.jp/">',
+        )
+        for name in ("index.html", "zh.html", "en.html"):
+            source = (ROOT / name).read_text(encoding="utf-8")
+            with self.subTest(hreflang=name):
+                for snippet in cluster:
+                    self.assertIn(snippet, source)
 
     def test_not_found_page_names_each_home_in_its_own_language(self):
         source = (ROOT / "404.html").read_text(encoding="utf-8")

@@ -292,6 +292,13 @@ class BuildTests(unittest.TestCase):
         osaka = next(post for post in catalog if post['slug'] == 'osaka-kyoto-nara-3days')
         sitemap = self.read('sitemap.xml')
         self.assertIn(f'<lastmod>{osaka["updated"]}T00:00:00+09:00</lastmod>', sitemap)
+        self.assertIn('<loc>https://mangen.jp/blog/feed.xml</loc>', sitemap)
+        page2 = self.read('blog/page/2/index.html')
+        self.assertIn('content="从城市漫步到山间温泉，找到适合你的日本旅行灵感。万源整理行程路线、交通接送与实用旅行指南。第 2 页。"', page2)
+        self.assertNotEqual(
+            re.search(r'name="description" content="([^"]*)"', self.read('blog/index.html')).group(1),
+            re.search(r'name="description" content="([^"]*)"', page2).group(1),
+        )
         self.assertNotRegex(sitemap, r'<lastmod>\d{4}-\d{2}-\d{2}</lastmod>')
         for stamp in re.findall(r'<lastmod>(.*?)</lastmod>', sitemap):
             self.assertRegex(stamp, r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+09:00$')
