@@ -212,8 +212,8 @@ class BuildTests(unittest.TestCase):
         self.build()
         page = self.read('zh.html')
         header = page.split('</header>', 1)[0]
-        self.assertIn('href="#guides">旅行指南</a>', header)
-        self.assertNotIn('href="/blog/">旅行指南</a>', header)
+        self.assertIn('href="/blog/">旅行指南</a>', header)
+        self.assertNotIn('href="#guides">旅行指南</a>', header)
         start = page.index('<!-- home-guides:start -->')
         end = page.index('<!-- home-guides:end -->')
         self.assertLess(page.index('id="fleet"'), start)
