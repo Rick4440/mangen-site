@@ -2,6 +2,7 @@
 from datetime import date, timedelta
 from pathlib import Path
 from html.parser import HTMLParser
+import hashlib
 import importlib.util
 import json
 import math
@@ -211,8 +212,8 @@ class BuildTests(unittest.TestCase):
         self.build()
         page = self.read('zh.html')
         header = page.split('</header>', 1)[0]
-        self.assertIn('href="#guides">旅行指南</a>', header)
-        self.assertNotIn('href="/blog/">旅行指南</a>', header)
+        self.assertIn('href="/blog/">旅行指南</a>', header)
+        self.assertNotIn('href="#guides">旅行指南</a>', header)
         start = page.index('<!-- home-guides:start -->')
         end = page.index('<!-- home-guides:end -->')
         self.assertLess(page.index('id="fleet"'), start)
@@ -242,6 +243,44 @@ class BuildTests(unittest.TestCase):
         self.assertLess(featured.index('/blog/osaka-kyoto-nara-3days'), featured.index('featured-mini'))
         self.build()
         self.assertEqual(self.read('zh.html'), page)
+
+    def test_local_stylesheets_and_scripts_use_content_hashes(self):
+        for name in ("index.html", "zh.html", "en.html", "404.html", "quote.html"):
+            shutil.copy(ROOT / name, self.root / name)
+        header = self.read("scripts/journal-header.html")
+        self.build()
+        self.assertEqual(self.read("scripts/journal-header.html"), header)
+        pages = [
+            "index.html", "zh.html", "en.html", "404.html", "quote.html",
+            "scripts/article-template.html", "scripts/blog-index-template.html",
+            "blog/index.html", "blog/osaka-kyoto-nara-3days.html",
+        ]
+        hashes = {}
+        for path in (self.root / "assets").rglob("*"):
+            if path.suffix in {".css", ".js"} and path.is_file():
+                hashes["/" + path.relative_to(self.root).as_posix()] = hashlib.sha256(path.read_bytes()).hexdigest()[:12]
+        for name in pages:
+            source = self.read(name)
+            refs = re.findall(r'/assets/[A-Za-z0-9_./-]+\.(?:css|js)(?:\?[^"\']*)?', source)
+            with self.subTest(page=name):
+                self.assertTrue(refs)
+                for ref in refs:
+                    path = ref.split("?", 1)[0]
+                    self.assertEqual(ref, f"{path}?v={hashes[path]}")
+                self.assertNotIn("?v=20261024-", source)
+                if "fonts.googleapis.com" in source:
+                    self.assertIn("fonts.googleapis.com/css2?family=", source)
+                    self.assertNotIn("fonts.googleapis.com/css2?v=", source)
+        style = self.root / "assets/css/style.css"
+        style.write_bytes(style.read_bytes() + b"\n/* cache-bust probe */\n")
+        changed = hashlib.sha256(style.read_bytes()).hexdigest()[:12]
+        self.build()
+        self.assertIn(f'/assets/css/style.css?v={changed}', self.read("index.html"))
+        self.assertIn(f'/assets/css/style.css?v={changed}', self.read("blog/index.html"))
+        self.assertIn(f'/assets/css/style.css?v={changed}', self.read("404.html"))
+        self.assertNotIn(f'/assets/css/style.css?v={hashes["/assets/css/style.css"]}', self.read("zh.html"))
+        self.assertIn(f'/assets/js/main.js?v={hashes["/assets/js/main.js"]}', self.read("en.html"))
+        self.assertIn(f'/assets/quote/styles.css?v={hashes["/assets/quote/styles.css"]}', self.read("quote.html"))
 
 
 def _builder():

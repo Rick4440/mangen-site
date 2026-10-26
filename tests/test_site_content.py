@@ -84,7 +84,8 @@ class SiteContentTests(unittest.TestCase):
                 for phrase in stale:
                     self.assertNotIn(phrase, checked)
                 if name == "zh.html":
-                    self.assertIn('href="#guides">旅行指南</a>', nav)
+                    self.assertIn('href="/blog/">旅行指南</a>', nav)
+                    self.assertNotIn('href="#guides"', nav)
                     guide = source.split('id="guides"', 1)[1].split("</section>", 1)[0]
                     self.assertIn("<h2>旅行指南</h2>", guide)
                     self.assertIn('href="/blog/">查看全部 →</a>', guide)
