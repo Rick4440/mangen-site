@@ -29,13 +29,13 @@ class FaqPageTests(unittest.TestCase):
         spec.loader.exec_module(module)
         return module.update_site_pages(self.root)
 
-    def test_final_five_are_visible_after_company_in_all_languages(self):
+    def test_all_finalized_items_are_visible_after_company_in_all_languages(self):
         self.build()
         data = json.loads((self.root / 'content/settings/faq.json').read_text())
         for lang, filename, heading in [('zh','zh.html','常见问题'),('ja','index.html','よくあるご質問'),('en','en.html','Frequently Asked Questions')]:
             html = (self.root / filename).read_text()
             faq = html.split('<!-- faq:start -->')[1].split('<!-- faq:end -->')[0]
-            self.assertEqual(faq.count('class="faq-item"'), 5)
+            self.assertEqual(faq.count('class="faq-item"'), len(data['items']))
             self.assertNotIn('<details', faq)
             self.assertNotRegex(faq, r'(?<![-\w])hidden(?:\s|=|>)')
             self.assertIn(heading, faq)
