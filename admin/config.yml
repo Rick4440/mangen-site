@@ -212,11 +212,175 @@ collections:
                   - { label: "中文", name: "zh", widget: "string" }
                   - { label: "英文", name: "en", widget: "string" }
 
+  - name: navigation
+    label: 导航与页脚（三语）
+    description: 顶部与页脚使用同一组入口。支持三语名称、排序、增删和页脚文案。电话、邮箱、地址请在公司信息中修改。
+    files:
+    - name: navigation
+      label: 全站导航与页脚
+      file: content/settings/navigation.json
+      fields:
+      - label: 页脚导航标题
+        name: footer_heading_i18n
+        widget: object
+        fields:
+        - label: 中文
+          name: zh
+          widget: string
+        - label: 日文
+          name: ja
+          widget: string
+        - label: 英文
+          name: en
+          widget: string
+      - label: 联系方式标题
+        name: contact_heading_i18n
+        widget: object
+        fields:
+        - label: 中文
+          name: zh
+          widget: string
+        - label: 日文
+          name: ja
+          widget: string
+        - label: 英文
+          name: en
+          widget: string
+      - label: 页脚服务说明
+        name: footer_tagline_i18n
+        widget: object
+        fields:
+        - label: 中文
+          name: zh
+          widget: text
+        - label: 日文
+          name: ja
+          widget: text
+        - label: 英文
+          name: en
+          widget: text
+      - label: 导航入口（拖动调整顺序）
+        name: items
+        widget: list
+        summary: '{{fields.label_i18n.zh}}'
+        fields:
+        - label: 跳转位置（每种只选一次）
+          name: target
+          widget: select
+          options:
+          - label: 用车服务
+            value: services
+          - label: 车型阵容
+            value: fleet
+          - label: 旅行指南
+            value: blog
+          - label: 联系我们
+            value: contact
+          - label: 公司介绍
+            value: company
+          - label: 常见问题
+            value: faq
+        - label: 入口名称
+          name: label_i18n
+          widget: object
+          fields:
+          - label: 中文
+            name: zh
+            widget: string
+          - label: 日文
+            name: ja
+            widget: string
+          - label: 英文
+            name: en
+            widget: string
+
   - name: faq
     label: 常见问题（三语）
     description: 首页公司介绍下方的问答。直接显示全部答案，可添加、删除、拖动排序。保存后自动构建上线。
     files:
-    - name: faq
+    - name: navigation
+    label: 导航与页脚（三语）
+    description: 顶部与页脚使用同一组入口。支持三语名称、排序、增删和页脚文案。电话、邮箱、地址请在公司信息中修改。
+    files:
+    - name: navigation
+      label: 全站导航与页脚
+      file: content/settings/navigation.json
+      fields:
+      - label: 页脚导航标题
+        name: footer_heading_i18n
+        widget: object
+        fields:
+        - label: 中文
+          name: zh
+          widget: string
+        - label: 日文
+          name: ja
+          widget: string
+        - label: 英文
+          name: en
+          widget: string
+      - label: 联系方式标题
+        name: contact_heading_i18n
+        widget: object
+        fields:
+        - label: 中文
+          name: zh
+          widget: string
+        - label: 日文
+          name: ja
+          widget: string
+        - label: 英文
+          name: en
+          widget: string
+      - label: 页脚服务说明
+        name: footer_tagline_i18n
+        widget: object
+        fields:
+        - label: 中文
+          name: zh
+          widget: text
+        - label: 日文
+          name: ja
+          widget: text
+        - label: 英文
+          name: en
+          widget: text
+      - label: 导航入口（拖动调整顺序）
+        name: items
+        widget: list
+        summary: '{{fields.label_i18n.zh}}'
+        fields:
+        - label: 跳转位置（每种只选一次）
+          name: target
+          widget: select
+          options:
+          - label: 用车服务
+            value: services
+          - label: 车型阵容
+            value: fleet
+          - label: 旅行指南
+            value: blog
+          - label: 联系我们
+            value: contact
+          - label: 公司介绍
+            value: company
+          - label: 常见问题
+            value: faq
+        - label: 入口名称
+          name: label_i18n
+          widget: object
+          fields:
+          - label: 中文
+            name: zh
+            widget: string
+          - label: 日文
+            name: ja
+            widget: string
+          - label: 英文
+            name: en
+            widget: string
+
+  - name: faq
       label: 首页常见问题
       file: content/settings/faq.json
       fields:

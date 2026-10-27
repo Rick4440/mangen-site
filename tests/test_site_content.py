@@ -74,7 +74,8 @@ class SiteContentTests(unittest.TestCase):
             nav = source.split("<nav>", 1)[1].split("</nav>", 1)[0]
             with self.subTest(page=name):
                 for anchor in anchors:
-                    label = re.search(rf'href="#{anchor}">([^<]+)</a>', nav).group(1)
+                    home = {'index.html': '/', 'zh.html': '/zh', 'en.html': '/en'}[name]
+                    label = re.search(rf'href="{home}#{anchor}">([^<]+)</a>', nav).group(1)
                     section = source.split(f'id="{anchor}"', 1)[1].split("</section>", 1)[0]
                     heading = re.search(r"<h2>([^<]+)</h2>", section).group(1)
                     self.assertEqual(heading, label)
@@ -156,9 +157,12 @@ class SiteContentTests(unittest.TestCase):
         # Reverting either short label or changing/adding a destination must fail.
         links = read_page("zh.html").footer_links
         self.assertEqual([item for item in links if not item[0].startswith("mailto:")], [
+            ("/zh#services", "用车服务"),
+            ("/zh#fleet", "车型阵容"),
             ("/blog/", "旅行指南"),
-            ("#services", "用车服务"),
-            ("#company", "公司介绍"),
+            ("/zh#contact", "联系我们"),
+            ("/zh#company", "公司介绍"),
+            ("/zh#faq", "常见问题"),
         ])
         self.assertIn(("mailto:info@mangen.jp", "info@mangen.jp"), links)
 

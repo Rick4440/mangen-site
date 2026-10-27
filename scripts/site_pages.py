@@ -70,9 +70,9 @@ def standalone_html(data, slug, lang):
 <title>{title} | 株式会社万源</title><meta name="description" content="{description}">
 <link rel="canonical" href="https://mangen.jp{route}">{alternates}
 <link rel="stylesheet" href="/assets/css/style.css"><link rel="icon" href="/assets/img/favicon.png"></head>
-<body><header class="site-header"><div class="inner"><a class="brand" href="{home}"><span class="brand-ja">株式会社万源</span><span class="brand-en">MANGEN CO., LTD.</span></a><nav aria-label="Language">{switch}</nav></div></header>
+<body><header class="site-header"><div class="inner"><a class="brand" href="{home}"><span class="brand-ja">株式会社万源</span><span class="brand-en">MANGEN CO., LTD.</span></a><button class="menu-btn" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button><nav aria-label="Menu"><ul></ul></nav><div class="lang-switch">{switch}</div></div></header>
 <main class="wrap cms-page"><nav class="crumb"><a href="{home}">{home_label}</a> / {title}</nav><article><h1>{title}</h1><p class="cms-page-summary">{escape(localized(data, 'description_i18n', lang, slug))}</p><div class="cms-page-body">{body}</div></article><p class="cms-page-contact"><a href="{home}#contact">{contact} →</a></p></main>
-<footer class="site-footer"><div class="wrap">© 2026 株式会社万源</div></footer></body></html>\n'''
+<footer class="site-footer"><div class="wrap">© 2026 株式会社万源</div></footer><script src="/assets/js/main.js"></script></body></html>\n'''
 
 
 def update_pages(root):

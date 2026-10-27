@@ -368,8 +368,8 @@
     const nav = $('.site-header nav');
     if (!btn || !nav || btn.dataset.menuBound) return;
     btn.dataset.menuBound = 'true';
-    const closeLabel = document.documentElement.lang.startsWith('zh') ? '关闭导航' : 'Close menu';
-    const openLabel = document.documentElement.lang.startsWith('zh') ? '打开导航' : 'Open menu';
+    const menuLabels = {zh: ['打开导航', '关闭导航'], ja: ['メニューを開く', 'メニューを閉じる'], en: ['Open menu', 'Close menu']};
+    const [openLabel, closeLabel] = menuLabels[LANG] || menuLabels.en;
     function setOpen(open) {
       nav.classList.toggle('open', open);
       btn.setAttribute('aria-expanded', String(open));
@@ -384,7 +384,7 @@
     document.addEventListener('click', event => {
       if (!nav.contains(event.target) && !btn.contains(event.target)) setOpen(false);
     });
-    if (window.matchMedia) window.matchMedia('(min-width: 781px)').addEventListener('change', () => setOpen(false));
+    if (window.matchMedia) window.matchMedia('(min-width: 1021px)').addEventListener('change', () => setOpen(false));
   }
 
   /* --------------------------------------------------------------------

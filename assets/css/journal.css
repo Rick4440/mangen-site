@@ -12,7 +12,7 @@
 .journal-header .inner{max-width:1200px;min-height:92px;padding:20px 40px;gap:24px}
 .journal-header .brand-ja{font-size:23px;letter-spacing:.1em}
 .journal-header .brand-en{font-size:9px;letter-spacing:.23em;margin-top:7px;color:var(--journal-gold)}
-.journal-header nav ul{gap:30px;font-size:14px}
+.journal-header nav ul{gap:22px;font-size:13px}
 .journal-header nav a{display:block;position:relative;padding:16px 0;color:#474740}
 .journal-header nav a.active{color:var(--journal-gold)}
 .journal-header nav a.active:after{content:"";height:2px;background:#ac8a4c;position:absolute;left:0;right:0;bottom:3px}
@@ -173,3 +173,16 @@
 .guide-service ul{list-style:none;padding:0;margin:0;display:grid;gap:14px}
 .guide-service a{font-weight:600;color:inherit}
 @media(min-width:781px){.guide-service ul{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}}
+
+/* Six shared navigation links: collapse before tablet widths become crowded. */
+@media(min-width:781px) and (max-width:1020px){
+  .journal-header .inner{flex-wrap:wrap;gap:12px;min-height:80px;padding:18px 24px}
+  .journal-header .brand{margin-right:auto}
+  .journal-header .lang-switch{margin-left:auto}
+  .journal-header .menu-btn{display:block;min-width:44px;min-height:44px}
+  .journal-header nav{order:4;width:100%}
+  .journal-header nav ul{display:none}
+  .journal-header nav.open ul{display:flex;position:static;background:var(--journal-bg);border:0;border-top:1px solid var(--journal-line);padding:10px 0 0;gap:0}
+  .journal-header nav.open a{padding:11px 2px}
+  .journal-header nav a.active:after{display:none}
+}

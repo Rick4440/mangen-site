@@ -1021,6 +1021,8 @@ def main():
         elif path in editorial_paths: ET.SubElement(entry, ns + "lastmod").text = EDITORIAL_LASTMOD
     ET.ElementTree(urls).write(ROOT / "sitemap.xml", encoding="utf-8", xml_declaration=True)
     update_chinese_homepage(records, today)
+    from site_navigation import update_site_navigation
+    update_site_navigation(ROOT)
     stamp_html_assets()
     print(f"Built {len(posts)} articles, {page_count} index page(s), search catalog and sitemap")
 

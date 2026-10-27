@@ -1,0 +1,13 @@
+{
+  "footer_heading_i18n": {"zh": "网站导航", "ja": "サイト案内", "en": "Explore"},
+  "contact_heading_i18n": {"zh": "联系方式", "ja": "お問い合わせ", "en": "Contact"},
+  "footer_tagline_i18n": {"zh": "东京・大阪机场接送与包车服务｜以关东、关西为主，其他地区欢迎咨询", "ja": "東京・大阪の空港送迎・貸切ハイヤー｜関東・関西中心、その他の地域はご相談ください", "en": "Airport transfers and private chauffeur services in Tokyo and Osaka. Mainly Kanto and Kansai; other areas on request."},
+  "items": [
+    {"target": "services", "label_i18n": {"zh": "用车服务", "ja": "サービス", "en": "Services"}},
+    {"target": "fleet", "label_i18n": {"zh": "车型阵容", "ja": "車両", "en": "Fleet"}},
+    {"target": "blog", "label_i18n": {"zh": "旅行指南", "ja": "ブログ", "en": "Travel Guide"}},
+    {"target": "contact", "label_i18n": {"zh": "联系我们", "ja": "お問い合わせ", "en": "Contact"}},
+    {"target": "company", "label_i18n": {"zh": "公司介绍", "ja": "会社概要", "en": "About"}},
+    {"target": "faq", "label_i18n": {"zh": "常见问题", "ja": "よくあるご質問", "en": "FAQ"}}
+  ]
+}
