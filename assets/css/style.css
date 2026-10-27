@@ -15,6 +15,27 @@
   --pad:54px;
   --gap:14px;
 }
+
+/* CMS-owned FAQ: answers are always visible, including without JavaScript. */
+.faq-section{background:var(--alt);border-top:1px solid var(--line)}
+.faq-section h2{margin-bottom:28px}
+.faq-list{max-width:960px}
+.faq-item{padding:22px 0;border-bottom:1px solid var(--line)}
+.faq-item:first-child{padding-top:0}
+.faq-item:last-child{border-bottom:0;padding-bottom:0}
+.faq-item h3,.faq-item p{display:flex;align-items:baseline;gap:16px;font-size:15px;line-height:1.9;margin:0}
+.faq-item h3{font-family:inherit;font-weight:600;letter-spacing:0}
+.faq-item p{color:var(--sub);margin-top:9px;font-size:14px;white-space:pre-line;overflow-wrap:anywhere}
+.faq-mark{flex:0 0 20px;font-family:Georgia,serif;font-size:17px;color:var(--accent-ink)}
+.cms-page{max-width:1000px;padding-top:35px;padding-bottom:65px}
+.cms-page h1{font-size:clamp(28px,4vw,44px);margin:25px 0 15px}
+.cms-page-summary{color:var(--sub);margin-bottom:32px}
+.cms-page-body{line-height:1.95;font-size:16px;overflow-wrap:anywhere}
+.cms-page-body h2,.cms-page-body h3{margin:30px 0 12px}
+.cms-page-body img{max-width:100%;height:auto;margin:20px 0}
+.cms-page-body a,.cms-page-contact a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:4px}
+.cms-page-contact{margin-top:35px}
+@media(max-width:600px){.faq-item{padding:19px 0}.faq-item h3{font-size:14px}.faq-item p{font-size:13px}.faq-item h3,.faq-item p{gap:10px}.faq-mark{flex-basis:18px}.cms-page-body{font-size:15px}}
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 body{

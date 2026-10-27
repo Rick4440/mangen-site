@@ -1,0 +1,26 @@
+{
+  "enabled": true,
+  "heading_i18n": {"zh": "常见问题", "ja": "よくあるご質問", "en": "Frequently Asked Questions"},
+  "items": [
+    {
+      "question_i18n": {"zh": "什么是日本的绿牌车？", "ja": "日本の「緑ナンバー」とは何ですか？", "en": "What is a green-plate vehicle in Japan?"},
+      "answer_i18n": {"zh": "绿牌是日本营业用车辆的专用车牌，只有取得运营许可的车辆才能挂。预订包车或接送服务时，请选择持有正规许可的运营商，并提前预约。", "ja": "緑ナンバーは、日本の事業用車両に使用されるナンバープレートで、営業許可を受けた車両に交付されます。貸切ハイヤーや送迎サービスをご利用の際は、正規の許可を持つ事業者を選び、事前にご予約ください。", "en": "Green license plates identify commercial vehicles in Japan and are issued to vehicles authorized for commercial operation. When booking a private chauffeur or transfer service, choose a properly licensed operator and book in advance."}
+    },
+    {
+      "question_i18n": {"zh": "包车一天可以用多久？超时怎么收费？", "ja": "1日の貸切利用は何時間ですか？延長料金はいくらですか？", "en": "How long is a full-day charter, and what is the overtime charge?"},
+      "answer_i18n": {"zh": "包车一天按 10 小时计算，超时部分每小时加收 1,000 日元，适用于埃尔法（Alphard）和海狮（HiAce）。其他车型的超时费用请另行咨询。", "ja": "1日の貸切利用は10時間です。アルファード（Alphard）とハイエース（HiAce）は、延長1時間につき1,000円を頂戴します。その他の車種の延長料金は、別途お問い合わせください。", "en": "A full-day charter covers 10 hours. For the Alphard and HiAce, overtime is charged at JPY 1,000 per hour. Please contact us for overtime rates for other vehicle models."}
+    },
+    {
+      "question_i18n": {"zh": "可以提供儿童座椅吗？", "ja": "チャイルドシートは用意してもらえますか？", "en": "Can you provide child seats?"},
+      "answer_i18n": {"zh": "可以，儿童座椅免费提供。预约时请告知孩子的年龄和所需数量。", "ja": "はい、チャイルドシートは無料でご用意します。ご予約時に、お子さまの年齢と必要な台数をお知らせください。", "en": "Yes, child seats are provided free of charge. Please tell us your children's ages and the number of seats required when booking."}
+    },
+    {
+      "question_i18n": {"zh": "怎么选车型？能放多少行李？", "ja": "車種はどのように選べばよいですか？荷物はどのくらい積めますか？", "en": "How should I choose a vehicle, and how much luggage can it carry?"},
+      "answer_i18n": {"zh": "请告诉我们乘车人数、行李的件数和尺寸，以及是否带婴儿车。我们会综合考虑乘坐空间和行李空间，帮您选择合适的车型。", "ja": "ご乗車人数、お荷物の個数とサイズ、ベビーカーの有無をお知らせください。乗車スペースと荷物スペースの両方を考慮し、適した車種をご案内します。", "en": "Please tell us the number of passengers, the number and sizes of your bags, and whether you are bringing a stroller. We will consider both seating and luggage space to help you choose a suitable vehicle."}
+    },
+    {
+      "question_i18n": {"zh": "询价时需要提供哪些信息？", "ja": "見積もりにはどのような情報が必要ですか？", "en": "What information is needed for a quote?"},
+      "answer_i18n": {"zh": "请提供用车日期、出发地、目的地、人数、行李情况和大致行程。接送机请另附航班号；如有儿童同行或其他特殊需求，也请一并说明。", "ja": "ご利用日、出発地、目的地、ご乗車人数、お荷物の内容、おおよその行程をお知らせください。空港送迎の場合は便名も必要です。お子さまの同伴やその他のご要望がある場合は、あわせてお知らせください。", "en": "Please provide your travel date, pickup location, destination, number of passengers, luggage details, and a rough itinerary. For airport transfers, please also include your flight number. Let us know if children are traveling or if you have any other special requirements."}
+    }
+  ]
+}

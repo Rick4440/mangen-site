@@ -920,6 +920,9 @@ def stamp_html_assets():
             paths.append(path)
     if BLOG.is_dir():
         paths.extend(sorted(BLOG.rglob("*.html")))
+    pages_root = ROOT / "pages"
+    if pages_root.is_dir():
+        paths.extend(sorted(pages_root.rglob("*.html")))
     for path in paths:
         original = path.read_text(encoding="utf-8")
         updated = version_asset_refs(original)
@@ -1000,6 +1003,9 @@ def main():
     hub_dates = write_hub_pages(records, header)
     write_editorial_pages()
 
+    from site_pages import update_site_pages
+    standalone_urls = update_site_pages(ROOT)
+
     ET.register_namespace("", "http://www.sitemaps.org/schemas/sitemap/0.9")
     ns = "{http://www.sitemaps.org/schemas/sitemap/0.9}"
     urls = ET.Element(ns + "urlset")
@@ -1008,7 +1014,7 @@ def main():
     if records:
         dates["/blog/feed.xml"] = max(post["updated_at"] for post in records[:FEED_LIMIT])
     editorial_paths = ["/editorial/", "/editorial/zh/", "/editorial/en/"]
-    for path in ["/", "/zh", "/en", *(page_url(i) for i in range(1, page_count+1)), *editorial_paths, *dates]:
+    for path in ["/", "/zh", "/en", *(page_url(i) for i in range(1, page_count+1)), *editorial_paths, *standalone_urls, *dates]:
         entry = ET.SubElement(urls, ns + "url")
         ET.SubElement(entry, ns + "loc").text = BASE + path
         if path in dates: ET.SubElement(entry, ns + "lastmod").text = dates[path]

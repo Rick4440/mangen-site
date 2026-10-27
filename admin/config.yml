@@ -29,7 +29,7 @@ site_url: https://mangen.jp
 display_url: https://mangen.jp
 logo_url: /assets/img/logo.png
 
-# 3 个 Collection：公司信息、车型、博客
+# 公司信息、车型、常见问题、独立页面、博客
 collections:
   # 1. 全局公司信息（电话、地址、资质、邮箱、Schema）
   - name: "company-info"
@@ -211,6 +211,133 @@ collections:
                   - { label: "日文", name: "ja", widget: "string" }
                   - { label: "中文", name: "zh", widget: "string" }
                   - { label: "英文", name: "en", widget: "string" }
+
+  - name: faq
+    label: 常见问题（三语）
+    description: 首页公司介绍下方的问答。直接显示全部答案，可添加、删除、拖动排序。保存后自动构建上线。
+    files:
+    - name: faq
+      label: 首页常见问题
+      file: content/settings/faq.json
+      fields:
+      - label: 显示常见问题
+        name: enabled
+        widget: boolean
+        default: true
+      - label: 栏目标题
+        name: heading_i18n
+        widget: object
+        fields:
+        - label: 中文
+          name: zh
+          widget: string
+        - label: 日文
+          name: ja
+          widget: string
+        - label: 英文
+          name: en
+          widget: string
+      - label: 问答列表（可拖动排序、添加和删除）
+        name: items
+        widget: list
+        required: false
+        summary: '{{fields.question_i18n.zh}}'
+        fields:
+        - label: 暂时隐藏此条
+          name: hidden
+          widget: boolean
+          required: false
+          default: false
+        - label: 问题
+          name: question_i18n
+          widget: object
+          fields:
+          - label: 中文
+            name: zh
+            widget: string
+          - label: 日文
+            name: ja
+            widget: string
+          - label: 英文
+            name: en
+            widget: string
+        - label: 答案
+          name: answer_i18n
+          widget: object
+          fields:
+          - label: 中文
+            name: zh
+            widget: text
+          - label: 日文
+            name: ja
+            widget: text
+          - label: 英文
+            name: en
+            widget: text
+  - name: pages
+    label: 独立页面（三语）
+    label_singular: 页面
+    description: 车型介绍及其他独立页面。支持三语标题、摘要和正文，正文可插入多张图片。草稿不上线；取消草稿后生成三语页面；删除后移除对应页面及站点地图记录。
+    folder: content/pages
+    create: true
+    delete: true
+    extension: md
+    format: frontmatter
+    identifier_field: page_id
+    slug: '{{fields.page_id}}'
+    summary: '{{title_i18n.zh}}'
+    preview_path: pages/{{filename}}/
+    fields:
+    - label: 页面编号（英文）
+      name: page_id
+      widget: string
+      pattern:
+      - ^[a-z0-9]+(-[a-z0-9]+)*$
+      - 仅使用小写字母、数字和连接号
+      hint: 例如 alphard。发布后不要修改，避免网址变化。
+    - label: 草稿（勾选不上线）
+      name: draft
+      widget: boolean
+      default: true
+    - label: 页面标题
+      name: title_i18n
+      widget: object
+      fields:
+      - label: 中文
+        name: zh
+        widget: string
+      - label: 日文
+        name: ja
+        widget: string
+      - label: 英文
+        name: en
+        widget: string
+    - label: 搜索摘要
+      name: description_i18n
+      widget: object
+      fields:
+      - label: 中文
+        name: zh
+        widget: text
+      - label: 日文
+        name: ja
+        widget: text
+      - label: 英文
+        name: en
+        widget: text
+    - label: 页面正文（可插入图片）
+      name: body_i18n
+      widget: object
+      fields:
+      - label: 中文
+        name: zh
+        widget: markdown
+      - label: 日文
+        name: ja
+        widget: markdown
+      - label: 英文
+        name: en
+        widget: markdown
 
   # 3. 博客文章（一个文件一篇文章）
   - name: "blog"
