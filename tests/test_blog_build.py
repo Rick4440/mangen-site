@@ -107,7 +107,11 @@ class BuildTests(unittest.TestCase):
         self.assertTrue(tags)
         for tag in tags:
             self.assertNotIn(' / ', tag)
-        self.assertIn('class="guide-taxonomy">东京<span> · </span>行程路线</div>', source)
+        # A concrete taxonomy example may move off page one as new posts arrive.
+        index_sources = source + ''.join(
+            path.read_text() for path in sorted((self.root / 'blog/page').glob('*/index.html'))
+        )
+        self.assertIn('class="guide-taxonomy">东京<span> · </span>行程路线</div>', index_sources)
         self.assertNotIn('大阪 / 京都 / 奈良', source)
         topic_buttons = [item['value'] for item in Elements(source).attrs('button', **{'data-filter': 'topic'}) if item['value']]
         self.assertEqual(topic_buttons, ['行程路线', '交通接送', '住宿美食', '购物退税', '季节活动', '礼仪与生活'])
