@@ -2,16 +2,17 @@
 title: "访日旅游礼仪与注意事项：让您的日本之行更顺畅"
 slug: "japan-travel-etiquette"
 date: "2026-09-22"
+updated: "2026-11-02"
 category: b
 topic: 礼仪与生活
-excerpt: "在日本，遵守一些本地礼仪可以让旅行体验顺滑一倍以上。本文整理访日客人最容易忽略但最重要的细节。"
+excerpt: "访日时，电车、用餐、住宿、购物退税和神社参拜都有一些容易忽略的习惯。本文按场景整理这些事项，方便出发前先看一遍，少在现场临时判断。"
 title_i18n:
   ja: "訪日マナーの基本"
   zh: "访日旅游礼仪与注意事项：让您的日本之行更顺畅"
   en: "Japan Travel Etiquette: small rules that make your trip much smoother"
 excerpt_i18n:
   ja: "日本で気をつけたい基本的なマナーをお伝えします。"
-  zh: "在日本，遵守一些本地礼仪可以让旅行体验顺滑一倍以上。本文整理访日客人最容易忽略但最重要的细节。"
+  zh: "访日时，电车、用餐、住宿、购物退税和神社参拜都有一些容易忽略的习惯。本文按场景整理这些事项，方便出发前先看一遍，少在现场临时判断。"
   en: "Following a few local rules will double your travel experience. Here are the most overlooked details."
 ---
 

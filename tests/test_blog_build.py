@@ -42,7 +42,10 @@ class BuildTests(unittest.TestCase):
     def read(self, name): return (self.root / name).read_text()
     def extra_posts(self, count):
         for i in range(count):
-            (self.root / 'content/posts' / f'b-20261001-{i:06}.md').write_text(f'---\ndate: 2026-10-01\ncategory: b\ntitle: "测试指南 {i}"\nexcerpt: "正文摘要"\n---\n## 准备\n内容\n')
+            (self.root / 'content/posts' / f'fixture-guide-{i:02d}.md').write_text(
+                f'---\ndate: 2026-10-01\ncategory: b\ntitle: "测试指南 {i}"\n'
+                'excerpt: "这是一篇用于构建测试的摘要，长度足够作为文章页面的 meta description，不使用编号网址。"\n'
+                '---\n## 准备\n内容\n')
     def test_real_cards_and_generated_search_catalog_keep_all_source_urls(self):
         self.build(); index = Elements(self.read('blog/index.html'))
         self.assertEqual(len(index.cards()), min(12, len(self.original)))
@@ -63,7 +66,12 @@ class BuildTests(unittest.TestCase):
             self.assertEqual(len(cards), min(12, total - (i - 1) * 12))
             canonical='https://mangen.jp/blog/' if i==1 else f'https://mangen.jp/blog/page/{i}/'
             self.assertEqual(page.attrs('link', rel='canonical')[0]['href'], canonical)
-            self.assertIn(canonical, self.read('sitemap.xml'))
+            sitemap = self.read('sitemap.xml')
+            if i == 1:
+                self.assertIn(canonical, sitemap)
+            else:
+                self.assertNotIn(canonical, sitemap)
+                self.assertNotIn('noindex', self.read(route))
             description = page.attrs('meta', name='description')[0]['content']
             self.assertEqual(page.attrs('meta', **{'property': 'og:description'})[0]['content'], description)
             descriptions.append(description)
@@ -80,11 +88,11 @@ class BuildTests(unittest.TestCase):
         self.build()
         after={str(p.relative_to(self.root)):p.read_bytes() for p in (self.root/'blog').rglob('*') if p.is_file()}
         self.assertEqual(before,after)
-        for path in (self.root/'content/posts').glob('b-20261001*.md'): path.unlink()
+        for path in (self.root/'content/posts').glob('fixture-guide-*.md'): path.unlink()
         self.build()
         stale_page = math.ceil(len(self.original) / 12) + 1
         self.assertFalse((self.root/f'blog/page/{stale_page}/index.html').exists())
-        self.assertFalse((self.root/'blog/b-20261001-000000.html').exists())
+        self.assertFalse((self.root/'blog/fixture-guide-00.html').exists())
     def test_filters_are_grounded_and_no_mock_articles_exist(self):
         self.build(); source=self.read('blog/index.html')
         self.assertIn('data-filter="destination"', source)
@@ -170,7 +178,7 @@ class BuildTests(unittest.TestCase):
                 self.assertLess(footer.index('072-275-4665'), footer.index('042-649-9057'))
 
     def test_explicit_optional_metadata_is_used_and_escaped(self):
-        self.extra_posts(1); path=self.root/'content/posts/b-20261001-000000.md'
+        self.extra_posts(1); path=self.root/'content/posts/fixture-guide-00.md'
         path.write_text(path.read_text().replace('category: b','category: b\ndestinations: [东京]\ntopic: 季节活动\nfeatured: true\nupdated: 2026-10-02').replace('测试指南 0','测试 &lt;script&gt;指南'))
         self.build(); payload=json.loads(self.read('blog/articles.json')); post=next(p for p in payload['posts'] if p['slug']==path.stem)
         self.assertEqual(post['destinations'],['东京']); self.assertEqual(post['topic'],'季节活动')
@@ -188,7 +196,7 @@ class BuildTests(unittest.TestCase):
 
     def test_cleared_optional_destinations_keep_title_inference(self):
         self.extra_posts(1)
-        path = self.root / 'content/posts/b-20261001-000000.md'
+        path = self.root / 'content/posts/fixture-guide-00.md'
         path.write_text(path.read_text().replace('category: b', 'category: b\ndestinations: []').replace('测试指南 0', '京都旅行指南'))
         self.build()
         post = next(p for p in json.loads(self.read('blog/articles.json'))['posts'] if p['slug'] == path.stem)
@@ -217,10 +225,10 @@ class BuildTests(unittest.TestCase):
         self.build()
         latest_date = max(date.fromisoformat(post['date']) for post in json.loads(self.read('blog/articles.json'))['posts'])
         fixture_date = (latest_date + timedelta(days=1)).isoformat()
-        fixture_slug = 'b-' + fixture_date.replace('-', '') + '-000001'
+        fixture_slug = 'newest-guide-fixture'
         (self.root / 'content/posts' / f'{fixture_slug}.md').write_text(
             f'---\ndate: {fixture_date}\ncategory: b\ntopic: 交通接送\n'
-            'title: "最新 <指南>"\nexcerpt: "摘要 & 说明"\n---\n正文\n')
+            'title: "最新 <指南>"\nexcerpt: "摘要 & 说明：这篇测试文字用来确认最新指南会出现在中文首页，并且长度足够作为文章页面的 meta description。"\n---\n正文\n')
         self.build()
         page = self.read('zh.html')
         header = page.split('</header>', 1)[0]
@@ -241,6 +249,9 @@ class BuildTests(unittest.TestCase):
         links = re.findall(r'<article class="home-guide[^"]*">\s*<a href="([^"]+)">', block)
         self.assertEqual(len(links), 5)
         self.assertNotIn(f'/blog/{fixture_slug}', links)
+        latest = block.split('class="home-latest"', 1)[1]
+        self.assertIn(f'href="/blog/{fixture_slug}"', latest)
+        self.assertIn('<h2>最新指南</h2>', block)
         self.assertEqual(block.count('home-guide--lead'), 1)
         self.assertEqual(block.count('home-guide--row'), 4)
         self.assertEqual(block.count('home-guide-excerpt'), 1)
@@ -308,7 +319,9 @@ class BuildTests(unittest.TestCase):
         osaka = next(post for post in catalog if post['slug'] == 'osaka-kyoto-nara-3days')
         sitemap = self.read('sitemap.xml')
         self.assertIn(f'<lastmod>{osaka["updated"]}T00:00:00+09:00</lastmod>', sitemap)
-        self.assertIn('<loc>https://mangen.jp/blog/feed.xml</loc>', sitemap)
+        self.assertNotIn('<loc>https://mangen.jp/blog/feed.xml</loc>', sitemap)
+        self.assertNotIn('/blog/page/', sitemap)
+        self.assertTrue((self.root / 'blog/feed.xml').is_file())
         page2 = self.read('blog/page/2/index.html')
         self.assertIn('content="从城市漫步到山间温泉，找到适合你的日本旅行灵感。万源整理行程路线、交通接送与实用旅行指南。第 2 页。"', page2)
         self.assertNotEqual(
@@ -387,13 +400,12 @@ class BuildTests(unittest.TestCase):
         self.assertIn('href="/blog/region/osaka-kansai/">奈良</a>', article)
         self.assertIn('这条路线适合谁？', article.split('<div class="body">', 1)[1].split('</div>', 1)[0])
         sitemap = self.read('sitemap.xml')
-        self.assertIn('https://mangen.jp/blog/topic/routes/</loc>', sitemap)
-        self.assertIn('https://mangen.jp/blog/region/tokyo-kanto/</loc>', sitemap)
-        self.assertIn('https://mangen.jp/blog/topic/routes/page/2/</loc>', sitemap)
-        hub_lastmod = re.search(r'https://mangen.jp/blog/region/tokyo-kanto/</loc>\s*<lastmod>([^<]+)</lastmod>', sitemap)
-        self.assertIsNotNone(hub_lastmod)
-        self.assertRegex(hub_lastmod.group(1), r'^\d{4}-\d{2}-\d{2}T00:00:00\+09:00$')
-        self.assertLess(sitemap.index('tokyo-kanto'), sitemap.index('osaka-kansai'))
+        self.assertNotIn('https://mangen.jp/blog/topic/routes/</loc>', sitemap)
+        self.assertNotIn('https://mangen.jp/blog/region/tokyo-kanto/</loc>', sitemap)
+        self.assertNotIn('/blog/topic/', sitemap)
+        self.assertNotIn('/blog/region/', sitemap)
+        self.assertNotIn('noindex', routes)
+        self.assertLess(nav.index('tokyo-kanto'), nav.index('osaka-kansai'))
 
     def test_every_article_related_block_is_static_cards(self):
         self.build()
@@ -451,9 +463,9 @@ class BuildTests(unittest.TestCase):
         self.assertIn('class="guide-service"', osaka)
         self.assertNotIn('class="source-note"', osaka)
         changed = self.read('blog/first-trip-japan-2026.html')
-        self.assertIn('"dateModified": "2026-10-14"', changed)
+        self.assertIn('"dateModified": "2026-11-02"', changed)
         self.assertIn('发布于 <time datetime="2026-09-24">2026-09-24</time>', changed)
-        self.assertIn('更新于 <time datetime="2026-10-14">2026-10-14</time>', changed)
+        self.assertIn('更新于 <time datetime="2026-11-02">2026-11-02</time>', changed)
         self.assertNotIn('class="guide-service"', changed)
         for route, canonical in (
             ('editorial/index.html', 'https://mangen.jp/editorial/'),
@@ -655,6 +667,15 @@ class RelatedArticleTests(unittest.TestCase):
         related = self.build.select_related_map([solo, tokyo, *neighbors])
         self.assertEqual([post['slug'] for post in related['solo']], [f'near-{i}' for i in range(4)])
 
+    def test_pillar_articles_keep_one_slot_for_a_newer_match(self):
+        older = [_related_post(self.build, f'old-{i}', f'2026-08-0{i+1}', '行程路线', ['大阪', '京都']) for i in range(5)]
+        pillar = _related_post(self.build, 'osaka-kyoto-nara-3days', '2026-09-22', '行程路线', ['大阪', '京都', '奈良'])
+        newer = _related_post(self.build, 'kiyomizu-night-maple', '2026-11-01', '行程路线', ['京都'])
+        related = self.build.select_related_map([*older, pillar, newer])
+        slugs = [post['slug'] for post in related['osaka-kyoto-nara-3days']]
+        self.assertIn('kiyomizu-night-maple', slugs)
+        self.assertLessEqual(len(slugs), 5)
+
     def test_cards_show_thumbnail_title_date_and_escape(self):
         post = _related_post(self.build, 'old', '2026-01-02', '行程路线', ['东京'], title='旧文 <指南> & 说明', cover='')
         covered = _related_post(self.build, 'pic', '2026-01-03', '行程路线', ['东京'], title='有图', cover='/assets/uploads/a.png')
@@ -708,6 +729,21 @@ class DiscoveryTests(unittest.TestCase):
             'https://mangen.jp/blog/old', 'https://mangen.jp/blog/new',
         ])
         self.assertEqual(indexnow.changed_locations('', current)[0], 'https://mangen.jp/')
+        self.assertEqual(indexnow.submission_urls(previous, current, ['https://mangen.jp/blog/edited'], 'changed'), [
+            'https://mangen.jp/blog/old', 'https://mangen.jp/blog/new', 'https://mangen.jp/blog/edited',
+        ])
+        self.assertEqual(indexnow.submission_urls(previous, current, [], 'full'), [
+            'https://mangen.jp/', 'https://mangen.jp/blog/old', 'https://mangen.jp/blog/new',
+        ])
+
+    def test_new_numbered_slugs_and_short_descriptions_are_rejected(self):
+        build = _builder()
+        build.ensure_readable_slug('b-20261102-090005')
+        build.ensure_readable_slug('kyoto-night-maple')
+        with self.assertRaises(ValueError):
+            build.ensure_readable_slug('d-20261103-090000')
+        with self.assertRaises(ValueError):
+            build.require_description('example', '太短')
 
     def test_submit_posts_to_indexnow_and_bing_without_fetching_the_site(self):
         indexnow = _indexnow()

@@ -1,8 +1,9 @@
 """Tell IndexNow about sitemap URLs that are new or whose lastmod changed.
 
-The URL list comes from this checkout's sitemap.xml and the previous commit.
-The runner does not request mangen.jp. IndexNow fetches the public key file
-itself. There is no Actions secret.
+The current sitemap is rendered from this checkout. It is compared with
+sitemap.xml in the previous commit, and article files changed in the git diff
+are included as well. The runner does not request mangen.jp. IndexNow fetches
+the public key file itself. There is no Actions secret.
 """
 from pathlib import Path
 import json
@@ -87,6 +88,50 @@ def submit(key, urls):
         print(f"Submitted {len(urls)} URL(s) to {endpoint}.")
 
 
+def submission_urls(previous_xml, current_xml, article_urls, mode):
+    """Changed mode unions the sitemap diff with article files touched in git.
+
+    Full mode, and a manual run with no previous commit, submits every URL in
+    the sitemap rendered from the current checkout.
+    """
+    current = [loc for loc, _lastmod in sitemap_entries(current_xml) if loc]
+    if mode == "full" or not (previous_xml or "").strip():
+        return current
+    urls = changed_locations(previous_xml, current_xml)
+    for loc in article_urls:
+        if loc and loc not in urls:
+            urls.append(loc)
+    return urls
+
+
+def changed_article_urls(before):
+    if not before or set(before) == {"0"}:
+        return []
+    try:
+        output = subprocess.check_output(
+            ["git", "diff", "--name-only", "--diff-filter=AM", before, "HEAD", "--", "content/posts"],
+            cwd=ROOT, text=True, stderr=subprocess.DEVNULL,
+        )
+    except subprocess.CalledProcessError:
+        return []
+    urls = []
+    for line in output.splitlines():
+        path = Path(line.strip())
+        if path.suffix == ".md" and path.stem:
+            urls.append(f"https://{HOST}/blog/{path.stem}")
+    return urls
+
+
+def render_current_sitemap():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("mangen_build", ROOT / "scripts" / "build.py")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    posts = [post for path in module.POSTS.glob("*.md") if not (post := module.load_post(path))[0].get("draft", False)]
+    records = [module.post_record(post) for post in posts]
+    return module.render_sitemap(records)
+
+
 def previous_sitemap(before):
     if not before or set(before) == {"0"}:
         return ""
@@ -98,8 +143,13 @@ def previous_sitemap(before):
 
 def main():
     key = find_key()
-    current = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
-    urls = [loc for loc in changed_locations(previous_sitemap(os.environ.get("INDEXNOW_BEFORE", "")), current) if loc]
+    mode = (os.environ.get("INDEXNOW_MODE") or "changed").strip()
+    if mode not in ("changed", "full"):
+        raise SystemExit(f"Unknown INDEXNOW_MODE: {mode}")
+    before = os.environ.get("INDEXNOW_BEFORE", "")
+    current = render_current_sitemap()
+    article_urls = changed_article_urls(before) if mode == "changed" else []
+    urls = submission_urls(previous_sitemap(before), current, article_urls, mode)
     if not urls:
         print("No new or changed sitemap URLs.")
         return

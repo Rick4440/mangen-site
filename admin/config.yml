@@ -511,7 +511,7 @@ collections:
     folder: "content/posts"
     create: true
     identifier_field: category
-    slug: "{{fields.category}}-{{year}}{{month}}{{day}}-{{hour}}{{minute}}{{second}}"
+    slug: "{{fields.url_slug}}"
     preview_path: "blog/{{filename}}"
     summary: "{{title_i18n.zh}} · {{date}}"
     sortable_fields: ["date", "title_i18n.zh", "category", "commit_date"]
@@ -534,7 +534,13 @@ collections:
         date_format: "YYYY-MM-DD"
         time_format: false
         picker_utc: true
-      - label: "文章分类（同时用于自动生成网址）"
+      - label: "英文网址（仅新文章）"
+        name: "url_slug"
+        widget: "string"
+        required: false
+        pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "用小写英文和短横线，例如 kyoto-night-maple。不要用分类加日期编号。已发布文章不要改文件名。"]
+        hint: "新建文章时，这个字段成为文件名和永久网址。已有编号文章留空，不要改文件名。"
+      - label: "文章分类"
         name: "category"
         widget: "select"
         options:
@@ -544,7 +550,7 @@ collections:
           - { label: "线路规划（d）", value: "d" }
           - { label: "公司动态（e）", value: "e" }
         default: "c"
-        hint: "选择分类后，系统会自动生成网址编号，不需要另外填写英文网址名。"
+        hint: "分类只用于后台筛选。网址由上面的英文网址决定，不再按分类和时间自动编号。"
       - { label: "下线（勾选后从网站及 sitemap 移除）", name: "draft", widget: "boolean", default: false, required: false }
       - { label: "文章封面图（可选）", name: "cover_image", widget: "image", required: false, hint: "上传后用于文章顶部及分享卡片；正文可用图片按钮插图。" }
       - label: "目的地（可选）"

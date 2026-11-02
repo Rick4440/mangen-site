@@ -1,7 +1,7 @@
 ---
 slug: green-plate-guide
 date: '2026-09-22'
-updated: '2026-10-28'
+updated: '2026-11-02'
 reviewed: '2026-10-28'
 category: c
 topic: 交通接送
@@ -110,3 +110,5 @@ cover_changes: 原创 SVG 导出 PNG；图示号牌不对应实际车辆。
 
 
 进一步了解这些责任如何落实到司机一天的工作，可阅读[日本ハイヤー司机的一天：从出车准备到收车归库](/blog/hire-driver-daily-safety-workflow)。
+
+自驾和儿童乘车的手续不在车牌制度里：[日本冬季租车上路前](/blog/b-20261101-090006)说明冬胎和封路，[日本儿童火车票怎么买](/blog/b-20261102-090005)说明年龄和指定席。

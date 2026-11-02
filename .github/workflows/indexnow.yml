@@ -1,7 +1,10 @@
 # After a push to main, submit sitemap URLs that are new or whose lastmod changed.
-# The runner compares sitemap.xml in this checkout with the previous commit.
-# It does not request mangen.jp. IndexNow fetches the public key file itself.
-# No Actions secret is required.
+# The runner renders sitemap.xml from this checkout and diffs it against the
+# previous commit. Daily article commits often do not regenerate sitemap.xml,
+# so the rendered sitemap is the source of new article URLs. Changed markdown
+# files are included from the git diff as well.
+# A weekly run and workflow_dispatch with mode=full submit every rendered URL.
+# The runner does not request mangen.jp. No Actions secret is required.
 # Setup notes: docs-deploy.md, section IndexNow.
 name: IndexNow
 
@@ -9,6 +12,17 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      mode:
+        description: changed submits the sitemap diff plus edited articles; full submits every rendered sitemap URL
+        type: choice
+        options:
+          - changed
+          - full
+        default: full
+  schedule:
+    # Monday 00:15 Japan time (Sunday 15:15 UTC).
+    - cron: "15 15 * * 0"
 
 jobs:
   submit:
@@ -17,7 +31,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Install build tools
+        run: python -m pip install -r requirements.txt
       - name: Submit new or changed URLs
         env:
           INDEXNOW_BEFORE: ${{ github.event.before }}
+          INDEXNOW_MODE: ${{ github.event_name == 'schedule' && 'full' || github.event.inputs.mode || 'changed' }}
         run: python3 scripts/indexnow.py

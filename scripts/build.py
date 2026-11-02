@@ -149,6 +149,7 @@ def load_post(path):
     slug = path.stem
     if not re.fullmatch(r"[a-z0-9-]+", slug):
         raise ValueError(f"Invalid slug: {path}")
+    ensure_readable_slug(slug)
     published = metadata.get("date")
     if isinstance(published, (date, datetime)):
         published = published.isoformat()[:10]
@@ -160,6 +161,36 @@ def load_post(path):
         raise ValueError(f"Review date disagrees with the closing note in {slug}: {stated} / {reviewed}")
     metadata["reviewed"] = stated or reviewed
     return metadata, slug, str(published), render_markdown(body, path)
+
+
+NUMBERED_SLUG = re.compile(r"^[a-e]-\d{8}-\d{6}$")
+MIN_DESCRIPTION = 50
+PILLAR_SLUGS = ("osaka-kyoto-nara-3days", "first-trip-japan-2026", "green-plate-guide")
+LATEST_GUIDE_COUNT = 4
+
+
+def legacy_numbered_slugs():
+    path = ROOT / "content" / "legacy-numbered-slugs.txt"
+    if not path.is_file():
+        return set()
+    return {line.strip() for line in path.read_text(encoding="utf-8").splitlines() if line.strip() and not line.startswith("#")}
+
+
+def ensure_readable_slug(slug):
+    """New posts use a readable filename. Numbered slugs already on the site stay put."""
+    if NUMBERED_SLUG.fullmatch(slug) and slug not in legacy_numbered_slugs():
+        raise ValueError(
+            f"New article {slug} needs a readable slug such as kyoto-night-maple, "
+            "not a category-date number. Do not rename articles that are already published."
+        )
+
+
+def require_description(slug, excerpt):
+    if len(excerpt) < MIN_DESCRIPTION:
+        raise ValueError(
+            f"Meta description is too short ({len(excerpt)} characters) in {slug}. "
+            f"Write at least {MIN_DESCRIPTION} characters."
+        )
 
 
 PER_PAGE = 12
@@ -283,6 +314,7 @@ def post_record(post):
     data, slug, published, body = post
     title = data.get("title_i18n", {}).get("zh") or data.get("title") or slug
     excerpt = plain(data.get("excerpt_i18n", {}).get("zh") or data.get("excerpt") or "")
+    require_description(slug, excerpt)
     topic = canonical_topic(data.get("topic"), data.get("category"))
     if topic not in TOPICS:
         raise ValueError(f"Unsupported topic in {slug}: {topic}")
@@ -524,6 +556,33 @@ def render_home_guide_card(post, lead=False):
             f'<div class="home-guide-copy">{topic}{title}{when}</div></a></article>')
 
 
+def select_latest_guides(records, day, limit=LATEST_GUIDE_COUNT):
+    """Newest published articles, including ones the daily rotation does not pick."""
+    iso = day.isoformat() if isinstance(day, date) else str(day)[:10]
+    pool = [post for post in records if post.get("date", "") <= iso]
+    pool.sort(key=lambda post: (post.get("date") or "", post["slug"]), reverse=True)
+    return pool[:limit]
+
+
+def render_latest_guides(records, day):
+    posts = select_latest_guides(records, day)
+    if not posts:
+        return ""
+    items = []
+    for post in posts:
+        shown = text(post["date"].replace("-", "."))
+        items.append(
+            f'<li><a href="{text(post["url"])}">{text(post["title"])}'
+            f'<time datetime="{text(post["date"])}">{shown}</time></a></li>'
+        )
+    return (
+        '    <div class="home-guides-head home-latest-head">\n'
+        '      <h2>最新指南</h2>\n'
+        '    </div>\n'
+        f'    <ul class="home-latest">{"".join(items)}</ul>\n'
+    )
+
+
 def render_home_guides(records, day):
     posts = select_daily_guides(records, day)
     lead = render_home_guide_card(posts[0], True) if posts else ""
@@ -538,6 +597,7 @@ def render_home_guides(records, day):
         '      <a class="home-guides-all" href="/blog/">查看全部 →</a>\n'
         '    </div>\n'
         f'    <div class="home-guides">\n{lead}\n{listing}\n    </div>\n'
+        f'{render_latest_guides(records, day)}'
         '  </div>\n'
         '</section>\n'
         f'{HOME_GUIDE_END}'
@@ -880,10 +940,36 @@ def select_related_map(records):
             band.sort(key=lambda item: (inbound[item["slug"]], item.get("date") or "", item["slug"]))
             selected.extend(band[:RELATED_MAX - len(selected)])
             seen.update(item["slug"] for item in selected)
+        selected = prefer_newer_pillar_link(source, selected, bands)
         for item in selected:
             inbound[item["slug"]] += 1
         chosen[source["slug"]] = selected
     return chosen
+
+
+def prefer_newer_pillar_link(source, selected, bands):
+    """High-traffic guides keep one related slot for a newer matching article."""
+    if source.get("slug") not in PILLAR_SLUGS or not selected:
+        return selected
+    source_date = source.get("date") or ""
+    if any((item.get("date") or "") > source_date for item in selected):
+        return selected
+    chosen = {item["slug"] for item in selected}
+    newer = []
+    for tier in (2, 1, 0):
+        for item in bands[tier]:
+            if item["slug"] in chosen:
+                continue
+            if (item.get("date") or "") > source_date:
+                newer.append(item)
+        if newer:
+            break
+    if not newer:
+        return selected
+    newer.sort(key=lambda item: (item.get("date") or "", item["slug"]), reverse=True)
+    updated = list(selected)
+    updated[-1] = newer[0]
+    return updated
 
 
 def render_related_section(posts):
@@ -904,6 +990,31 @@ def render_related_section(posts):
         )
     return ('<section class="related-reading" aria-label="相关阅读"><h2>相关阅读</h2><ul>'
             + "".join(items) + "</ul></section>")
+
+
+def render_sitemap(records):
+    """Canonical pages only: articles, three homepages, /blog/, and the editorial pages.
+
+    Pagination, topic and region hubs, and the Atom feed stay on the site. They are
+    not sitemap entries.
+    """
+    from io import BytesIO
+    ET.register_namespace("", "http://www.sitemaps.org/schemas/sitemap/0.9")
+    ns = "{http://www.sitemaps.org/schemas/sitemap/0.9}"
+    urls = ET.Element(ns + "urlset")
+    article_dates = {post["url"]: post["updated_at"] for post in records}
+    editorial = ("/editorial/", "/editorial/zh/", "/editorial/en/")
+    paths = ["/", "/zh", "/en", "/blog/", *editorial, *[post["url"] for post in records]]
+    for path in paths:
+        entry = ET.SubElement(urls, ns + "url")
+        ET.SubElement(entry, ns + "loc").text = BASE + path
+        if path in article_dates:
+            ET.SubElement(entry, ns + "lastmod").text = article_dates[path]
+        elif path in editorial:
+            ET.SubElement(entry, ns + "lastmod").text = EDITORIAL_LASTMOD
+    buffer = BytesIO()
+    ET.ElementTree(urls).write(buffer, encoding="utf-8", xml_declaration=True)
+    return buffer.getvalue().decode("utf-8")
 
 
 def stamp_html_assets():
@@ -1000,26 +1111,13 @@ def main():
     public_records = [{key: value for key, value in post.items() if key not in hidden} for post in records]
     (BLOG / "articles.json").write_text(json.dumps({"perPage": PER_PAGE, "posts": public_records}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     write_feed(records)
-    hub_dates = write_hub_pages(records, header)
+    write_hub_pages(records, header)
     write_editorial_pages()
 
     from site_pages import update_site_pages
-    standalone_urls = update_site_pages(ROOT)
+    update_site_pages(ROOT)
 
-    ET.register_namespace("", "http://www.sitemaps.org/schemas/sitemap/0.9")
-    ns = "{http://www.sitemaps.org/schemas/sitemap/0.9}"
-    urls = ET.Element(ns + "urlset")
-    dates = {post["url"]: post["updated_at"] for post in records}
-    dates.update(hub_dates)
-    if records:
-        dates["/blog/feed.xml"] = max(post["updated_at"] for post in records[:FEED_LIMIT])
-    editorial_paths = ["/editorial/", "/editorial/zh/", "/editorial/en/"]
-    for path in ["/", "/zh", "/en", *(page_url(i) for i in range(1, page_count+1)), *editorial_paths, *standalone_urls, *dates]:
-        entry = ET.SubElement(urls, ns + "url")
-        ET.SubElement(entry, ns + "loc").text = BASE + path
-        if path in dates: ET.SubElement(entry, ns + "lastmod").text = dates[path]
-        elif path in editorial_paths: ET.SubElement(entry, ns + "lastmod").text = EDITORIAL_LASTMOD
-    ET.ElementTree(urls).write(ROOT / "sitemap.xml", encoding="utf-8", xml_declaration=True)
+    (ROOT / "sitemap.xml").write_text(render_sitemap(records), encoding="utf-8")
     update_chinese_homepage(records, today)
     from site_navigation import update_site_navigation
     update_site_navigation(ROOT)
