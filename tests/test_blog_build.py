@@ -46,6 +46,18 @@ class BuildTests(unittest.TestCase):
                 f'---\ndate: 2026-10-01\ncategory: b\ntitle: "测试指南 {i}"\n'
                 'excerpt: "这是一篇用于构建测试的摘要，长度足够作为文章页面的 meta description，不使用编号网址。"\n'
                 '---\n## 准备\n内容\n')
+    def test_numbered_filename_still_builds_and_is_published(self):
+        path = self.root / 'content/posts/d-20261103-090000.md'
+        path.write_text(
+            '---\ndate: 2026-11-03\ncategory: d\ntopic: 行程路线\n'
+            'title: "编号文件名仍可发布"\n'
+            'excerpt: "这是一篇用来确认编号文件名不会让构建失败的测试摘要，长度超过五十个字。"\n'
+            '---\n正文\n'
+        )
+        self.build()
+        self.assertTrue((self.root / 'blog/d-20261103-090000.html').is_file())
+        self.assertIn('https://mangen.jp/blog/d-20261103-090000', self.read('sitemap.xml'))
+
     def test_real_cards_and_generated_search_catalog_keep_all_source_urls(self):
         self.build(); index = Elements(self.read('blog/index.html'))
         self.assertEqual(len(index.cards()), min(12, len(self.original)))
@@ -372,7 +384,7 @@ class BuildTests(unittest.TestCase):
             self.assertIn(f'href="/blog/region/{slug}/"', nav)
         routes = self.read('blog/topic/routes/index.html')
         self.assertIn('<title>行程路线 | 日本旅行指南 | 株式会社万源</title>', routes)
-        self.assertIn('content="收录主题为行程路线的旅行指南。"', routes)
+        self.assertIn('content="按城市和天数整理可以走完的日本行程。每篇说明景点、交通和休息怎么取舍，方便出发前把一天放进合适的范围。具体条件以各篇正文的说明为准。"', routes)
         self.assertIn('href="https://mangen.jp/blog/topic/routes/"', routes)
         self.assertIn('"@type": "BreadcrumbList"', routes)
         self.assertIn('"@type": "CollectionPage"', routes)
@@ -381,13 +393,13 @@ class BuildTests(unittest.TestCase):
         self.assertIn('href="/blog/topic/routes/page/2/"', routes)
         page2 = self.read('blog/topic/routes/page/2/index.html')
         self.assertIn('<title>行程路线 · 第 2 页 | 日本旅行指南 | 株式会社万源</title>', page2)
-        self.assertIn('content="收录主题为行程路线的旅行指南。第 2 页。"', page2)
+        self.assertIn('content="按城市和天数整理可以走完的日本行程。每篇说明景点、交通和休息怎么取舍，方便出发前把一天放进合适的范围。具体条件以各篇正文的说明为准。第 2 页。"', page2)
         self.assertIn('rel="prev" href="https://mangen.jp/blog/topic/routes/"', page2)
         first = {card['href'] for card in Elements(routes).cards()}
         second = {card['href'] for card in Elements(page2).cards()}
         self.assertTrue(second.isdisjoint(first))
         kanto = self.read('blog/region/tokyo-kanto/index.html')
-        self.assertIn('收录目的地属于东京・关东的旅行指南。东京・关东包含：东京、横滨、镰仓、江之岛、川越、箱根、富士山、日光、高尾山、长瀞、足利、热海、羽田、成田。', kanto)
+        self.assertIn('东京・关东的旅行指南集中在这里，包含东京、横滨、镰仓、江之岛、川越、箱根、富士山、日光、高尾山、长瀞、足利、热海、羽田、成田。', kanto)
         other = self.read('blog/region/other/index.html')
         self.assertIn('其他指未归入东京・关东、大阪・关西、京都、北海道、冲绳的目的地。', other)
         tax = self.read('blog/topic/tax-free-shopping/index.html')
@@ -400,12 +412,16 @@ class BuildTests(unittest.TestCase):
         self.assertIn('href="/blog/region/osaka-kansai/">奈良</a>', article)
         self.assertIn('这条路线适合谁？', article.split('<div class="body">', 1)[1].split('</div>', 1)[0])
         sitemap = self.read('sitemap.xml')
-        self.assertNotIn('https://mangen.jp/blog/topic/routes/</loc>', sitemap)
-        self.assertNotIn('https://mangen.jp/blog/region/tokyo-kanto/</loc>', sitemap)
-        self.assertNotIn('/blog/topic/', sitemap)
-        self.assertNotIn('/blog/region/', sitemap)
+        self.assertIn('https://mangen.jp/blog/topic/routes/</loc>', sitemap)
+        self.assertIn('https://mangen.jp/blog/region/tokyo-kanto/</loc>', sitemap)
+        self.assertNotIn('https://mangen.jp/blog/topic/routes/page/2/</loc>', sitemap)
+        self.assertNotIn('/blog/page/', sitemap)
         self.assertNotIn('noindex', routes)
-        self.assertLess(nav.index('tokyo-kanto'), nav.index('osaka-kansai'))
+        self.assertNotIn('noindex', page2)
+        hub_lastmod = re.search(r'https://mangen.jp/blog/region/tokyo-kanto/</loc>\s*<lastmod>([^<]+)</lastmod>', sitemap)
+        self.assertIsNotNone(hub_lastmod)
+        self.assertRegex(hub_lastmod.group(1), r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+09:00$')
+        self.assertLess(sitemap.index('tokyo-kanto'), sitemap.index('osaka-kansai'))
 
     def test_every_article_related_block_is_static_cards(self):
         self.build()
@@ -693,15 +709,22 @@ class RelatedArticleTests(unittest.TestCase):
 class HubCopyTests(unittest.TestCase):
     def test_intros_use_only_the_taxonomy_names(self):
         build = _builder()
-        self.assertEqual(build.topic_intro('行程路线'), '收录主题为行程路线的旅行指南。')
+        self.assertEqual(build.topic_intro('行程路线'), build.TOPIC_INTROS['行程路线'] + '具体条件以各篇正文的说明为准。')
+        self.assertGreaterEqual(len(build.topic_intro('行程路线')), 50)
         self.assertEqual(build.topic_hub_path('交通接送'), '/blog/topic/transfers/')
         self.assertEqual(build.topic_hub_path('礼仪与生活', 2), '/blog/topic/etiquette/page/2/')
         self.assertEqual(build.region_hub_path('东京・关东'), '/blog/region/tokyo-kanto/')
         self.assertEqual(build.region_hub_path('大阪・关西', 3), '/blog/region/osaka-kansai/page/3/')
         intro = build.region_intro('大阪・关西')
-        self.assertEqual(intro, '收录目的地属于大阪・关西的旅行指南。大阪・关西包含：大阪、神户、奈良、姬路、和歌山、滋贺、箕面。')
+        self.assertIn('大阪、神户、奈良、姬路、和歌山、滋贺、箕面', intro)
+        self.assertGreaterEqual(len(intro), 50)
         self.assertNotIn('推荐', intro)
         self.assertNotIn('最佳', intro)
+        for topic in build.TOPICS:
+            self.assertGreaterEqual(len(build.topic_intro(topic)), 50, topic)
+        for label, _places in build.REGION_GROUPS:
+            self.assertGreaterEqual(len(build.region_intro(label)), 50, label)
+        self.assertGreaterEqual(len(build.region_intro(build.OTHER_REGION)), 50)
 
 
 class DiscoveryTests(unittest.TestCase):
@@ -736,14 +759,21 @@ class DiscoveryTests(unittest.TestCase):
             'https://mangen.jp/', 'https://mangen.jp/blog/old', 'https://mangen.jp/blog/new',
         ])
 
-    def test_new_numbered_slugs_and_short_descriptions_are_rejected(self):
+    def test_numbered_filename_warns_and_short_description_does_not_fail(self):
         build = _builder()
-        build.ensure_readable_slug('b-20261102-090005')
-        build.ensure_readable_slug('kyoto-night-maple')
-        with self.assertRaises(ValueError):
-            build.ensure_readable_slug('d-20261103-090000')
-        with self.assertRaises(ValueError):
-            build.require_description('example', '太短')
+        fresh = io.StringIO()
+        with contextlib.redirect_stderr(fresh):
+            self.assertEqual(build.resolve_slug({}, 'd-20261103-090000'), 'd-20261103-090000')
+        self.assertIn('no url_slug', fresh.getvalue())
+        known = io.StringIO()
+        with contextlib.redirect_stderr(known):
+            self.assertEqual(build.resolve_slug({}, 'b-20261102-090005'), 'b-20261102-090005')
+            self.assertEqual(build.resolve_slug({'url_slug': 'kyoto-night-maple'}, 'kyoto-night-maple'), 'kyoto-night-maple')
+        self.assertEqual(known.getvalue(), '')
+        short = io.StringIO()
+        with contextlib.redirect_stderr(short):
+            build.warn_short_description('example', '太短')
+        self.assertIn('example', short.getvalue())
 
     def test_submit_posts_to_indexnow_and_bing_without_fetching_the_site(self):
         indexnow = _indexnow()

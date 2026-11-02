@@ -539,7 +539,7 @@ collections:
         widget: "string"
         required: false
         pattern: ['^[a-z0-9]+(?:-[a-z0-9]+)*$', "用小写英文和短横线，例如 kyoto-night-maple。不要用分类加日期编号。已发布文章不要改文件名。"]
-        hint: "新建文章时，这个字段成为文件名和永久网址。已有编号文章留空，不要改文件名。"
+        hint: "新建文章时尽量填写，这个字段会成为文件名。留空时构建仍用文件名发布，并在日志里警告。已有编号文章不要改文件名。"
       - label: "文章分类"
         name: "category"
         widget: "select"

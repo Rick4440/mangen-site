@@ -6,6 +6,7 @@ import hashlib
 import json
 import re
 import math
+import sys
 import xml.etree.ElementTree as ET
 
 import markdown
@@ -146,10 +147,9 @@ def load_post(path):
     if not match:
         raise ValueError(f"Missing YAML front matter: {path}")
     metadata = yaml.safe_load(match.group(1)) or {}
-    slug = path.stem
+    slug = resolve_slug(metadata, path.stem)
     if not re.fullmatch(r"[a-z0-9-]+", slug):
         raise ValueError(f"Invalid slug: {path}")
-    ensure_readable_slug(slug)
     published = metadata.get("date")
     if isinstance(published, (date, datetime)):
         published = published.isoformat()[:10]
@@ -176,19 +176,41 @@ def legacy_numbered_slugs():
     return {line.strip() for line in path.read_text(encoding="utf-8").splitlines() if line.strip() and not line.startswith("#")}
 
 
-def ensure_readable_slug(slug):
-    """New posts use a readable filename. Numbered slugs already on the site stay put."""
-    if NUMBERED_SLUG.fullmatch(slug) and slug not in legacy_numbered_slugs():
-        raise ValueError(
-            f"New article {slug} needs a readable slug such as kyoto-night-maple, "
-            "not a category-date number. Do not rename articles that are already published."
+def resolve_slug(metadata, filename_stem):
+    """Publish the filename. A missing or unusable url_slug warns and does not stop the build."""
+    requested = str((metadata or {}).get("url_slug") or "").strip()
+    if requested and not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", requested):
+        print(
+            f"Warning: {filename_stem}.md url_slug {requested!r} is not usable; publishing /blog/{filename_stem}.",
+            file=sys.stderr,
+        )
+        requested = ""
+    if requested and requested != filename_stem:
+        print(
+            f"Warning: {filename_stem}.md url_slug is {requested}; the published URL stays /blog/{filename_stem}.",
+            file=sys.stderr,
+        )
+    elif not requested and NUMBERED_SLUG.fullmatch(filename_stem) and filename_stem not in legacy_numbered_slugs():
+        print(
+            f"Warning: {filename_stem}.md has no url_slug; publishing the numbered URL /blog/{filename_stem}.",
+            file=sys.stderr,
+        )
+    return filename_stem
+
+
+def warn_short_description(slug, excerpt):
+    if len(excerpt) < MIN_DESCRIPTION:
+        print(
+            f"Warning: meta description is {len(excerpt)} characters in {slug}; "
+            f"aim for at least {MIN_DESCRIPTION}.",
+            file=sys.stderr,
         )
 
 
-def require_description(slug, excerpt):
-    if len(excerpt) < MIN_DESCRIPTION:
+def require_hub_description(name, description):
+    if len(description) < MIN_DESCRIPTION:
         raise ValueError(
-            f"Meta description is too short ({len(excerpt)} characters) in {slug}. "
+            f"Hub description is too short ({len(description)} characters) for {name}. "
             f"Write at least {MIN_DESCRIPTION} characters."
         )
 
@@ -314,7 +336,7 @@ def post_record(post):
     data, slug, published, body = post
     title = data.get("title_i18n", {}).get("zh") or data.get("title") or slug
     excerpt = plain(data.get("excerpt_i18n", {}).get("zh") or data.get("excerpt") or "")
-    require_description(slug, excerpt)
+    warn_short_description(slug, excerpt)
     topic = canonical_topic(data.get("topic"), data.get("category"))
     if topic not in TOPICS:
         raise ValueError(f"Unsupported topic in {slug}: {topic}")
@@ -697,16 +719,31 @@ def region_hub_path(region, page=1):
     return f"/blog/region/{slug}/" if page == 1 else f"/blog/region/{slug}/page/{page}/"
 
 
+TOPIC_INTROS = {
+    "行程路线": "按城市和天数整理可以走完的日本行程。每篇说明景点、交通和休息怎么取舍，方便出发前把一天放进合适的范围。",
+    "交通接送": "机场、铁路、租车和包车出发前要核对的规则。每篇只写衔接和限制，不把某一种方式写成唯一选择。",
+    "住宿美食": "酒店、温泉旅馆和用餐前要核对的事项，包括预约、餐食、取消条件和现场限制，方便按同行的人来安排。",
+    "购物退税": "日本购物、免税和退换货前要分开看的条件，包括金额、包装、离境确认，以及买错和商品瑕疵不是同一件事。",
+    "季节活动": "赏花、红叶、灯光和冬季活动的开放说明。按到访日期核对票种和闭园时间，不把往年的景色当成当天的情况。",
+    "礼仪与生活": "电车、用餐、住宿、参拜和随身物品里容易忽略的习惯。出发前按场景看一遍，少到了现场才临时判断。",
+}
+
+
 def topic_intro(topic):
-    return f"收录主题为{topic}的旅行指南。"
+    description = TOPIC_INTROS[topic] + "具体条件以各篇正文的说明为准。"
+    require_hub_description(topic, description)
+    return description
 
 
 def region_intro(region):
     if region == OTHER_REGION:
         names = "、".join(label for label, _ in REGION_GROUPS)
-        return f"收录目的地属于{region}的旅行指南。{region}指未归入{names}的目的地。"
-    places = dict(REGION_GROUPS)[region]
-    return f"收录目的地属于{region}的旅行指南。{region}包含：" + "、".join(places) + "。"
+        description = f"其他指未归入{names}的目的地。这些文章仍按各自写到的城市归在这一页，打开前按日期核对交通。"
+    else:
+        places = "、".join(dict(REGION_GROUPS)[region])
+        description = f"{region}的旅行指南集中在这里，包含{places}。打开一篇之前，按自己的到访日期核对交通和开放情况。具体安排以各篇文章里的说明为准。"
+    require_hub_description(region, description)
+    return description
 
 
 def topic_hub_link(post):
@@ -992,11 +1029,30 @@ def render_related_section(posts):
             + "".join(items) + "</ul></section>")
 
 
-def render_sitemap(records):
-    """Canonical pages only: articles, three homepages, /blog/, and the editorial pages.
+def hub_lastmods(records):
+    """Lastmod for every generated hub page, including later pages of the same hub."""
+    dates = {}
+    groups = [("topic", topic, topic_hub_path) for topic in TOPICS]
+    groups += [("region", label, region_hub_path) for label, _ in REGION_GROUPS]
+    groups.append(("region", OTHER_REGION, region_hub_path))
+    for kind, name, path_for in groups:
+        if kind == "topic":
+            members = [post for post in records if post["topic"] == name]
+        else:
+            members = [post for post in records if name in post["regions"]]
+        if not members:
+            continue
+        page_count = math.ceil(len(members) / PER_PAGE)
+        for number in range(1, page_count + 1):
+            chunk = members[(number - 1) * PER_PAGE:number * PER_PAGE]
+            dates[path_for(name, number)] = f"{max(post['updated'] for post in chunk)}T00:00:00+09:00"
+    return dates
 
-    Pagination, topic and region hubs, and the Atom feed stay on the site. They are
-    not sitemap entries.
+
+def render_sitemap(records, hub_dates=None):
+    """Articles, homepages, /blog/, editorial pages, and topic/region hub landing pages.
+
+    /blog/page/N, hub pagination, and the Atom feed stay on the site and out of the sitemap.
     """
     from io import BytesIO
     ET.register_namespace("", "http://www.sitemaps.org/schemas/sitemap/0.9")
@@ -1004,12 +1060,15 @@ def render_sitemap(records):
     urls = ET.Element(ns + "urlset")
     article_dates = {post["url"]: post["updated_at"] for post in records}
     editorial = ("/editorial/", "/editorial/zh/", "/editorial/en/")
-    paths = ["/", "/zh", "/en", "/blog/", *editorial, *[post["url"] for post in records]]
+    landings = [(path, stamp) for path, stamp in (hub_dates if hub_dates is not None else hub_lastmods(records)).items() if "/page/" not in path]
+    dated = dict(article_dates)
+    dated.update(landings)
+    paths = ["/", "/zh", "/en", "/blog/", *editorial, *[path for path, _stamp in landings], *[post["url"] for post in records]]
     for path in paths:
         entry = ET.SubElement(urls, ns + "url")
         ET.SubElement(entry, ns + "loc").text = BASE + path
-        if path in article_dates:
-            ET.SubElement(entry, ns + "lastmod").text = article_dates[path]
+        if path in dated:
+            ET.SubElement(entry, ns + "lastmod").text = dated[path]
         elif path in editorial:
             ET.SubElement(entry, ns + "lastmod").text = EDITORIAL_LASTMOD
     buffer = BytesIO()
@@ -1111,13 +1170,13 @@ def main():
     public_records = [{key: value for key, value in post.items() if key not in hidden} for post in records]
     (BLOG / "articles.json").write_text(json.dumps({"perPage": PER_PAGE, "posts": public_records}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     write_feed(records)
-    write_hub_pages(records, header)
+    hub_dates = write_hub_pages(records, header)
     write_editorial_pages()
 
     from site_pages import update_site_pages
     update_site_pages(ROOT)
 
-    (ROOT / "sitemap.xml").write_text(render_sitemap(records), encoding="utf-8")
+    (ROOT / "sitemap.xml").write_text(render_sitemap(records, hub_dates), encoding="utf-8")
     update_chinese_homepage(records, today)
     from site_navigation import update_site_navigation
     update_site_navigation(ROOT)
