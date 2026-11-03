@@ -186,3 +186,10 @@
   .journal-header nav.open a{padding:11px 2px}
   .journal-header nav a.active:after{display:none}
 }
+
+/* Preserve complete editorial diagrams in this daily batch across cover/card ratios. */
+img[src="/assets/uploads/batch-20261103/seasonal-kunenan-guide.png"],
+img[src="/assets/uploads/batch-20261103/seasonal-kodaiji-guide.png"],
+img[src="/assets/uploads/batch-20261103/seasonal-akame-guide.png"],
+img[src="/assets/uploads/batch-20261103/seasonal-ryujin-guide.png"],
+img[src="/assets/uploads/batch-20261103/seasonal-hibiya-guide.png"]{object-fit:contain!important}
