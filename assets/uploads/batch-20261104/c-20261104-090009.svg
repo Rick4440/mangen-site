@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-labelledby="title desc">
+<title id="title">赏雪预报分阶段看</title>
+<desc id="desc">万源原创几何信息图，非实景照片。原创方法示意 · 非实时预报</desc>
+<rect x="0" y="0" width="1200" height="750" rx="0" fill="#EEF2F6"/>
+<circle cx="76" cy="360" r="188" fill="none" opacity="0.15" stroke="#496B87" stroke-width="2"/>
+<circle cx="1135" cy="390" r="220" fill="none" opacity="0.15" stroke="#496B87" stroke-width="2"/>
+<path d="M 80,130 L 150,130" fill="none" stroke="#496B87" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 1050,130 L 1120,130" fill="none" stroke="#496B87" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 80,180 L 150,180" fill="none" stroke="#496B87" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 1050,180 L 1120,180" fill="none" stroke="#496B87" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 80,230 L 150,230" fill="none" stroke="#496B87" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 1050,230 L 1120,230" fill="none" stroke="#496B87" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 80,520 L 150,520" fill="none" stroke="#496B87" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 1050,520 L 1120,520" fill="none" stroke="#496B87" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 80,570 L 150,570" fill="none" stroke="#496B87" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 1050,570 L 1120,570" fill="none" stroke="#496B87" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 80,620 L 150,620" fill="none" stroke="#496B87" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 1050,620 L 1120,620" fill="none" stroke="#496B87" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<text x="600" y="104" font-family="Noto Sans CJK SC,sans-serif" font-size="27" fill="#496B87" font-weight="400" text-anchor="middle">万源 · 日本旅行科普</text>
+<text x="600" y="178" font-family="Noto Sans CJK SC,sans-serif" font-size="60" fill="#233832" font-weight="700" text-anchor="middle">赏雪预报分阶段看</text>
+<text x="600" y="230" font-family="Noto Sans CJK SC,sans-serif" font-size="35" fill="#586861" font-weight="400" text-anchor="middle">原创方法示意 · 非实时预报</text>
+<rect x="260" y="285" width="680" height="72" rx="16" fill="#FFFFFF"/>
+<circle cx="307" cy="321" r="24" fill="#496B87" opacity="1"/>
+<text x="307" y="332" font-family="Noto Sans CJK SC,sans-serif" font-size="31" fill="#FFFFFF" font-weight="700" text-anchor="middle">1</text>
+<text x="358" y="337" font-family="Noto Sans CJK SC,sans-serif" font-size="52" fill="#233832" font-weight="700" text-anchor="start">区域趋势</text>
+<path d="M 600,360 L 600,378" fill="none" stroke="#496B87" stroke-width="3" opacity="1" stroke-linecap="round"/>
+<path d="M 591,372 L 600,382 L 609,372" fill="none" stroke="#496B87" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="260" y="390" width="680" height="72" rx="16" fill="#FFFFFF"/>
+<circle cx="307" cy="426" r="24" fill="#496B87" opacity="1"/>
+<text x="307" y="437" font-family="Noto Sans CJK SC,sans-serif" font-size="31" fill="#FFFFFF" font-weight="700" text-anchor="middle">2</text>
+<text x="358" y="442" font-family="Noto Sans CJK SC,sans-serif" font-size="52" fill="#233832" font-weight="700" text-anchor="start">当日雪况</text>
+<path d="M 600,465 L 600,483" fill="none" stroke="#496B87" stroke-width="3" opacity="1" stroke-linecap="round"/>
+<path d="M 591,477 L 600,487 L 609,477" fill="none" stroke="#496B87" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="260" y="495" width="680" height="72" rx="16" fill="#FFFFFF"/>
+<circle cx="307" cy="531" r="24" fill="#496B87" opacity="1"/>
+<text x="307" y="542" font-family="Noto Sans CJK SC,sans-serif" font-size="31" fill="#FFFFFF" font-weight="700" text-anchor="middle">3</text>
+<text x="358" y="547" font-family="Noto Sans CJK SC,sans-serif" font-size="52" fill="#233832" font-weight="700" text-anchor="start">实际营业</text>
+<text x="600" y="623" font-family="Noto Sans CJK SC,sans-serif" font-size="38" fill="#496B87" font-weight="700" text-anchor="middle">趋势不能代替出发当天的确认</text>
+<path d="M 280,657 L 920,657" fill="none" stroke="#496B87" stroke-width="1" opacity="0.3" stroke-linecap="round"/>
+<text x="600" y="686" font-family="Noto Sans CJK SC,sans-serif" font-size="24" fill="#586861" font-weight="400" text-anchor="middle">原创信息图 · 非实景照片 · 详见正文条件</text>
+</svg>
