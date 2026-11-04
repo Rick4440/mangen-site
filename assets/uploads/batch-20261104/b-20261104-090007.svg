@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-labelledby="title desc">
+<title id="title">暖宝宝先看用途</title>
+<desc id="desc">万源原创几何信息图，非实景照片。普通一次性暖宝宝</desc>
+<rect x="0" y="0" width="1200" height="750" rx="0" fill="#F8F1E7"/>
+<circle cx="76" cy="360" r="188" fill="none" opacity="0.15" stroke="#A15D31" stroke-width="2"/>
+<circle cx="1135" cy="390" r="220" fill="none" opacity="0.15" stroke="#A15D31" stroke-width="2"/>
+<path d="M 80,130 L 150,130" fill="none" stroke="#A15D31" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 1050,130 L 1120,130" fill="none" stroke="#A15D31" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 80,180 L 150,180" fill="none" stroke="#A15D31" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 1050,180 L 1120,180" fill="none" stroke="#A15D31" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 80,230 L 150,230" fill="none" stroke="#A15D31" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 1050,230 L 1120,230" fill="none" stroke="#A15D31" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 80,520 L 150,520" fill="none" stroke="#A15D31" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 1050,520 L 1120,520" fill="none" stroke="#A15D31" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 80,570 L 150,570" fill="none" stroke="#A15D31" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 1050,570 L 1120,570" fill="none" stroke="#A15D31" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 80,620 L 150,620" fill="none" stroke="#A15D31" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 1050,620 L 1120,620" fill="none" stroke="#A15D31" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<text x="600" y="104" font-family="Noto Sans CJK SC,sans-serif" font-size="27" fill="#A15D31" font-weight="400" text-anchor="middle">万源 · 日本出行实用</text>
+<text x="600" y="178" font-family="Noto Sans CJK SC,sans-serif" font-size="60" fill="#233832" font-weight="700" text-anchor="middle">暖宝宝先看用途</text>
+<text x="600" y="230" font-family="Noto Sans CJK SC,sans-serif" font-size="35" fill="#586861" font-weight="400" text-anchor="middle">普通一次性暖宝宝</text>
+<rect x="268" y="280" width="210" height="144" rx="18" fill="#FFFFFF"/>
+<rect x="344" y="300" width="58" height="50" rx="7" fill="none" stroke="#A15D31" stroke-width="3"/>
+<path d="M 357,313 L 389,313" fill="none" stroke="#A15D31" stroke-width="3" opacity="1" stroke-linecap="round"/>
+<path d="M 357,324 L 389,324" fill="none" stroke="#A15D31" stroke-width="3" opacity="1" stroke-linecap="round"/>
+<text x="373" y="397" font-family="Noto Sans CJK SC,sans-serif" font-size="40" fill="#233832" font-weight="700" text-anchor="middle">衣物贴式</text>
+<rect x="495" y="280" width="210" height="144" rx="18" fill="#FFFFFF"/>
+<rect x="571" y="300" width="58" height="50" rx="7" fill="none" stroke="#A15D31" stroke-width="3"/>
+<path d="M 584,313 L 616,313" fill="none" stroke="#A15D31" stroke-width="3" opacity="1" stroke-linecap="round"/>
+<path d="M 584,324 L 616,324" fill="none" stroke="#A15D31" stroke-width="3" opacity="1" stroke-linecap="round"/>
+<text x="600" y="397" font-family="Noto Sans CJK SC,sans-serif" font-size="40" fill="#233832" font-weight="700" text-anchor="middle">非贴式</text>
+<rect x="722" y="280" width="210" height="144" rx="18" fill="#FFFFFF"/>
+<rect x="798" y="300" width="58" height="50" rx="7" fill="none" stroke="#A15D31" stroke-width="3"/>
+<path d="M 811,313 L 843,313" fill="none" stroke="#A15D31" stroke-width="3" opacity="1" stroke-linecap="round"/>
+<path d="M 811,324 L 843,324" fill="none" stroke="#A15D31" stroke-width="3" opacity="1" stroke-linecap="round"/>
+<text x="827" y="397" font-family="Noto Sans CJK SC,sans-serif" font-size="40" fill="#233832" font-weight="700" text-anchor="middle">鞋袜专用</text>
+<text x="600" y="482" font-family="Noto Sans CJK SC,sans-serif" font-size="50" fill="#A15D31" font-weight="700" text-anchor="middle">看包装的使用位置</text>
+<text x="600" y="556" font-family="Noto Sans CJK SC,sans-serif" font-size="44" fill="#233832" font-weight="700" text-anchor="middle">不贴皮肤，不带着入睡</text>
+<text x="600" y="614" font-family="Noto Sans CJK SC,sans-serif" font-size="44" fill="#233832" font-weight="700" text-anchor="middle">不叠加其他取暖设备</text>
+<path d="M 280,657 L 920,657" fill="none" stroke="#A15D31" stroke-width="1" opacity="0.3" stroke-linecap="round"/>
+<text x="600" y="686" font-family="Noto Sans CJK SC,sans-serif" font-size="24" fill="#586861" font-weight="400" text-anchor="middle">原创信息图 · 非实景照片 · 详见正文条件</text>
+</svg>

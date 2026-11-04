@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750" role="img" aria-labelledby="title desc">
+<title id="title">大山夜枫按日下山</title>
+<desc id="desc">万源原创几何信息图，非实景照片。2026年11月20—29日</desc>
+<rect x="0" y="0" width="1200" height="750" rx="0" fill="#F3F0F7"/>
+<circle cx="76" cy="360" r="188" fill="none" opacity="0.15" stroke="#605579" stroke-width="2"/>
+<circle cx="1135" cy="390" r="220" fill="none" opacity="0.15" stroke="#605579" stroke-width="2"/>
+<path d="M 80,130 L 150,130" fill="none" stroke="#605579" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 1050,130 L 1120,130" fill="none" stroke="#605579" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 80,180 L 150,180" fill="none" stroke="#605579" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 1050,180 L 1120,180" fill="none" stroke="#605579" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 80,230 L 150,230" fill="none" stroke="#605579" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 1050,230 L 1120,230" fill="none" stroke="#605579" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 80,520 L 150,520" fill="none" stroke="#605579" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 1050,520 L 1120,520" fill="none" stroke="#605579" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 80,570 L 150,570" fill="none" stroke="#605579" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 1050,570 L 1120,570" fill="none" stroke="#605579" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 80,620 L 150,620" fill="none" stroke="#605579" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<path d="M 1050,620 L 1120,620" fill="none" stroke="#605579" stroke-width="2" opacity="0.22" stroke-linecap="round"/>
+<text x="600" y="104" font-family="Noto Sans CJK SC,sans-serif" font-size="27" fill="#605579" font-weight="400" text-anchor="middle">万源 · 日本旅行笔记</text>
+<text x="600" y="178" font-family="Noto Sans CJK SC,sans-serif" font-size="60" fill="#233832" font-weight="700" text-anchor="middle">大山夜枫按日下山</text>
+<text x="600" y="230" font-family="Noto Sans CJK SC,sans-serif" font-size="35" fill="#586861" font-weight="400" text-anchor="middle">2026年11月20—29日</text>
+<rect x="260" y="278" width="680" height="122" rx="18" fill="#FFFFFF"/>
+<text x="295" y="326" font-family="Noto Sans CJK SC,sans-serif" font-size="40" fill="#233832" font-weight="700" text-anchor="start">平日</text>
+<text x="900" y="377" font-family="Noto Sans CJK SC,sans-serif" font-size="64" fill="#605579" font-weight="700" text-anchor="end">19:00</text>
+<rect x="260" y="418" width="680" height="122" rx="18" fill="#FFFFFF"/>
+<text x="295" y="466" font-family="Noto Sans CJK SC,sans-serif" font-size="40" fill="#233832" font-weight="700" text-anchor="start">周六日及节假日</text>
+<text x="900" y="517" font-family="Noto Sans CJK SC,sans-serif" font-size="64" fill="#605579" font-weight="700" text-anchor="end">20:00</text>
+<text x="600" y="598" font-family="Noto Sans CJK SC,sans-serif" font-size="44" fill="#605579" font-weight="700" text-anchor="middle">缆车延长运行结束时间</text>
+<text x="600" y="639" font-family="Noto Sans CJK SC,sans-serif" font-size="37" fill="#586861" font-weight="400" text-anchor="middle">不是到站排队截止时间</text>
+<path d="M 280,657 L 920,657" fill="none" stroke="#605579" stroke-width="1" opacity="0.3" stroke-linecap="round"/>
+<text x="600" y="686" font-family="Noto Sans CJK SC,sans-serif" font-size="24" fill="#586861" font-weight="400" text-anchor="middle">原创信息图 · 非实景照片 · 详见正文条件</text>
+</svg>

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1120" viewBox="0 0 1000 1120" role="img" aria-labelledby="title desc">
+<title id="title">50%偏多，意思是什么？</title>
+<desc id="desc">万源原创方法示意图，非实时预报。假设某日本海侧区域的冬季累计降雪预报</desc>
+<rect x="0" y="0" width="1000" height="1120" rx="0" fill="#F1F4F5"/>
+<rect x="0" y="0" width="1000" height="15" rx="0" fill="#496B87"/>
+<text x="65" y="78" font-family="Noto Sans CJK SC,sans-serif" font-size="28" fill="#496B87" font-weight="400" text-anchor="start">万源 · 日本旅行科普</text>
+<text x="65" y="158" font-family="Noto Sans CJK SC,sans-serif" font-size="58" fill="#233832" font-weight="700" text-anchor="start">50%偏多，意思是什么？</text>
+<text x="65" y="212" font-family="Noto Sans CJK SC,sans-serif" font-size="32" fill="#586861" font-weight="400" text-anchor="start">假设某日本海侧区域的冬季累计降雪预报</text>
+<text x="65" y="293" font-family="Noto Sans CJK SC,sans-serif" font-size="39" fill="#233832" font-weight="700" text-anchor="start">针对指定区域、指定时段的累计降雪量</text>
+<text x="65" y="345" font-family="Noto Sans CJK SC,sans-serif" font-size="41" fill="#233832" font-weight="700" text-anchor="start">落入三个气候类别的概率</text>
+<rect x="65" y="395" width="174" height="166" rx="0" fill="#DDE6E7"/>
+<text x="152.0" y="454" font-family="Noto Sans CJK SC,sans-serif" font-size="41" fill="#233832" font-weight="700" text-anchor="middle">偏少</text>
+<text x="152.0" y="527" font-family="Noto Sans CJK SC,sans-serif" font-size="58" fill="#233832" font-weight="700" text-anchor="middle">20%</text>
+<rect x="239" y="395" width="261" height="166" rx="0" fill="#B8CBD3"/>
+<text x="369.5" y="454" font-family="Noto Sans CJK SC,sans-serif" font-size="41" fill="#233832" font-weight="700" text-anchor="middle">平年水平</text>
+<text x="369.5" y="527" font-family="Noto Sans CJK SC,sans-serif" font-size="58" fill="#233832" font-weight="700" text-anchor="middle">30%</text>
+<rect x="500" y="395" width="435" height="166" rx="0" fill="#496B87"/>
+<text x="717.5" y="454" font-family="Noto Sans CJK SC,sans-serif" font-size="41" fill="#FFFFFF" font-weight="700" text-anchor="middle">偏多</text>
+<text x="717.5" y="527" font-family="Noto Sans CJK SC,sans-serif" font-size="58" fill="#FFFFFF" font-weight="700" text-anchor="middle">50%</text>
+<text x="500" y="614" font-family="Noto Sans CJK SC,sans-serif" font-size="40" fill="#8B4F3D" font-weight="700" text-anchor="middle">假设教学示例，不是实际预报</text>
+<rect x="65" y="649" width="870" height="69" rx="14" fill="#FFFFFF"/>
+<text x="96" y="699" font-family="Noto Sans CJK SC,sans-serif" font-size="42" fill="#8B4F3D" font-weight="700" text-anchor="start">×</text>
+<text x="159" y="699" font-family="Noto Sans CJK SC,sans-serif" font-size="43" fill="#233832" font-weight="700" text-anchor="start">不是50%的日子下雪</text>
+<rect x="65" y="735" width="870" height="69" rx="14" fill="#FFFFFF"/>
+<text x="96" y="785" font-family="Noto Sans CJK SC,sans-serif" font-size="42" fill="#8B4F3D" font-weight="700" text-anchor="start">×</text>
+<text x="159" y="785" font-family="Noto Sans CJK SC,sans-serif" font-size="43" fill="#233832" font-weight="700" text-anchor="start">不是雪量比平年水平多50%</text>
+<rect x="65" y="821" width="870" height="69" rx="14" fill="#FFFFFF"/>
+<text x="96" y="871" font-family="Noto Sans CJK SC,sans-serif" font-size="42" fill="#8B4F3D" font-weight="700" text-anchor="start">×</text>
+<text x="159" y="871" font-family="Noto Sans CJK SC,sans-serif" font-size="43" fill="#233832" font-weight="700" text-anchor="start">不是50%的雪道开放</text>
+<text x="65" y="965" font-family="Noto Sans CJK SC,sans-serif" font-size="34" fill="#586861" font-weight="400" text-anchor="start">地点与日期能否赏雪，还要继续查短期雪况。</text>
+<path d="M 65,1020 L 935,1020" fill="none" stroke="#496B87" stroke-width="1" opacity="0.3" stroke-linecap="round"/>
+<text x="65" y="1065" font-family="Noto Sans CJK SC,sans-serif" font-size="26" fill="#586861" font-weight="400" text-anchor="start">万源原创图示（AI辅助） · 非实时预报</text>
+</svg>
