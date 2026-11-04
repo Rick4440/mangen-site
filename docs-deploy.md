@@ -10,9 +10,13 @@
 
 `/blog/feed.xml` 是最新 50 篇旅行指南的 Atom 订阅。文章页和 `/blog/` 用 `<link rel="alternate">` 指向它。sitemap 里文章的 `lastmod` 使用 `+09:00` 的完整时间。稿件目前只写了日历日期，没有钟点，因此时间取该日日本时间 00:00，不用构建时刻冒充更新时间。
 
-推送到 `main` 后，GitHub Actions 工作流 IndexNow（`.github/workflows/indexnow.yml`）用本次提交的 `sitemap.xml` 和上一次提交里的 `sitemap.xml` 比较，把新增或 `lastmod` 变了的 URL POST 到 `https://api.indexnow.org/indexnow` 和 `https://www.bing.com/indexnow`。返回 200 或 202 算成功；其他状态会把响应正文写进日志并让这一步失败。运行器不请求 `mangen.jp`。站点根目录的 `e61e8cdfd15dbe8d1e1c92f0140ffbf1.txt` 是公开校验文件，内容就是文件名。IndexNow 会自己来抓这个文件，所以它必须能被部署出去。不需要再设 GitHub Actions 密钥。
+推送到 `main` 后，GitHub Actions 工作流 IndexNow（`.github/workflows/indexnow.yml`）用当前稿件重新生成 sitemap，再和上一次提交里的 `sitemap.xml` 比较。每日文章提交通常只加入 Markdown，不会把新的 sitemap 写回仓库，所以不能只比较已提交的 sitemap 文件。这次改过的 `content/posts` 也会进入提交名单。新增或 `lastmod` 变了的 URL POST 到 `https://api.indexnow.org/indexnow` 和 `https://www.bing.com/indexnow`。返回 200 或 202 算成功；其他状态会把响应正文写进日志并让这一步失败。运行器不请求 `mangen.jp`。站点根目录的 `e61e8cdfd15dbe8d1e1c92f0140ffbf1.txt` 是公开校验文件，内容就是文件名。IndexNow 会自己来抓这个文件，所以它必须能被部署出去。不需要再设 GitHub Actions 密钥。
 
-手动运行时没有「上一次提交」，会提交 sitemap 里的全部 URL。定时轮换如果只在 Cloudflare 上重建、不产生新的 Git 提交，不会触发这次提交。
+手动运行默认提交生成结果里的全部 URL，也可以选 changed，只提交差异。每周日本时间周一 00:15 再全量提交一次。定时的每日精选如果只在 Cloudflare 上重建、不产生新的 Git 提交，不会单独触发按差异提交；周任务仍会跑全量。
+
+## 新文章网址
+
+后台新建文章可以填写 `url_slug`，用小写英文和短横线，例如 `kyoto-night-maple`。没有填写时，构建使用文件名并在日志里警告，`d-20261103-090000` 这种编号文件仍会发布。仓库的脚本和工作流里没有每日写稿程序，编号文件名来自仓库外的写稿流程。文章摘要短于 50 字只警告。主题页和地区页的简介短于 50 字会让构建失败。
 
 ## 每日精选轮换
 

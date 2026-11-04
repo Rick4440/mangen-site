@@ -7,6 +7,7 @@ import argparse
 import asyncio
 import json
 import math
+import re
 from pathlib import Path
 import threading
 from http.server import ThreadingHTTPServer
@@ -69,7 +70,10 @@ async def run(output):
     data = json.loads((ROOT/'blog/articles.json').read_text())
     routes = select_routes(data['posts'], data['perPage'], [])
     sitemap = {urlsplit(x.text).path for x in ET.parse(ROOT/'sitemap.xml').iter('{http://www.sitemaps.org/schemas/sitemap/0.9}loc')}
-    assert set(routes) <= sitemap, 'Article or list route absent from sitemap'
+    pages = {route for route in routes if re.fullmatch(r'/blog/page/\d+/', route)}
+    assert pages, 'Pagination routes missing from the crawl'
+    assert pages.isdisjoint(sitemap), 'Pagination URLs must stay out of the sitemap'
+    assert set(routes) - pages <= sitemap, 'Article or /blog/ route absent from sitemap'
     broken=validate_local_targets(ROOT,routes)
     assert not broken, f'Broken local links/resources: {broken}'
     server = ThreadingHTTPServer(('127.0.0.1', 0), handler_for(ROOT))
