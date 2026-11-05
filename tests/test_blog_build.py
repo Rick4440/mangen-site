@@ -37,8 +37,14 @@ class BuildTests(unittest.TestCase):
             shutil.copy2(ROOT / name, self.root / name)
         self.original = sorted(p.stem for p in (self.root / 'content/posts').glob('*.md'))
     def tearDown(self): self.tmp.cleanup()
-    def build(self):
-        subprocess.run(['python3', 'scripts/build.py'], cwd=self.root, check=True, capture_output=True, env=os.environ.copy())
+    def build(self, today=None):
+        command = ['python3', 'scripts/build.py']
+        if today is not None:
+            command = ['python3', '-c',
+                'import sys; from datetime import date; sys.path.insert(0, "scripts"); '
+                'import build; build.journal_today = lambda: date.fromisoformat(sys.argv[1]); '
+                'build.main()', today.isoformat()]
+        subprocess.run(command, cwd=self.root, check=True, capture_output=True, env=os.environ.copy())
     def read(self, name): return (self.root / name).read_text()
     def extra_posts(self, count):
         for i in range(count):
@@ -236,12 +242,13 @@ class BuildTests(unittest.TestCase):
         # Keep the fixture newest as real daily articles are added.
         self.build()
         latest_date = max(date.fromisoformat(post['date']) for post in json.loads(self.read('blog/articles.json'))['posts'])
-        fixture_date = (latest_date + timedelta(days=1)).isoformat()
+        fixture_date = latest_date + timedelta(days=1)
         fixture_slug = 'newest-guide-fixture'
         (self.root / 'content/posts' / f'{fixture_slug}.md').write_text(
             f'---\ndate: {fixture_date}\ncategory: b\ntopic: 交通接送\n'
             'title: "最新 <指南>"\nexcerpt: "摘要 & 说明：这篇测试文字用来确认最新指南会出现在中文首页，并且长度足够作为文章页面的 meta description。"\n---\n正文\n')
-        self.build()
+        # The newest fixture must be published on the test's day, not wall-clock time.
+        self.build(today=fixture_date)
         page = self.read('zh.html')
         header = page.split('</header>', 1)[0]
         self.assertIn('href="/blog/">旅行指南</a>', header)
@@ -280,7 +287,16 @@ class BuildTests(unittest.TestCase):
         self.assertIn('最新 &lt;指南&gt;', featured_page)
         self.assertIn('摘要 &amp; 说明', featured_page)
         self.assertNotIn('<指南>', featured_page)
-        self.build()
+        self.build(today=fixture_date)
+        self.assertEqual(self.read('zh.html'), page)
+
+        future_slug = 'future-guide-fixture'
+        future_date = fixture_date + timedelta(days=1)
+        (self.root / 'content/posts' / f'{future_slug}.md').write_text(
+            f'---\ndate: {future_date}\ncategory: b\ntopic: 交通接送\n'
+            'title: "未来指南"\nexcerpt: "这篇未来日期的测试文章不应提前出现在中文首页的最新指南中。"\n---\n正文\n')
+        self.build(today=fixture_date)
+        self.assertNotIn(f'href="/blog/{future_slug}"', self.read('zh.html'))
         self.assertEqual(self.read('zh.html'), page)
 
     def test_local_stylesheets_and_scripts_use_content_hashes(self):
