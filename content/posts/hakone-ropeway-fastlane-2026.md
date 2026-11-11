@@ -25,7 +25,7 @@ cover_source: https://commons.wikimedia.org/wiki/File:A_view_of_Owakudani_and_ro
 cover_license: CC BY-SA 4.0
 cover_license_url: https://creativecommons.org/licenses/by-sa/4.0/
 cover_creator_url: https://commons.wikimedia.org/wiki/User:Joli_Rumi
-cover_changes: 使用Commons提供的1280×720等比缩小副本；未裁切、调色、叠字或修改内容。
+cover_changes: 使用Commons提供的1280×720等比缩小副本；图片文件未裁切、调色或叠字；网页封面按容器比例裁切显示。
 ---
 计划**2026年11月21日或22日，从强罗、早云山方向前往大涌谷和芦之湖**，可以考虑箱根索道此次付费优先通道。预约在**11月13日18:00日本时间（中国大陆17:00）**开放；如果从桃源台反向上山、在23日游览，或只去强罗，这项预约并不对应你的路线。[小田急箱根11月4日公告](https://www.hakonenavi.jp/_wp/wp-content/uploads/2026/11/12f4caecbe206dea75e6bcfa05b40804-1.pdf)
 
