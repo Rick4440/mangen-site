@@ -35,6 +35,10 @@ cover_changes: 原创文字与几何图形；使用Noto Sans CJK SC排版导出P
 
 建议把登记确认邮件与日历事项放在一起，另标记“东京Big Sight西馆”。如果还安排其他东京展会，不要拿上一场的胸卡或展馆记忆套用。把邮件转给同行者也不等于替对方完成登记，出发前应各自核对姓名和收到的凭证。
 
+![2024年2月东京Big Sight建筑外观，非2026年COMNEXT会场内部或入口指引](/assets/uploads/batch-20261118/tokyo-big-sight-2024.jpg)
+
+*2024年2月东京国际展示场外观，非2026年展会现场、入口或排队示意。摄影：Masahiko OHKUBO；[Wikimedia Commons来源](https://commons.wikimedia.org/wiki/File:Tokyo_Big_Sight_exterior_2024-02-12.jpg)，[CC BY 2.0](https://creativecommons.org/licenses/by/2.0/)。采用Wikimedia提供的1280像素缩略图，未另行裁切。*
+
 ## 胸卡与讲座，是两件不同的事
 
 按[官方来场指南](https://www.cbw-expo.jp/ja-jp/visit.html)，可以提前彩色打印来场者胸卡，也可使用兑换用二维码在现场设备打印；胸卡在三天会期内有效。打算连续两天参观的人，可保留好第一天的胸卡，不要离场后随手丢弃。
