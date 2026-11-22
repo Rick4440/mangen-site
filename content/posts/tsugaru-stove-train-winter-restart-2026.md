@@ -28,10 +28,6 @@ cover_changes: 原创文字与几何图形；使用Noto Sans CJK SC排版导出P
 
 去青森体验雪国铁路，有一段不必坐到终点才算完整。津轻铁道宣布，车内有达摩形煤炉的暖炉列车于**2026年12月1日恢复，本季计划运行到2027年3月31日，每天三往返**。从津轻五所川原到金木的短乘能体验旧车厢；想看一路平原，可以坐到津轻中里。先决定哪一程一定要进暖炉车厢，而不是先给两程都留下不能移动的预期。[津轻铁道本季运行与购票](https://tsutetsu.com/lp)
 
-![站台旁的旧式津轻铁路暖炉列车和橙色客车（2007年1月历史照片）](/assets/uploads/batch-20261123/tsugaru-stove-train-2007.jpg)
-
-津轻铁路暖炉列车外观，摄于2007年1月6日。为历史实拍，不代表2026年度的车辆编组、座位或积雪情况。 [TsugaruTetsudoStoveTrain](https://commons.wikimedia.org/wiki/File:TsugaruTetsudoStoveTrain.JPG)／[Ippukucho](https://commons.wikimedia.org/wiki/User:Ippukucho)／Wikimedia Commons／[CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)。使用 Commons 提供的 1280 像素版本，未另裁切或调色。
-
 ## 订不了指定席，现场有两种车厢
 
 运营方介绍，计划列车由通常车辆“走れメロス号”连挂旧式暖炉客车。想坐后者，要付乘车区间运费，另加**1000日元暖炉列车券**；两种票不是二选一。津轻五所川原、金木、津轻中里站窗口凭现金购买，不收信用卡或电子货币；无人站乘车可向车长购票。暖炉客车先到先办，满员可能无法购得附加券，不能把普通运费支付成功当作暖炉座位已确定。
