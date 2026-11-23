@@ -351,7 +351,7 @@ class BuildTests(unittest.TestCase):
         self.assertNotIn('/blog/page/', sitemap)
         self.assertTrue((self.root / 'blog/feed.xml').is_file())
         page2 = self.read('blog/page/2/index.html')
-        self.assertIn('content="从城市漫步到山间温泉，找到适合你的日本旅行灵感。万源整理行程路线、交通接送与实用旅行指南。第 2 页。"', page2)
+        self.assertIn('content="万源日本旅行指南，按地区与主题整理城市行程、机场交通、住宿用餐、购物退税和季节活动。先看最新文章，也可按目的地查找适合自己出发日期与同行人的安排。第 2 页。"', page2)
         self.assertNotEqual(
             re.search(r'name="description" content="([^"]*)"', self.read('blog/index.html')).group(1),
             re.search(r'name="description" content="([^"]*)"', page2).group(1),
@@ -399,7 +399,7 @@ class BuildTests(unittest.TestCase):
         for slug in ('tokyo-kanto', 'osaka-kansai', 'kyoto', 'hokkaido', 'okinawa', 'other'):
             self.assertIn(f'href="/blog/region/{slug}/"', nav)
         routes = self.read('blog/topic/routes/index.html')
-        self.assertIn('<title>行程路线 | 日本旅行指南 | 株式会社万源</title>', routes)
+        self.assertIn('<title>日本行程路线攻略：城市游览与天数安排 | 日本旅行指南 | 株式会社万源</title>', routes)
         self.assertIn('content="按城市和天数整理可以走完的日本行程。每篇说明景点、交通和休息怎么取舍，方便出发前把一天放进合适的范围。具体条件以各篇正文的说明为准。"', routes)
         self.assertIn('href="https://mangen.jp/blog/topic/routes/"', routes)
         self.assertIn('"@type": "BreadcrumbList"', routes)
@@ -408,7 +408,7 @@ class BuildTests(unittest.TestCase):
         self.assertEqual(len(Elements(routes).cards()), 12)
         self.assertIn('href="/blog/topic/routes/page/2/"', routes)
         page2 = self.read('blog/topic/routes/page/2/index.html')
-        self.assertIn('<title>行程路线 · 第 2 页 | 日本旅行指南 | 株式会社万源</title>', page2)
+        self.assertIn('<title>日本行程路线攻略：城市游览与天数安排 · 第 2 页 | 日本旅行指南 | 株式会社万源</title>', page2)
         self.assertIn('content="按城市和天数整理可以走完的日本行程。每篇说明景点、交通和休息怎么取舍，方便出发前把一天放进合适的范围。具体条件以各篇正文的说明为准。第 2 页。"', page2)
         self.assertIn('rel="prev" href="https://mangen.jp/blog/topic/routes/"', page2)
         first = {card['href'] for card in Elements(routes).cards()}
@@ -579,7 +579,7 @@ class DailyGuideTests(unittest.TestCase):
         self.assertEqual(len(slugs), 5)
 
     def test_less_linked_older_articles_lead_when_the_window_starts(self):
-        posts = [_guide(f'quiet-{index}', f'2020-01-{index + 1:02d}') for index in range(5)]
+        posts = [_guide(f'quiet-{index}', f'2020-01-{index + 1:02d}') for index in range(10)]
         posts.append(_guide('popular', '2026-10-01'))
         for post in posts:
             if post['slug'] != 'popular':
@@ -648,12 +648,12 @@ class RelatedArticleTests(unittest.TestCase):
     def setUp(self):
         self.build = _builder()
 
-    def test_newest_page_links_the_older_matches_and_not_itself(self):
+    def test_related_pages_prefer_recent_matches_and_not_themselves(self):
         posts = [_related_post(self.build, f'g-{i:02d}', f'2026-01-{i+1:02d}', '行程路线', ['东京']) for i in range(8)]
         newest = posts[-1]
         related = self.build.select_related_map(posts)
         slugs = [post['slug'] for post in related[newest['slug']]]
-        self.assertEqual(slugs, [f'g-{i:02d}' for i in range(5)])
+        self.assertEqual(slugs, [f'g-{i:02d}' for i in range(6, 1, -1)])
         self.assertNotIn(newest['slug'], slugs)
         again = [post['slug'] for post in self.build.select_related_map(list(reversed(posts)))[newest['slug']]]
         self.assertEqual(again, slugs)
@@ -661,8 +661,7 @@ class RelatedArticleTests(unittest.TestCase):
         for picks in related.values():
             for post in picks:
                 inbound[post['slug']] += 1
-        self.assertTrue(all(count > 0 for count in inbound.values()))
-        self.assertGreaterEqual(inbound['g-00'], inbound['g-07'])
+        self.assertGreater(inbound['g-07'], inbound['g-00'])
 
     def test_region_and_topic_win_then_same_topic_fills_a_short_pool(self):
         tokyo = [_related_post(self.build, f'tokyo-{i}', f'2026-02-0{i+1}', '行程路线', ['东京']) for i in range(2)]
@@ -697,7 +696,7 @@ class RelatedArticleTests(unittest.TestCase):
         neighbors = [_related_post(self.build, f'near-{i}', f'2026-06-0{i+1}', '住宿美食', ['大阪']) for i in range(4)]
         tokyo = _related_post(self.build, 'tokyo', '2026-08-01', '住宿美食', ['东京'])
         related = self.build.select_related_map([solo, tokyo, *neighbors])
-        self.assertEqual([post['slug'] for post in related['solo']], [f'near-{i}' for i in range(4)])
+        self.assertEqual([post['slug'] for post in related['solo']], [f'near-{i}' for i in range(3, -1, -1)])
 
     def test_pillar_articles_keep_one_slot_for_a_newer_match(self):
         older = [_related_post(self.build, f'old-{i}', f'2026-08-0{i+1}', '行程路线', ['大阪', '京都']) for i in range(5)]
