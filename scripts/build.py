@@ -166,7 +166,7 @@ def load_post(path):
 NUMBERED_SLUG = re.compile(r"^[a-e]-\d{8}-\d{6}$")
 MIN_DESCRIPTION = 50
 PILLAR_SLUGS = ("osaka-kyoto-nara-3days", "first-trip-japan-2026", "green-plate-guide")
-LATEST_GUIDE_COUNT = 4
+LATEST_GUIDE_COUNT = 10
 
 
 def legacy_numbered_slugs():
@@ -641,6 +641,30 @@ def update_chinese_homepage(records, day):
         path.write_text(updated, encoding="utf-8")
 
 
+def update_other_homepages(records, day):
+    """Keep article titles in their original Chinese; label the destination clearly."""
+    for filename, heading, note, more in (
+        ("index.html", "最新の旅行ガイド", "以下の記事は中国語でお読みいただけます。", "旅行ガイドの一覧"),
+        ("en.html", "Latest travel guides", "These articles are available in Chinese.", "Browse all travel guides"),
+    ):
+        path = ROOT / filename
+        if not path.exists(): continue
+        page = path.read_text(encoding="utf-8")
+        start, end = "<!-- LATEST-GUIDES:START -->", "<!-- LATEST-GUIDES:END -->"
+        items = "".join(f'<li><a href="{text(post["url"])}"><span lang="zh-CN">{text(post["title"])}</span>'
+                        f'<time datetime="{text(post["date"])}">{text(post["date"])}</time></a></li>'
+                        for post in select_latest_guides(records, day))
+        block = (f'{start}<section class="sec" id="latest-guides"><div class="wrap">'
+                 f'<h2>{heading}</h2><p>{note}</p><ul class="home-latest">{items}</ul>'
+                 f'<p><a href="/blog/">{more}</a></p></div></section>{end}')
+        if start in page:
+            a = page.index(start); b = page.index(end, a) + len(end)
+            page = page[:a] + block + page[b:]
+        else:
+            page = page.replace('</main>', block + '\n</main>', 1)
+        path.write_text(page, encoding="utf-8")
+
+
 def render_featured(posts, day):
     """Blog editor's picks use the same lead-plus-four markup as the homepage block."""
     if not posts:
@@ -785,6 +809,51 @@ def hub_schema(name, description, canonical, posts, start):
     }
 
 
+HUB_TITLES = {
+    "行程路线": "日本行程路线攻略：城市游览与天数安排",
+    "交通接送": "日本交通与接送指南：机场、铁路和包车安排",
+    "住宿美食": "日本住宿与美食指南：酒店选择、餐厅预约与用餐准备",
+    "购物退税": "日本购物退税指南：购买条件、离境确认与退换货",
+    "季节活动": "日本季节活动指南：赏花、红叶、灯光与冬季出游",
+    "礼仪与生活": "日本旅行礼仪与生活指南：乘车、用餐及随身准备",
+    "东京・关东": "东京与关东旅行攻略：城市漫步、周边行程与交通",
+    "大阪・关西": "大阪与关西旅行攻略：大阪、奈良、神户及周边游览",
+    "京都": "京都旅行攻略：市区景点、宇治行程与季节活动",
+    "北海道": "北海道旅行攻略：札幌、小樽、函馆与冬季安排",
+    "冲绳": "冲绳旅行攻略：那霸出行、海岛游览与交通准备",
+    "其他": "日本其他地区旅行攻略：按目的地查找行程与交通",
+}
+
+
+def hub_title(name):
+    return HUB_TITLES[name]
+
+
+def write_article_archive(records, header):
+    """A stable HTML route to every published article, including legacy numbered URLs."""
+    groups = {}
+    for post in sorted(records, key=lambda item: (item["date"], item["slug"]), reverse=True):
+        groups.setdefault(post["date"][:7], []).append(post)
+    sections = []
+    for month, posts in groups.items():
+        links = "".join(f'<li><time datetime="{text(p["date"])}">{text(p["date"])}</time> '
+                        f'<a href="{text(p["url"])}">{text(p["title"])}</a></li>' for p in posts)
+        sections.append(f'<section><h2>{text(month)}</h2><ul>{links}</ul></section>')
+    template = (ROOT / "scripts/hub-template.html").read_text(encoding="utf-8")
+    values = {
+        "TITLE": "日本旅行指南文章目录：按发布日期浏览全部攻略", "NAME": "全部文章目录",
+        "DESCRIPTION": "按发布日期浏览万源日本旅行指南的全部文章，涵盖城市行程、机场交通、住宿美食与季节活动。新文章和早期指南都保留在目录中，方便按主题标题查找，并回到正文核对出行条件。",
+        "CANONICAL": BASE + "/blog/archive/", "INTRO": "按发布日期查找文章；出发前请核对正文中的适用日期与官方说明。",
+        "TOTAL": len(records), "HEADER": header, "CARDS": "".join(sections),
+        "PAGINATION": "", "PAGINATION_HEAD": "", "SCHEMA": "",
+    }
+    ordered = sorted(records, key=lambda item: (item["date"], item["slug"]), reverse=True)
+    values["SCHEMA"] = json.dumps(hub_schema("全部文章目录", values["DESCRIPTION"], values["CANONICAL"], ordered, 1), ensure_ascii=False).replace("<", "\\u003c")
+    target = BLOG / "archive" / "index.html"
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(render_template(template, values).replace('class="guide-grid"', 'class="article-archive"').replace('</head>', '<link rel="stylesheet" href="/assets/css/article-archive.css">\n</head>'), encoding="utf-8")
+
+
 def write_hub_pages(records, header):
     """One crawlable index per topic and per region that has articles."""
     template = (ROOT / "scripts/hub-template.html").read_text(encoding="utf-8")
@@ -806,7 +875,7 @@ def write_hub_pages(records, header):
             chunk = members[(number - 1) * PER_PAGE:number * PER_PAGE]
             url = path_for(name, number)
             description = intro if number == 1 else f"{intro}第 {number} 页。"
-            title = name if number == 1 else f"{name} · 第 {number} 页"
+            title = hub_title(name) + (f" · 第 {number} 页" if number > 1 else "")
             canonical = BASE + url
             head = ""
             if number > 1:
@@ -1063,7 +1132,8 @@ def render_sitemap(records, hub_dates=None):
     landings = [(path, stamp) for path, stamp in (hub_dates if hub_dates is not None else hub_lastmods(records)).items() if "/page/" not in path]
     dated = dict(article_dates)
     dated.update(landings)
-    paths = ["/", "/zh", "/en", "/blog/", *editorial, *[path for path, _stamp in landings], *[post["url"] for post in records]]
+    dated["/blog/archive/"] = max(post["updated_at"] for post in records)
+    paths = ["/", "/zh", "/en", "/blog/", "/blog/archive/", *editorial, *[path for path, _stamp in landings], *[post["url"] for post in records]]
     for path in paths:
         entry = ET.SubElement(urls, ns + "url")
         ET.SubElement(entry, ns + "loc").text = BASE + path
@@ -1146,10 +1216,10 @@ def main():
     for number in range(1, page_count + 1):
         output = BLOG / "index.html" if number == 1 else BLOG / "page" / str(number) / "index.html"
         output.parent.mkdir(parents=True, exist_ok=True)
-        guide_description = "从城市漫步到山间温泉，找到适合你的日本旅行灵感。万源整理行程路线、交通接送与实用旅行指南。"
+        guide_description = "万源日本旅行指南，按地区与主题整理城市行程、机场交通、住宿用餐、购物退税和季节活动。先看最新文章，也可按目的地查找适合自己出发日期与同行人的安排。"
         if number > 1:
             guide_description += f"第 {number} 页。"
-        values = {"HEADER": header, "PAGE_TITLE": "日本旅行指南" + (f" · 第 {number} 页" if number > 1 else ""),
+        values = {"HEADER": header, "PAGE_TITLE": "日本旅行指南：行程、交通与目的地攻略" + (f" · 第 {number} 页" if number > 1 else ""),
             "DESCRIPTION": guide_description,
             "CANONICAL": BASE + page_url(number), "PAGE": number, "TOTAL": len(records), "PAGE_COUNT": page_count,
             "DESTINATION_FILTER": render_destination_filters(records),
@@ -1169,6 +1239,7 @@ def main():
     hidden = {"published_at", "updated_at", "tags", "body_links", "reviewed"}
     public_records = [{key: value for key, value in post.items() if key not in hidden} for post in records]
     (BLOG / "articles.json").write_text(json.dumps({"perPage": PER_PAGE, "posts": public_records}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    write_article_archive(records, header)
     write_feed(records)
     hub_dates = write_hub_pages(records, header)
     write_editorial_pages()
@@ -1178,6 +1249,7 @@ def main():
 
     (ROOT / "sitemap.xml").write_text(render_sitemap(records, hub_dates), encoding="utf-8")
     update_chinese_homepage(records, today)
+    update_other_homepages(records, today)
     from site_navigation import update_site_navigation
     update_site_navigation(ROOT)
     stamp_html_assets()

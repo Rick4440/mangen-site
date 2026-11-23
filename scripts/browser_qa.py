@@ -69,6 +69,7 @@ async def run(output):
     from preview import handler_for
     data = json.loads((ROOT/'blog/articles.json').read_text())
     routes = select_routes(data['posts'], data['perPage'], [])
+    routes.append('/blog/archive/')
     sitemap = {urlsplit(x.text).path for x in ET.parse(ROOT/'sitemap.xml').iter('{http://www.sitemaps.org/schemas/sitemap/0.9}loc')}
     pages = {route for route in routes if re.fullmatch(r'/blog/page/\d+/', route)}
     assert pages, 'Pagination routes missing from the crawl'

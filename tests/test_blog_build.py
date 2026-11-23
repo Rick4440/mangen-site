@@ -351,7 +351,7 @@ class BuildTests(unittest.TestCase):
         self.assertNotIn('/blog/page/', sitemap)
         self.assertTrue((self.root / 'blog/feed.xml').is_file())
         page2 = self.read('blog/page/2/index.html')
-        self.assertIn('content="从城市漫步到山间温泉，找到适合你的日本旅行灵感。万源整理行程路线、交通接送与实用旅行指南。第 2 页。"', page2)
+        self.assertIn('content="万源日本旅行指南，按地区与主题整理城市行程、机场交通、住宿用餐、购物退税和季节活动。先看最新文章，也可按目的地查找适合自己出发日期与同行人的安排。第 2 页。"', page2)
         self.assertNotEqual(
             re.search(r'name="description" content="([^"]*)"', self.read('blog/index.html')).group(1),
             re.search(r'name="description" content="([^"]*)"', page2).group(1),
@@ -399,7 +399,7 @@ class BuildTests(unittest.TestCase):
         for slug in ('tokyo-kanto', 'osaka-kansai', 'kyoto', 'hokkaido', 'okinawa', 'other'):
             self.assertIn(f'href="/blog/region/{slug}/"', nav)
         routes = self.read('blog/topic/routes/index.html')
-        self.assertIn('<title>行程路线 | 日本旅行指南 | 株式会社万源</title>', routes)
+        self.assertIn('<title>日本行程路线攻略：城市游览与天数安排 | 日本旅行指南 | 株式会社万源</title>', routes)
         self.assertIn('content="按城市和天数整理可以走完的日本行程。每篇说明景点、交通和休息怎么取舍，方便出发前把一天放进合适的范围。具体条件以各篇正文的说明为准。"', routes)
         self.assertIn('href="https://mangen.jp/blog/topic/routes/"', routes)
         self.assertIn('"@type": "BreadcrumbList"', routes)
@@ -408,7 +408,7 @@ class BuildTests(unittest.TestCase):
         self.assertEqual(len(Elements(routes).cards()), 12)
         self.assertIn('href="/blog/topic/routes/page/2/"', routes)
         page2 = self.read('blog/topic/routes/page/2/index.html')
-        self.assertIn('<title>行程路线 · 第 2 页 | 日本旅行指南 | 株式会社万源</title>', page2)
+        self.assertIn('<title>日本行程路线攻略：城市游览与天数安排 · 第 2 页 | 日本旅行指南 | 株式会社万源</title>', page2)
         self.assertIn('content="按城市和天数整理可以走完的日本行程。每篇说明景点、交通和休息怎么取舍，方便出发前把一天放进合适的范围。具体条件以各篇正文的说明为准。第 2 页。"', page2)
         self.assertIn('rel="prev" href="https://mangen.jp/blog/topic/routes/"', page2)
         first = {card['href'] for card in Elements(routes).cards()}

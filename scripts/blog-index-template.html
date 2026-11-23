@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600&family=Shippori+Mincho:wght@500;600&family=Noto+Serif+SC:wght@500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/style.css?v=c7cb15ae35d1">
-  <link rel="stylesheet" href="/assets/css/journal.css?v=7d9020ed2644">
+  <link rel="stylesheet" href="/assets/css/journal.css?v=a0264a7f1a9d">
   <script src="/assets/js/main.js?v=ffb10df44028" defer></script>
   <script src="/assets/js/journal.js?v=c4b73378263f" defer></script>
 </head>
@@ -37,7 +37,7 @@
   <p class="journal-notice" id="journal-error" role="status" hidden></p>
   {{FEATURED}}
   <section class="guide-section" aria-labelledby="guides-title">
-    <div class="section-heading"><div><h2 id="guides-title" tabindex="-1">全部指南</h2><p id="result-count" role="status" aria-live="polite">共 {{TOTAL}} 篇指南</p></div><span class="sort-label">最新发布</span></div>
+    <div class="section-heading"><div><h2 id="guides-title" tabindex="-1">全部指南</h2><p><a href="/blog/archive/">按日期浏览全部文章目录</a></p><p id="result-count" role="status" aria-live="polite">共 {{TOTAL}} 篇指南</p></div><span class="sort-label">最新发布</span></div>
     <div id="active-filters" class="active-filters" hidden><p></p><button type="button" data-clear>清除筛选</button></div>
     <div class="guide-grid" id="guide-grid">{{CARDS}}</div>
     <div class="empty-state" id="empty-state" hidden><h3>暂时没有找到相关指南</h3><p>试试其他城市或关键词，或者清除筛选浏览全部内容。</p><button type="button" data-clear>查看全部指南</button></div>
