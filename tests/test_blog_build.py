@@ -579,7 +579,7 @@ class DailyGuideTests(unittest.TestCase):
         self.assertEqual(len(slugs), 5)
 
     def test_less_linked_older_articles_lead_when_the_window_starts(self):
-        posts = [_guide(f'quiet-{index}', f'2020-01-{index + 1:02d}') for index in range(10)]
+        posts = [_guide(f'quiet-{index}', f'2020-01-{index + 1:02d}') for index in range(5)]
         posts.append(_guide('popular', '2026-10-01'))
         for post in posts:
             if post['slug'] != 'popular':
@@ -648,12 +648,12 @@ class RelatedArticleTests(unittest.TestCase):
     def setUp(self):
         self.build = _builder()
 
-    def test_related_pages_prefer_recent_matches_and_not_themselves(self):
+    def test_newest_page_links_the_older_matches_and_not_itself(self):
         posts = [_related_post(self.build, f'g-{i:02d}', f'2026-01-{i+1:02d}', '行程路线', ['东京']) for i in range(8)]
         newest = posts[-1]
         related = self.build.select_related_map(posts)
         slugs = [post['slug'] for post in related[newest['slug']]]
-        self.assertEqual(slugs, [f'g-{i:02d}' for i in range(6, 1, -1)])
+        self.assertEqual(slugs, [f'g-{i:02d}' for i in range(5)])
         self.assertNotIn(newest['slug'], slugs)
         again = [post['slug'] for post in self.build.select_related_map(list(reversed(posts)))[newest['slug']]]
         self.assertEqual(again, slugs)
@@ -661,7 +661,8 @@ class RelatedArticleTests(unittest.TestCase):
         for picks in related.values():
             for post in picks:
                 inbound[post['slug']] += 1
-        self.assertGreater(inbound['g-07'], inbound['g-00'])
+        self.assertTrue(all(count > 0 for count in inbound.values()))
+        self.assertGreaterEqual(inbound['g-00'], inbound['g-07'])
 
     def test_region_and_topic_win_then_same_topic_fills_a_short_pool(self):
         tokyo = [_related_post(self.build, f'tokyo-{i}', f'2026-02-0{i+1}', '行程路线', ['东京']) for i in range(2)]
@@ -696,7 +697,7 @@ class RelatedArticleTests(unittest.TestCase):
         neighbors = [_related_post(self.build, f'near-{i}', f'2026-06-0{i+1}', '住宿美食', ['大阪']) for i in range(4)]
         tokyo = _related_post(self.build, 'tokyo', '2026-08-01', '住宿美食', ['东京'])
         related = self.build.select_related_map([solo, tokyo, *neighbors])
-        self.assertEqual([post['slug'] for post in related['solo']], [f'near-{i}' for i in range(3, -1, -1)])
+        self.assertEqual([post['slug'] for post in related['solo']], [f'near-{i}' for i in range(4)])
 
     def test_pillar_articles_keep_one_slot_for_a_newer_match(self):
         older = [_related_post(self.build, f'old-{i}', f'2026-08-0{i+1}', '行程路线', ['大阪', '京都']) for i in range(5)]

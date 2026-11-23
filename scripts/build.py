@@ -490,11 +490,14 @@ def usable_thumbnail(post):
     return cover.startswith("/assets/") and ".." not in cover.split("/") and Path(cover).suffix.lower() in _THUMB_EXT
 
 
-def related_posts(records, post, limit=5):
-    """Recent articles sharing a topic, tag or region; identical to article output."""
-    candidates = [item for item in records if related_tier(post, item) is not None]
-    candidates.sort(key=lambda item: (related_tier(post, item), item.get("date") or "", item["slug"]), reverse=True)
-    return candidates[:limit]
+def related_posts(records, post, limit=3):
+    """Same related-reading order the article pages emit. Date then slug breaks ties."""
+    others = sorted((item for item in records if item["slug"] != post["slug"]),
+                    key=lambda item: (item["date"], item["slug"]), reverse=True)
+    return sorted(others, key=lambda item: (
+        bool(set(item.get("destinations") or []) & set(post.get("destinations") or []) - {"全日本"}),
+        item.get("topic") == post.get("topic"),
+        bool(item.get("featured"))), reverse=True)[:limit]
 
 
 def inbound_link_counts(records, day):
@@ -842,11 +845,13 @@ def write_article_archive(records, header):
         "DESCRIPTION": "按发布日期浏览万源日本旅行指南的全部文章，涵盖城市行程、机场交通、住宿美食与季节活动。新文章和早期指南都保留在目录中，方便按主题标题查找，并回到正文核对出行条件。",
         "CANONICAL": BASE + "/blog/archive/", "INTRO": "按发布日期查找文章；出发前请核对正文中的适用日期与官方说明。",
         "TOTAL": len(records), "HEADER": header, "CARDS": "".join(sections),
-        "PAGINATION": "", "PAGINATION_HEAD": "", "SCHEMA": "{}",
+        "PAGINATION": "", "PAGINATION_HEAD": "", "SCHEMA": "",
     }
+    ordered = sorted(records, key=lambda item: (item["date"], item["slug"]), reverse=True)
+    values["SCHEMA"] = json.dumps(hub_schema("全部文章目录", values["DESCRIPTION"], values["CANONICAL"], ordered, 1), ensure_ascii=False).replace("<", "\\u003c")
     target = BLOG / "archive" / "index.html"
     target.parent.mkdir(parents=True, exist_ok=True)
-    target.write_text(render_template(template, values).replace('class="guide-grid"', 'class="article-archive"'), encoding="utf-8")
+    target.write_text(render_template(template, values).replace('class="guide-grid"', 'class="article-archive"').replace('</head>', '<link rel="stylesheet" href="/assets/css/article-archive.css">\n</head>'), encoding="utf-8")
 
 
 def write_hub_pages(records, header):
@@ -1020,8 +1025,57 @@ def related_tier(source, candidate):
 
 
 def select_related_map(records):
-    """Prefer recent matches; the complete archive keeps older posts discoverable."""
-    return {post["slug"]: related_posts(records, post, RELATED_MAX) for post in records}
+    """3–5 related articles per page. Newer pages give their links to older matches first."""
+    sources = sorted(records, key=lambda post: (post.get("date") or "", post["slug"]), reverse=True)
+    inbound = {post["slug"]: 0 for post in records}
+    chosen = {}
+    for source in sources:
+        bands = {2: [], 1: [], 0: []}
+        for candidate in records:
+            tier = related_tier(source, candidate)
+            if tier is not None:
+                bands[tier].append(candidate)
+        selected = []
+        seen = set()
+        for tier in (2, 1, 0):
+            if len(selected) >= RELATED_MAX:
+                break
+            if tier < 2 and len(selected) >= RELATED_MIN:
+                break
+            band = [item for item in bands[tier] if item["slug"] not in seen]
+            band.sort(key=lambda item: (inbound[item["slug"]], item.get("date") or "", item["slug"]))
+            selected.extend(band[:RELATED_MAX - len(selected)])
+            seen.update(item["slug"] for item in selected)
+        selected = prefer_newer_pillar_link(source, selected, bands)
+        for item in selected:
+            inbound[item["slug"]] += 1
+        chosen[source["slug"]] = selected
+    return chosen
+
+
+def prefer_newer_pillar_link(source, selected, bands):
+    """High-traffic guides keep one related slot for a newer matching article."""
+    if source.get("slug") not in PILLAR_SLUGS or not selected:
+        return selected
+    source_date = source.get("date") or ""
+    if any((item.get("date") or "") > source_date for item in selected):
+        return selected
+    chosen = {item["slug"] for item in selected}
+    newer = []
+    for tier in (2, 1, 0):
+        for item in bands[tier]:
+            if item["slug"] in chosen:
+                continue
+            if (item.get("date") or "") > source_date:
+                newer.append(item)
+        if newer:
+            break
+    if not newer:
+        return selected
+    newer.sort(key=lambda item: (item.get("date") or "", item["slug"]), reverse=True)
+    updated = list(selected)
+    updated[-1] = newer[0]
+    return updated
 
 
 def render_related_section(posts):

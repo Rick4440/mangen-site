@@ -1,0 +1,12 @@
+/* Archive-only rules keep shared pages and editorial policy styles unchanged. */
+.article-archive{display:grid;gap:28px;margin:28px 0 48px}
+.article-archive section{background:#fff;border:1px solid var(--line,#ddd);border-radius:var(--radius,12px);padding:24px}
+.article-archive h2{margin:0 0 16px;font-size:22px;line-height:1.4}
+.article-archive ul{list-style:none;padding:0;margin:0}
+.article-archive li{display:grid;grid-template-columns:100px minmax(0,1fr);gap:16px;padding:13px 0;line-height:1.7}
+.article-archive li+li{border-top:1px solid var(--line,#ddd)}
+.article-archive time{font-size:13px;color:var(--sub,#666);font-variant-numeric:tabular-nums}
+.article-archive a{color:inherit;text-decoration:underline;text-underline-offset:4px;overflow-wrap:anywhere}
+.article-archive a:hover{color:var(--accent-ink,#78582d)}
+.article-archive a:focus-visible{outline:2px solid currentColor;outline-offset:4px}
+@media(max-width:600px){.article-archive{gap:18px}.article-archive section{padding:18px}.article-archive li{grid-template-columns:minmax(0,1fr);gap:4px}}

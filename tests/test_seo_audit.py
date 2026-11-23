@@ -39,7 +39,7 @@ class SeoAuditTests(unittest.TestCase):
             for post in latest:
                 self.assertIn('href="' + post['url'] + '"', content)
 
-    def test_every_article_has_three_to_five_relevant_recent_links(self):
+    def test_every_article_has_three_to_five_relevant_links(self):
         import build
         import json
         records = json.loads((ROOT / 'blog/articles.json').read_text())['posts']
@@ -49,4 +49,18 @@ class SeoAuditTests(unittest.TestCase):
             self.assertGreaterEqual(len(picks), 3, source['slug'])
             self.assertLessEqual(len(picks), 5)
             self.assertTrue(all(build.related_tier(source, p) is not None for p in picks))
-            self.assertEqual(picks, sorted(picks, key=lambda p: (build.related_tier(source, p), p['date'], p['slug']), reverse=True))
+
+
+    def test_archive_has_styles_and_complete_collection_schema(self):
+        import json
+        import re
+        content = (ROOT / 'blog/archive/index.html').read_text()
+        self.assertIn('/assets/css/article-archive.css', content)
+        schema = json.loads(re.search(r'<script type="application/ld\+json">(.*?)</script>', content, re.S)[1])
+        collection = next(item for item in schema['@graph'] if item['@type'] == 'CollectionPage')
+        records = json.loads((ROOT / 'blog/articles.json').read_text())['posts']
+        items = collection['mainEntity']['itemListElement']
+        self.assertEqual(len(items), len(records))
+        self.assertEqual(collection['mainEntity']['numberOfItems'], len(records))
+        self.assertEqual({item['url'] for item in items}, {'https://mangen.jp' + post['url'] for post in records})
+        self.assertEqual([item['position'] for item in items], list(range(1, len(records) + 1)))
